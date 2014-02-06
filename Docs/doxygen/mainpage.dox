@@ -1,0 +1,23 @@
+/**
+ * @mainpage BuenaVista package
+ * The collection of programs to fit and to plot the various form factors.
+ *
+ * @author Erik Bartoš
+ *
+ * @copyright (c) 2013
+ *
+ */
+
+/**
+ * @page page_intro Introduction
+ *
+ * @section descr Short description
+ * The collection of programs to fit and to plot the various form factors.
+ *
+ * @section notes Release
+ * Version 1.0
+ *
+ * @todo a lot of
+ * @todo stuff
+ *
+ */

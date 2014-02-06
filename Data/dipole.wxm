@@ -1,0 +1,15 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 0.8.7 ] */
+
+/* [wxMaxima: input   start ] */
+wxplot2d([1./((1+x/0.71)*(1+x/0.71))], [x,-1,1])$
+
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+limit(.78*(.78*.78-1.4*1.4)*t/((.78*.78-t)*(1.4*1.4-t))+1.4/(1.4*1.4-t), t, 10000);
+limit(.78*(.78*.78-1.4*1.4)*t/((.78*.78-t)*(1.4*1.4-t))+1.4/(1.4*1.4-t), t, -10000);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

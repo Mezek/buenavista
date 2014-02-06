@@ -1,0 +1,355 @@
+%% -*- TeX -*-
+%% File: `buenavista.tex'
+%% Coding: utf-8
+%% Format: pdfLaTeX
+%% Description: Notes to Unitary and Analytic model
+%% Date: Tue 06 Nov 2012 01:47:21 PM CET 
+%% (C) 2012 Erik Bartoš
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,draft]{article}
+% Adjust final/draft for final version!
+
+\usepackage{helvet}
+%\usepackage[slovak]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+%\usepackage{indentfirst}
+
+\usepackage{amsmath,amssymb}
+\usepackage{hepnames}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{adjustbox,ragged2e}
+\usepackage{siunitx}
+
+\newcommand*\doctitle{Notes to Unitary and Analytic model}
+\newcommand*\docauthor{Erik Bartoš}
+\newcommand*\docdate{\today}
+
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+      breaklinks    = true,
+      baseurl       = http://,
+      pdfborder     = 0 0 0,
+      pdfpagemode   = UseNone, %UseNone, UseOutline
+%      pdfstartview  = FitH,
+      pdfstartpage  = 1,
+      pdfcreator    = Pdf\LaTeX{} with hyperref package,
+      pdfproducer   = Pdf\LaTeX{},
+      bookmarksopen = true,
+      pdfauthor     = {\docauthor},
+      pdftitle      = {\doctitle},  
+      pdfsubject    = {Article},
+      pdfkeywords   = {scientific,paper}
+}
+
+\usepackage{graphicx}
+\usepackage{epstopdf}
+%\DeclareGraphicsExtensions{.eps}
+%\epstopdfsetup{suffix=}
+
+\usepackage[colorinlistoftodos, textwidth=4cm, shadow]{todonotes}
+% option: disable - disable todonotes package
+% option: obeyDraft - first check draft option
+%%\usepackage[displaymath, tightpage]{preview}
+\usepackage{setspace,fancyhdr}
+
+
+%\textwidth=0.6\paperwidth
+
+% Declarations math
+\newcommand*{\m}[1]{\mathrm {#1}}
+\newcommand*{\dd}{\ensuremath{\mathrm{d}}}
+\newcommand*{\ee}{\ensuremath{\mathrm{e}}}
+\newcommand*{\ii}{\ensuremath{\mathrm{i}}}
+\newcommand*{\nn}{\nonumber}
+\newcommand*{\G}[3][G]{\ensuremath{#1_{\m{#2}}^{\m{#3}}}}
+\newcommand*{\F}[2]{\ensuremath{\G{#1}{#2}}}
+
+\DeclareRobustCommand{\APN}{\HepAntiParticle{N}{}{}\xspace}
+\DeclareRobustCommand{\APgL}{\HepAntiParticle{\Lambda}{}{}\xspace}
+\DeclareRobustCommand{\PgXz}{\HepParticle{\Xi}{}{0}\xspace}
+\DeclareRobustCommand{\APgXz}{\HepAntiParticle{\Xi}{}{0}\xspace}
+\DeclareRobustCommand{\Pgfb}{\HepParticleResonance{\Pgf}{2175}{}{}\xspace}
+\DeclareRobustCommand{\Pgrdva}{\HepParticleResonance{\Pgr}{1570}{}{}\xspace}
+\DeclareRobustCommand{\Pgrtri}{\HepParticleResonance{\Pgr}{1720}{}{}\xspace}
+\DeclareRobustCommand{\Pgos}{\HepParticle{\Pgo'}{}{}\xspace}
+\DeclareRobustCommand{\Pgoss}{\HepParticle{\Pgo''}{}{}\xspace}
+\DeclareRobustCommand{\Pgfs}{\HepParticle{\Pgf'}{}{}\xspace}
+\DeclareRobustCommand{\Pgfss}{\HepParticle{\Pgf''}{}{}\xspace}
+\DeclareRobustCommand{\Pgrs}{\HepParticle{\Pgr'}{}{}\xspace}
+\DeclareRobustCommand{\Pgrss}{\HepParticle{\Pgr''}{}{}\xspace}
+
+\newcommand*{\bra}{\mathinner\langle}
+\newcommand*{\ket}{\mathinner\rangle}
+\newcommand*{\ack}{\mathinner\vert}
+\newcommand*{\radE}[1][2]{\bra r_{\m{E}}^{#1}\ket}
+\newcommand*{\radM}[1][2]{\bra r_{\m{M}}^{#1}\ket}
+
+% Declarations todonotes
+\newcommand{\todoGreen}[1]{\todo[color=green!40]{#1}}
+
+% Declarations units
+\DeclareSIUnit \GeVc {\giga\electronvolt\per\textit{c}}
+\DeclareSIUnit \GeVcS {(\GeVc)\squared}
+\DeclareSIUnit \fm {\femto\meter }
+
+\def\tol#1#2#3{\hbox{\rule{0pt}{12pt}${#1}_{-{#2}}^{+{#3}}$}}
+
+\newcounter{mycomment}
+\newcommand*{\todoA}[2][]{% 
+	% initials of the author (optional) + note in the margin
+	\refstepcounter{mycomment}%
+	{%
+		\setstretch{0.7}% spacing
+		\todo[color={red!100!green!33},size=\small]{%
+		%\textbf{Comment [\uppercase{#1}\themycomment]:}~#2}%
+		\textbf{[\uppercase{#1}\themycomment]:}~#2}%
+	}}
+\newcommand*{\todoEB}[2][]{\todoA[EB#1]{#2}}
+
+% Declarations fancyhdr
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\renewcommand{\headrulewidth}{0pt}
+%\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\parbox{0.7\textwidth}{\doctitle}}
+\fancyhead[R]{\footnotesize\docauthor}
+%\fancyfoot[C]{\docauthor}
+\fancyfoot[C]{\footnotesize Page \thepage\ of 2}
+\fancypagestyle{plain}{\fancyhf{}} % first page
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{\doctitle}
+\author{\docauthor}
+
+\date{\docdate}
+\maketitle
+
+
+\begin{abstract}
+We have analyzed the electromagnetic form factors of $1/2^{+}$ baryon octet.
+\end{abstract}
+
+\listoftodos
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The notes done during the calculations and in the time of preparing literature.
+\todoGreen{Example: A green note.}
+\todoEB{An author comment.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Cross sections}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The standard dipole\footnote{sd --- standard dipole}
+
+\begin{equation}
+\G{sd}{}(Q^2) = \bigg(1+\frac{Q^2}{\SI{0.71}{\GeVcS}}\bigg)^2
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Proton electromagnetic radii}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[!ht]\centering
+\begin{tabular}{
+	l
+	l
+	l
+	l
+	S[table-number-alignment = left]
+}
+\toprule
+{Paper} & {$\radE[]$} & {$\radE$} & {$\radM[]$} & {$\radM$}\\
+\midrule
+{\cite{Mohr:2008fa}} & 0.8768(69) & 0.7688 & &\\
+{\cite{Pohl:2010zza}} & 0.84184(67) & 0.70869 & &\\
+{\cite{Lorenz:2012tm}} & \tol{0.84}{0.01}{0.01} & 0.7056 & \tol{0.86}{0.02}{0.01} &\\
+{\cite{Antognini:1900ns}} & 0.84087(39) & 0.70706 & 0.87(6) & \\
+\midrule
+\bottomrule
+\end{tabular}
+\caption{The values of proton electromagnetic radii are in \si{\fm}.}
+\label{tab:radii}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hyperons}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Baryon form factors
+\begin{align}
+\G{E\Pp(\Pn)}{}(t)&=\G{E\PN}{s}(t)\pm\G{E\PN}{v}(t)\nn\\
+\G{M\Pp(\Pn)}{}(t)&=\G{M\PN}{s}(t)\pm\G{M\PN}{v}(t)\nn\\
+\G{E\PgL}{}(t)&=\G{E\PgL}{s}(t)\nn\\
+\G{M\PgL}{}(t)&=\G{M\PgL}{s}(t)\nn\\
+\G{E\PgSp(\PgSm)}{}(t)&=\G{E\PgS}{s}(t)\pm\G{E\PgS}{v}(t)\nn\\
+\G{M\PgSp(\PgSm)}{}(t)&=\G{M\PgS}{s}(t)\pm\G{M\PgS}{v}(t)\nn\\
+\G{E\PgSz}{}(t)&=\G{E\PgSz}{s}(t)\nn\\
+\G{M\PgSz}{}(t)&=\G{M\PgSz}{s}(t)\nn\\
+\G{E\PgXz(\PgXm)}{}(t)&=\G{E\PgX}{s}(t)\pm\G{E\PgX}{v}(t)\nn\\
+\G{M\PgXz(\PgXm)}{}(t)&=\G{M\PgX}{s}(t)\pm\G{M\PgX}{v}(t)
+\end{align}
+
+\begin{table}[!ht]\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ccccccc}
+\toprule
+Baryon & $\G{E}{}$ & $\G{M}{}$ & $\G{E}{s}$ & $\G{E}{v}$ & $\G{M}{s}$ & $\G{M}{v}$\\
+\midrule
+\Pp   &  1 & $\mu_{\Pp}$    & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\Pp}+\mu_{\Pn})$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\Pp}-\mu_{\Pn})$}} \\
+\Pn   &  0 & $\mu_{\Pn}$      &  &  &  &  \\
+\PgL  &  0 & $\mu_{\PgL}$     & 0 & --- & $\mu_{\PgL}$ & --- \\ 
+\PgSp &  1 & $\mu_{\PgSp}$  & \multicolumn{1}{c}{\multirow{2}{*}{0}} & \multicolumn{1}{c}{\multirow{2}{*}{1}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\PgSp}+\mu_{\PgSm})$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\PgSp}-\mu_{\PgSm})$}} \\
+\PgSm & -1 & $\mu_{\PgSm}$ &  &  &  &  \\
+\PgSz &  0 & $\tfrac{1}{2}(\mu_{\PgSp}+\mu_{\PgSm})$ & 0 & --- & $\tfrac{1}{2}(\mu_{\PgSp}+\mu_{\PgSm})$ & --- \\
+\PgXz &  0 & $\mu_{\PgXz}$    & \multicolumn{1}{c}{\multirow{2}{*}{$-\tfrac{1}{2}$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\PgXz}+\mu_{\PgXm})$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\PgXz}-\mu_{\PgXm})$}} \\
+\PgXm & -1 & $\mu_{\PgXm}$ &  &  &  &  \\
+\bottomrule
+\end{tabular}
+}
+\caption{The baryon norms, i.~e, the values of form factors in $t=0$.}
+\label{tab:norms}
+\end{table}
+
+and their decomposition to Dirac and Pauli parts
+\begin{align}
+\G{E\Pp(\Pn)}{}(t)&=[\F{1\PN}{s}(t)\pm\F{1\PN}{v}(t)]+\frac{t}{4m_{\PN}^2}[\F{2\PN}{s}(t)\pm\F{2\PN}{v}(t)]\nn\\
+\G{M\Pp(\Pn)}{}(t)&=[\F{1\PN}{s}(t)\pm\F{1\PN}{v}(t)]+[\F{2\PN}{s}(t)\pm\F{2\PN}{v}(t)]\nn\displaybreak\\
+\G{E\PgL}{}(t)&=\F{1\PgL}{s}(t)+\frac{t}{4m_{\PgL}^2}\F{2\PgL}{s}(t)\nn\\
+\G{M\PgL}{}(t)&=\F{1\PgL}{s}(t)+\F{2\PgL}{s}(t)\nn\\
+\G{E\PgSp(\PgSm)}{}(t)&=[\F{1\PgS}{s}(t)\pm\F{1\PgS}{v}(t)]+\frac{t}{4m_{\PgS}^2}[\F{2\PgS}{s}(t)\pm\F{2\PgS}{v}(t)]\nn\\
+\G{M\PgSp(\PgSm)}{}(t)&=[\F{1\PgS}{s}(t)\pm\F{1\PgS}{v}(t)]+[\F{2\PgS}{s}(t)\pm\F{2\PgS}{v}(t)]\nn\\
+\G{E\PgSz}{}(t)&=\F{1\PgSz}{s}(t)+\frac{t}{4m_{\PgSz}^2}\F{2\PgSz}{s}(t)\nn\\
+\G{M\PgSz}{}(t)&=\F{1\PgSz}{s}(t)+\F{2\PgSz}{s}(t)\nn\\
+\G{E\PgXz(\PgXm)}{}(t)&=[\F{1\PgX}{s}(t)\pm\F{1\PgX}{v}(t)]+\frac{t}{4m_{\PgX}^2}[\F{2\PgX}{s}(t)\pm\F{2\PgX}{v}(t)]\nn\\
+\G{M\PgXz(\PgXm)}{}(t)&=[\F{1\PgX}{s}(t)\pm\F{1\PgX}{v}(t)]+[\F{2\PgX}{s}(t)\pm\F{2\PgX}{v}(t)].
+\end{align}
+
+\begin{table}[!ht]\centering
+{\scriptsize
+\begin{tabular}{ccccccc}
+\toprule
+Baryon & $\G{E}{}$ & $\G{M}{}$ & $\F{1}{s}$ & $\F{1}{v}$ & $\F{2}{s}$ & $\F{2}{v}$\\
+\midrule
+\Pp   &  1 & $\mu_{\Pp}$    & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\Pp}+\mu_{\Pn}-1)$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\Pp}-\mu_{\Pn}-1)$}} \\
+\Pn   &  0 & $\mu_{\Pn}$      &  &  &  &  \\
+\PgL  &  0 & $\mu_{\PgL}$     & 0 & --- & $\mu_{\PgL}$ & --- \\ 
+\PgSp &  1 & $\mu_{\PgSp}$  & \multicolumn{1}{c}{\multirow{2}{*}{0}} & \multicolumn{1}{c}{\multirow{2}{*}{1}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\PgSp}+\mu_{\PgSm})$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\PgSp}-\mu_{\PgSm}-2)$}} \\
+\PgSm & -1 & $\mu_{\PgSm}$ &  &  &  &  \\
+\PgSz &  0 & $\tfrac{1}{2}(\mu_{\PgSp}+\mu_{\PgSm})$ & 0 & --- & $\tfrac{1}{2}(\mu_{\PgSp}+\mu_{\PgSm})$ & --- \\
+\PgXz &  0 & $\mu_{\PgXz}$    & \multicolumn{1}{c}{\multirow{2}{*}{$-\tfrac{1}{2}$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\PgXz}+\mu_{\PgXm}+1)$}} & \multicolumn{1}{c}{\multirow{2}{*}{$\tfrac{1}{2}(\mu_{\PgXz}-\mu_{\PgXm}-1)$}} \\
+\PgXm & -1 & $\mu_{\PgXm}$ &  &  &  &  \\
+\bottomrule
+\end{tabular}}
+\caption{The baryon norms, i.~e., the values of form factors in $t=0$.}
+\label{tab:dnorms}
+\end{table}
+
+The lepton width of a vector mesons is defined\todo{$V$ in $\Gamma \equiv$ vector mesons?!}
+
+\begin{equation}
+\Gamma(V\to \Pep\Pem)= (\alpha^2 m_i/3)(f_i^2/4\pi),\quad i = S,V
+\end{equation}
+where the masses and widths are taken from
+\begin{itemize}
+\item all basic masses and widths -- \cite{Nakamura:2010zzi}
+
+\item $\Pgos$, $\Pgoss$ -- Model A \cite{Donnachie:1988ws}
+
+\item $\Pgrs$ width -- estimated from $\Gamma_{\Pgos\to\Pep\Pem}=\tfrac{1}{9}\Gamma_{\Pgrs\to\Pep\Pem}$ \cite{Donnachie:1988ws}
+
+\item $\Pgrss$ width -- estimated from $\Gamma_{\Pgoss\to\Pep\Pem}=\tfrac{1}{9}\Gamma_{\Pgrss\to\Pep\Pem}$ \cite{Donnachie:1988ws}
+
+\item $\Pgf$ sign is $-1$.\todo{Find in literature.}
+\end{itemize}
+
+The mean square radius of the charge distribution is given by
+\begin{equation}
+<r^2>=4\pi\int\limits_0^\infty r^2\rho(r) \dd r=\frac{6}{F(0)}\frac{\dd F(t)}{\dd t}\Big|_{t\to 0}
+\end{equation}
+for the case of neutral baryons, the radii is defined as
+\begin{equation}
+<r^2>=6\frac{\dd F(t)}{\dd t}\Big|_{t\to 0}.
+\end{equation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Calculations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[!ht]\centering
+\begin{tabular}{cl}
+\toprule
+Coupling constant & Value \\
+\midrule
+$f_{\Pgo}$ & 17.0576 \\
+$f_{\Pgf}$ & 13.4448 \\
+$f_{\Pgr}$ & 4.95691 \\
+\midrule
+\multicolumn{2}{c}{0.788198 : 0.290599 : 0.368687} \\
+\midrule
+$f_{\Pgos}$ & 47.5897 \\
+$f_{\Pgfs}$ &  \\
+$f_{\Pgrs}$ & 13.6455 \\
+\midrule
+\multicolumn{2}{c}{--- : 0.2867 : ---} \\
+\midrule
+$f_{\Pgoss}$ & 48.3651 \\
+$f_{\Pgfss}$ &  \\
+$f_{\Pgrss}$ & 22.52751 \\
+\midrule
+\multicolumn{2}{c}{--- : 0.4658 : ---} \\
+\bottomrule
+\end{tabular}
+\caption{The values of universal coupling constants.\todo[inline]{Sign of $f_\phi$ is $\pm$?}}
+\label{tab:fmesons}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[!ht]\centering
+\begin{tabular}{cccc}
+\toprule
+Baryon & $\chi$PT %\cite{Kubis:2000aa}
+ & Our & Exp\\
+\midrule
+\Pp & 0. & 0. & \\
+\Pn & 0. & 0. & \\
+\PgL & 0. & 0. & \\
+\PgSp & 0. & 0. & \\
+\PgSz & 0. & 0. & \\
+\PgSm & 0. & 0. & $0.61\pm 0.12\pm 0.09$\\
+\PgXz & 0. & 0. & \\
+\PgXm & 0. & 0. & \\
+\bottomrule
+\end{tabular}
+\caption{The electric radii of baryons.}
+\label{tab:rade}
+\end{table}
+
+\begin{figure}[t]
+\missingfigure{AaAaA}
+%\includegraphics[width=\columnwidth]{fig01}
+\caption{}
+\label{fig:label0}
+\end{figure}
+
+
+\begin{footnotesize}
+\bibliography{hyperons}\bibliographystyle{apalike}
+\end{footnotesize}
+
+\end{document}
+%% End of file

@@ -1,0 +1,16 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.01.0 ] */
+
+/* [wxMaxima: input   start ] */
+m_Ph:1.01949;
+m_Om:0.78265;
+m_Rh:0.77549;
+m_K:0.89166;
+f(x):=m_Ph*m_Ph*cos(x)^2+m_Om*m_Om*sin(x)^2-(4.*m_K*m_K-m_Rh*m_Rh)/3.;
+plot2d(f(x),[x,0,2]);
+find_root(f(x) = 0, x, 0., 2.);
+%/float(%pi)*180;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
