@@ -2,8 +2,8 @@
  * $Date$
  * $Revision$
  * $Author$
- * $Header$
- * $Id$
+ * $Header: /home/bartos/Projects/anjuta/BuenaVista/Pions/modules/PlotGraph.h,v 4bd31590c819 2014/02/11 14:51:17 mezekus $
+ * $Id: PlotGraph.h,v 4bd31590c819 2014/02/11 14:51:17 mezekus $
  *
  * @file
  * @brief	Header for plotting.

@@ -2,8 +2,8 @@
  * $Date$
  * $Revision$
  * $Author$
- * $Header$
- * $Id$
+ * $Header: /home/bartos/Projects/anjuta/BuenaVista/Pions/modules/ConstBasic.cpp,v 4bd31590c819 2014/02/11 14:51:17 mezekus $
+ * $Id: ConstBasic.cpp,v 4bd31590c819 2014/02/11 14:51:17 mezekus $
  *
  * @file
  * @brief	Basic constants for numerical calculations.
