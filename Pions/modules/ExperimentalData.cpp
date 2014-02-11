@@ -2,8 +2,6 @@
  * $Date$
  * $Revision$
  * $Author$
- * $Header: /home/bartos/Projects/anjuta/BuenaVista/Pions/modules/ExperimentalData.cpp,v 4bd31590c819 2014/02/11 14:51:17 mezekus $
- * $Id: ExperimentalData.cpp,v 4bd31590c819 2014/02/11 14:51:17 mezekus $
  *
  * @file
  * @brief	Experimental data input.
