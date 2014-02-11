@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Author: Erik.Bartos@gmail.com
 
-SUBDIRS = src po Nucleons Data Docs Hyperons
+SUBDIRS = src po Data Docs Hyperons Nucleons Pions
 
 buenavistadocdir = ${prefix}/doc/buenavista
 buenavistadoc_DATA = \
