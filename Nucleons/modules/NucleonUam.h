@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-27 15:42:53 +0200 (Mon, 27 May 2013) $
- * $Revision: 357 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/NucleonUam.h $
- * $Id: NucleonUam.h 357 2013-05-27 13:42:53Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Header for U&A form factor for nucleons.
@@ -51,11 +51,11 @@ class FFactor {
 	FFactor ( std::size_t );
 	int numberOfParameters;
 	std::vector<hod> v;
-    void LoadParameters ( char* );
+	void LoadParameters ( char* );
 	void SetParameter ( const int , const double );
-    void SetParameters ( const std::vector<double>& );
+	void SetParameters ( const std::vector<double>& );
 	void FixParameters ( void );
-    void PrintParameters ( void );
+	void PrintParameters ( void );
 	void LoadCovMatrix ( char* );
 	double A ( int );
 	double E ( int );

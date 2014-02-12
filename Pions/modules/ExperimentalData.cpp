@@ -21,7 +21,7 @@ void ExperimentalData::ReadData ( char* d )
 	//myDataFile.open(dataFile);
 	if (myDataFile.is_open()) {
 		num = 0;
-		double dA,dB,dC,dD;
+		double dA,dB,dC;
 		while (myDataFile.peek() != EOF) {
 			firstChar = myDataFile.peek();
 			if ( (firstChar == '%') || (firstChar == '#') || (firstChar == '*') || (firstChar == '/') ) {
@@ -37,15 +37,12 @@ void ExperimentalData::ReadData ( char* d )
 				}
 			}
 			else {
-				myDataFile >> dA >> dB >> dC >> dD;
+				myDataFile >> dA >> dB >> dC;
 				fType.push_back(typeInt);
 				fX.push_back(dA);
 				fVal.push_back(dB);
 				fErrUp.push_back(dC);
-				fErrDown.push_back(dD);
-				fTheta.push_back(0.);
-				fEnergy.push_back(0.);
-				//std::cout << ">>> " << num << " " << type[num] << " " << x[num] << " " << val[num] << std::endl;
+				fErrDown.push_back(dC);
 				getline (myDataFile,line);
 				++num;
 			}
@@ -62,7 +59,7 @@ void ExperimentalData::ReadData ( char* d, int t )
 	ifstream myDataFile (d);
 	if (myDataFile.is_open()) {
 		num = 0;
-		double dA,dB,dC,dD;
+		double dA,dB,dC;
 		while (myDataFile.peek() != EOF) {
 			firstChar = myDataFile.peek();
 			if ( (firstChar == '%') || (firstChar == '#') || (firstChar == '*') || (firstChar == '/') ) {
@@ -76,15 +73,12 @@ void ExperimentalData::ReadData ( char* d, int t )
 				}
 			}
 			else {
-				myDataFile >> dA >> dB >> dC >> dD;
+				myDataFile >> dA >> dB >> dC;
 				if ( typeInt == t) {
 					fType.push_back(typeInt);
 					fX.push_back(dA);
 					fVal.push_back(dB);
 					fErrUp.push_back(dC);
-					fErrDown.push_back(dD);
-					fTheta.push_back(0.);
-					fEnergy.push_back(0.);
 					++num;
 				}
 				getline (myDataFile,line);
@@ -94,42 +88,6 @@ void ExperimentalData::ReadData ( char* d, int t )
 	}
 	else std::cerr << "> ReadData: Error! Unable to open data file '" << d << "'!" << std::endl;
 	this->typeN(t);
-}
-
-/// Read cross section data
-
-void ExperimentalData::ReadDataCrossSection ( char* d )
-{
-	ifstream myDataFile (d);
-	if (myDataFile.is_open()) {
-		num = 0;
-		double dA,dB,dC,dD,dE;
-		while (myDataFile.peek() != EOF) {
-			firstChar = myDataFile.peek();
-			if ( (firstChar == '%') || (firstChar == '#') || (firstChar == '*') || (firstChar == '/') ) {
-				getline (myDataFile,line);
-				if ((firstChar == '#')) {
-					std::string lineSub = line.substr(7);
-					std::istringstream stream (lineSub);
-					stream >> typeInt;
-				}
-			}
-			else {
-				myDataFile >> dA >> dB >> dC >> dD >> dE;
-				fType.push_back(typeInt);
-				fX.push_back(dA);
-				fVal.push_back(dB);
-				fErrUp.push_back(dC);
-				fErrDown.push_back(dC);
-				fTheta.push_back(dD);
-				fEnergy.push_back(dE);
-				getline (myDataFile,line);
-				++num;
-			}
-		}
-		myDataFile.close();
-	}
-	else std::cerr << "> ReadDataCrossSection: Error! Unable to open data file '" << d << "'!" << std::endl;
 }
 
 /// Read covariance matrix
@@ -196,8 +154,6 @@ void ExperimentalData::RemoveDataType ( int n )
 				fVal[j] = fVal[i];
 				fErrUp[j] = fErrUp[i];
 				fErrDown[j] = fErrDown[i];
-				fTheta[j] = fTheta[i];
-				fEnergy[j] = fEnergy[i];
 			}
 			++j;
 		}
@@ -206,8 +162,6 @@ void ExperimentalData::RemoveDataType ( int n )
 		fVal.resize(newSize);
 		fErrUp.resize(newSize);
 		fErrDown.resize(newSize);
-		fTheta.resize(newSize);
-		fEnergy.resize(newSize);
 		std::cout << "> Data type: '" << n << "' removed." << std::endl;
 	} else {
 		std::cout << "> RemoveDataType: Warning! Not such data type: '" << n << "'." << std::endl;
@@ -229,11 +183,7 @@ void ExperimentalData::CheckData ()
 		dm = fErrUp[i]-fErrDown[i];
 		if ( dm != 0. ) { ++k; } 
 		delta = (fErrUp[i] + fErrDown[i])/2.;
-		if ( fType[i] == 7 ) {
-			dVal = -fVal[i] - delta;
-		} else {
-			dVal = fVal[i] - delta;
-		}
+		dVal = fVal[i] - delta;
 		if ( dVal < 0. ) {
 			std::cout << "> CheckData: Warning! Type=" << fType[i] << " data at " << fX[i] 
 			<< " : lower error < zero: " << dVal << std::endl;
@@ -255,17 +205,11 @@ void ExperimentalData::DataInfo ()
 	for (int n = 1; n < 140; ++n) {
 		k[n] = this->typeN(n);
 		numAll = numAll+k[n];
-		if ( n >= 100 ) { numCS = numCS+k[n]; }
+		if ( n >= 1 ) { numCS = numCS+k[n]; }
 	}
 
 	std::cout << "\n> Experimental data:" << std::endl;
-	std::cout << "> Data protonElectric:           " << k[1]+k[2] << std::endl;
-	std::cout << "> Data protonMagnetic:           " << k[3]+k[4] << std::endl;
-	std::cout << "> Data neutronElectric:          " << k[5]+k[6] << std::endl;
-	std::cout << "> Data neutronMagnetic:          " << k[7]+k[8] << std::endl;
-	std::cout << "> Data protonRatios:             " << k[9] << std::endl;
-	std::cout << "> Data neutronRatios:            " << k[10] << std::endl;
-	std::cout << "> Data cross section ratios:     " << numCS << std::endl;
+	std::cout << "> Data type > 0:                 " << numCS << std::endl;
 	std::cout << "> Number of available data:      " << numAll << std::endl;
 
 	if ( this->size() != numAll ) {
@@ -281,7 +225,7 @@ void ExperimentalData::ShowData ()
 	int l = this->size();	
 
 	std::cout << "\n> Experimental data:" << std::endl;
-	std::cout << "  No.     Type        X    Value  ErrorUp ErrorDown   Theta   Energy" << std::endl;
+	std::cout << "  No.     Type        X    Value  ErrorUp ErrorDown" << std::endl;
 
 	for (int i = 0; i < l; ++i) {
 		std::cout.width(4);
@@ -295,11 +239,7 @@ void ExperimentalData::ShowData ()
 		std::cout.width(8);
 		std::cout << fErrUp[i] << " ";
 		std::cout.width(8);
-		std::cout << fErrDown[i] << " ";
-		std::cout.width(8);
-		std::cout << fTheta[i] << " ";
-		std::cout.width(8);
-		std::cout << fEnergy[i] << std::endl;
+		std::cout << fErrDown[i] << std::endl;
 	}
 }
 
@@ -307,6 +247,3 @@ void ExperimentalData::ShowData ()
 	}  // namespace Minuit2
 
 }  // namespace ROOT
-
-
-

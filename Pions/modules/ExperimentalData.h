@@ -29,8 +29,6 @@ class ExperimentalData {
 	std::vector<double> fVal;
 	std::vector<double> fErrUp;
 	std::vector<double> fErrDown;
-	std::vector<double> fTheta;
-	std::vector<double> fEnergy;
 	TMatrixD fCov;
 	
   public:
@@ -40,8 +38,6 @@ class ExperimentalData {
 	std::vector<double> Val() const { return fVal; }
 	std::vector<double> ErrUp() const { return fErrUp; }
 	std::vector<double> ErrDown() const { return fErrDown; }
-	std::vector<double> Theta() const { return fTheta; }
-	std::vector<double> Energy() const { return fEnergy; }
 	TMatrixD Cov() const { return fCov; }
 
 	ExperimentalData () { typeInt = 0; }; /**< default type=0 */
