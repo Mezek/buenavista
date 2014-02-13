@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-10-08 11:34:47 +0200 (Tue, 08 Oct 2013) $
- * $Revision: 387 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/Iachello/NucIachelloChi.cpp $
- * $Id: NucIachelloChi.cpp 387 2013-10-08 09:34:47Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * 
  * @file
  * @brief	Chi2 calculation for Iachello model.

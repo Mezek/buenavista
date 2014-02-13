@@ -2,8 +2,6 @@
  * $Date$
  * $Revision$
  * $Author$
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/NucleonFcn.h $
- * $Id$
  *
  * @file
  * @brief	Header for FCN function of nucleon FF.

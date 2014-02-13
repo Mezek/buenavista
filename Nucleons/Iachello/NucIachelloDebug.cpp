@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-10-08 14:00:23 +0200 (Tue, 08 Oct 2013) $
- * $Revision: 393 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/Iachello/NucIachelloDebug.cpp $
- * $Id: NucIachelloDebug.cpp 393 2013-10-08 12:00:23Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Debug file.

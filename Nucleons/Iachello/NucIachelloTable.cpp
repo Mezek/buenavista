@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-10-08 13:54:08 +0200 (Tue, 08 Oct 2013) $
- * $Revision: 391 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/Iachello/NucIachelloTable.cpp $
- * $Id: NucIachelloTable.cpp 391 2013-10-08 11:54:08Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * 
  * @file
  * @brief	Tabulate results for form factors in choosen interval of t.

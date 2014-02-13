@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-10-08 11:56:38 +0200 (Tue, 08 Oct 2013) $
- * $Revision: 390 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/Iachello/NucIachelloPlot.cpp $
- * $Id: NucIachelloPlot.cpp 390 2013-10-08 09:56:38Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Plot of Iachello form factors.
