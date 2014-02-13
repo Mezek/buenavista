@@ -26,10 +26,10 @@ void performChi ( char* p, char* f ) {
 	std::vector<double> errDown = C.ErrDown();
 	
 	ofstream myOutputXi (xiFile);
-	FFactor xiFF(12);
+	FFactor xiFF(11);
 	xiFF.LoadParameters(p);
-	xiFF.CheckParameters();
 	xiFF.PrintParameters();
+	int nPar = xiFF.numberOfParameters;
 	int nP = C.size();
 	double limChi = 7.;
 	double chi = 0.;
@@ -61,6 +61,9 @@ void performChi ( char* p, char* f ) {
 	}
 	myOutputXi << "Chi2: " << Chi2 << std::endl;
 	myOutputXi.close();
-	std::cout << "\n> Chi2  : " << Chi2 << std::endl;
-	std::cout << "> Points: " << nP << std::endl;
+	std::cout << "\n> Chi2 results:" << std::endl;
+	std::cout << "Chi2    : " << Chi2 << std::endl;
+	std::cout << "Points  : " << nP << std::endl;
+	std::cout << "Chi2/ndf: " << Chi2/(nP-nPar) << std::endl;
+	
 }

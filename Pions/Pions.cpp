@@ -48,7 +48,7 @@ char xiFile[] = "outXi.dat";                           ///< Chi2 output.
 char debugFile[] = "outDebug.dat";                     ///< Debug output.
 
 #include "modules/ConstBasic.cpp"
-#include "modules/ConstMesons-D.cpp"
+#include "modules/ConstMesons.cpp"
 #include "modules/ExperimentalData.cpp"
 #include "modules/PlotGraph.cpp"
 #include "modules/PionUam.cpp"
@@ -117,7 +117,7 @@ int main ( int argc, char **argv ) {
 
 			/// Plot: parameters, data
 
-			performPlot(globalArgs.parameters,globalArgs.data);
+			//performPlot(globalArgs.parameters,globalArgs.data);
 			
 			/// Debug: parameters, debugFile
 
@@ -133,7 +133,7 @@ int main ( int argc, char **argv ) {
 
 			performChi(globalArgs.output,globalArgs.data);
 
-			performPlot(globalArgs.output,globalArgs.data);
+			//performPlot(globalArgs.output,globalArgs.data);
 
 			if ( globalArgs.verbose == 1) { performDebug(globalArgs.output,debugFile); }
 

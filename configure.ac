@@ -39,6 +39,7 @@ Data/Makefile
 Docs/Makefile
 Hyperons/Makefile
 Nucleons/Makefile
+Pions/Makefile
 src/Makefile
 po/Makefile.in
 Nucleons/Iachello/Makefile

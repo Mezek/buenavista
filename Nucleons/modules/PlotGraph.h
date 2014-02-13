@@ -1,17 +1,17 @@
 /**
  * ============================================================================
- * $Date: 2013-10-02 13:45:42 +0200 (Wed, 02 Oct 2013) $
- * $Revision: 383 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/PlotGraph.h $
- * $Id: PlotGraph.h 383 2013-10-02 11:45:42Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Header for plotting.
  */
 
-#ifndef PlotGraph_H_
-#define PlotGraph_H_
+#ifndef _PlotGraph_H_
+#define _PlotGraph_H_
 
 // Root graphics
 #include "TGraph.h"
@@ -40,18 +40,18 @@ class PlotGraph {
 	int k;
 	Double_t x0, y0, s, w, h;
   public:
-    PlotGraph ( std::size_t );
-    void view (Int_t num, Double_t axisX[], Double_t axisY[]);
-    void view (Int_t num, Double_t axisX[], Double_t axisY[], Char_t const*);
-    void view2 (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[]);
-    void viewData (Int_t num, Double_t axisX[], Double_t axisY[]);
+	PlotGraph ( std::size_t );
+	void view (Int_t num, Double_t axisX[], Double_t axisY[]);
+	void view (Int_t num, Double_t axisX[], Double_t axisY[], Char_t const*);
+	void view2 (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[]);
+	void viewData (Int_t num, Double_t axisX[], Double_t axisY[]);
 	void viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[]);
-    void viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Char_t const*);
-    void viewPlusDataE (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Double_t axisXED[], Double_t axisYED[], Char_t const*);
-    void viewPlusDataAE (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Double_t axisXExl[],  Double_t axisXExh[], Double_t axisYEyl[], Double_t axisYEyh[], Char_t const*);
-    void viewPrint (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[]);
-    void view4 (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[], Double_t axisY3[], Double_t axisY4[]);
-    void view4Exp (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[], Double_t axisY3[], Double_t axisY4[], Int_t num1, Double_t axisEX1[], Double_t axisEY1[], Int_t num2, Double_t axisEX2[], Double_t axisEY2[], Int_t num3, Double_t axisEX3[], Double_t axisEY3[], Int_t num4, Double_t axisEX4[], Double_t axisEY4[]);
+	void viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Char_t const*);
+	void viewPlusDataE (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Double_t axisXED[], Double_t axisYED[], Char_t const*);
+	void viewPlusDataAE (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Double_t axisXExl[],  Double_t axisXExh[], Double_t axisYEyl[], Double_t axisYEyh[], Char_t const*);
+	void viewPrint (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[]);
+	void view4 (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[], Double_t axisY3[], Double_t axisY4[]);
+	void view4Exp (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[], Double_t axisY3[], Double_t axisY4[], Int_t num1, Double_t axisEX1[], Double_t axisEY1[], Int_t num2, Double_t axisEX2[], Double_t axisEY2[], Int_t num3, Double_t axisEX3[], Double_t axisEY3[], Int_t num4, Double_t axisEX4[], Double_t axisEY4[]);
 };
 
-#endif // PlotGraph_H_
+#endif // _PlotGraph_H_

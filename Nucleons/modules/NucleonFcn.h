@@ -1,16 +1,16 @@
 /**
- * $Date: 2013-05-13 15:39:22 +0200 (Mon, 13 May 2013) $
- * $Revision: 331 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/NucleonFcn.h $
- * $Id: NucleonFcn.h 331 2013-05-13 13:39:22Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Header for FCN function of nucleon FF.
  */
 
-#ifndef NucleonFcn_H_
-#define NucleonFcn_H_
+#ifndef _NucleonFcn_H_
+#define _NucleonFcn_H_
 
 #include "Minuit2/FCNBase.h"
 
@@ -74,4 +74,4 @@ class NucleonFcn : public FCNBase {
 	
 }  // namespace ROOT
 
-#endif //NucleonFcn_H_
+#endif // _NucleonFcn_H_

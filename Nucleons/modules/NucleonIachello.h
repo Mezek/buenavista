@@ -1,16 +1,16 @@
 /**
- * $Date: 2013-10-08 11:35:13 +0200 (Tue, 08 Oct 2013) $
- * $Revision: 388 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/NucleonIachello.h $
- * $Id: NucleonIachello.h 388 2013-10-08 09:35:13Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Header for Iachello form factor for nucleons.
  */
 
-#ifndef NucleonUam_H_
-#define NucleonUam_H_
+#ifndef _NucleonIachello_H_
+#define _NucleonIachello_H_
 
 #include "TMatrixDSym.h"
 #include "TDecompChol.h"
@@ -51,11 +51,11 @@ class FFactor {
 	FFactor ( std::size_t );
 	int numberOfParameters;
 	std::vector<hod> v;
-    void LoadParameters ( char* );
+	void LoadParameters ( char* );
 	void SetParameter ( const int , const double );
-    void SetParameters ( const std::vector<double>& );
+	void SetParameters ( const std::vector<double>& );
 	void FixParameters ( void );
-    void PrintParameters ( void );
+	void PrintParameters ( void );
 	void LoadCovMatrix ( char* );
 	double A ( int );
 	double E ( int );
@@ -89,4 +89,4 @@ class FFactor {
 
 }  // namespace ROOT
 
-#endif // NucleonUam_H_
+#endif // _NucleonIachello_H_

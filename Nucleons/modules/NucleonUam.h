@@ -9,8 +9,8 @@
  * @brief	Header for U&A form factor for nucleons.
  */
 
-#ifndef NucleonUam_H_
-#define NucleonUam_H_
+#ifndef _NucleonUam_H_
+#define _NucleonUam_H_
 
 #include "TMatrixDSym.h"
 #include "TDecompChol.h"
@@ -91,4 +91,4 @@ class FFactor {
 
 }  // namespace ROOT
 
-#endif // NucleonUam_H_
+#endif // _NucleonUam_H_

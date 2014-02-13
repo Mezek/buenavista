@@ -27,7 +27,7 @@ class FFactor {
 	std::vector<hod> a;
 	TMatrixD cov;
 	int modelPar;
-	bool handsome;
+	bool handSome;
 
   public:
 	FFactor ( std::size_t );
@@ -36,11 +36,15 @@ class FFactor {
 	void SetParameter ( const int, const double );
 	void SetParameters ( const std::vector<double>& );
 	void PrintParameters ( void );
-	double A ( int );
-	double E ( int );
+	std::string AName ( int );
+	double AVal ( int );
+	double AErr ( int );
+	double ADown ( int );
+	double AUp ( int );		
 	void LoadCovMatrix ( char* );
 	TComplex W ( const TComplex &, const double);
 	TComplex Value ( TComplex );
+	TComplex AbsValue ( TComplex );
 	double ValueSquared ( TComplex );
 
 	~FFactor () {};

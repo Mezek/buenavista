@@ -198,17 +198,18 @@ void ExperimentalData::CheckData ()
 void ExperimentalData::DataInfo ()
 {
 
-	int k[140];
+	int k[140]; // number of available data types
 	int numCS = 0;
 	int numAll = 0;
 	
-	for (int n = 1; n < 140; ++n) {
+	for (int n = 0; n < 140; ++n) {
 		k[n] = this->typeN(n);
 		numAll = numAll+k[n];
 		if ( n >= 1 ) { numCS = numCS+k[n]; }
 	}
 
 	std::cout << "\n> Experimental data:" << std::endl;
+	std::cout << "> Data type = 0:                 " << k[0] << std::endl;
 	std::cout << "> Data type > 0:                 " << numCS << std::endl;
 	std::cout << "> Number of available data:      " << numAll << std::endl;
 

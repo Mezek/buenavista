@@ -15,7 +15,7 @@ namespace ROOT {
 
 	namespace Minuit2 {
 
-double NucleonFcn::operator() (const std::vector<double>& par) const {
+double PionFcn::operator() (const std::vector<double>& par) const {
   
 	//assert(par.size() == modelPar);
 

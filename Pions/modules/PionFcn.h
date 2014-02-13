@@ -7,8 +7,8 @@
  * @brief	Header for FCN function of pion FF.
  */
 
-#ifndef PionFcn_H_
-#define PionFcn_H_
+#ifndef _PionFcn_H_
+#define _PionFcn_H_
 
 #include "Minuit2/FCNBase.h"
 
@@ -64,4 +64,4 @@ class PionFcn : public FCNBase {
 	
 }  // namespace ROOT
 
-#endif //PionFcn_H_
+#endif //_PionFcn_H_

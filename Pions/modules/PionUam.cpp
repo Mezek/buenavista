@@ -13,8 +13,8 @@ namespace ROOT {
 
 	namespace Minuit2 {
 
-FFactor::FFactor ( std::size_t size ): a(size), v(size) 
-{		
+FFactor::FFactor ( std::size_t size ): a(size)
+{
 	t(1.,0.00001);
 	//std::cout << "FF is empty! Value of t: " << t << std::endl;
 
@@ -53,14 +53,6 @@ void FFactor::LoadParameters (char* ds)
 				if ( p == 5) { ss >> a[k].up; }
 				++p;
 			}
-			//std::cout << "N: " << N << std::endl;
-			
-			this->v[k].name = a[k].name;
-			this->v[k].val = a[k].val;
-			this->v[k].err = a[k].err;
-			this->v[k].down = a[k].down;
-			this->v[k].up = a[k].up;
-			//std::cout << N << ".: " << v[k].name << " : " << v[k].val << " : " << v[k].err << " : " << v[k].down << " : " << v[k].down << std::endl;
 			++k;
 		}
 		myDataFile.close();
@@ -108,18 +100,39 @@ void FFactor::PrintParameters ()
 	}
 }
 
+/// Return name of i. parameter
+
+std::string FFactor::AName ( int i )
+{
+	return a[i].name;
+}
+
 /// Return value of i. parameter
 
-double FFactor::A ( int i )
+double FFactor::AVal ( int i )
 {
 	return a[i].val;
 }
 
 /// Return error of i. parameter
 
-double FFactor::E ( int i )
+double FFactor::AErr ( int i )
 {
 	return a[i].err;
+}
+
+/// Return down limit of i. parameter
+
+double FFactor::ADown ( int i )
+{
+	return a[i].down;
+}
+
+/// Return up limit of i. parameter
+
+double FFactor::AUp ( int i )
+{
+	return a[i].up;
 }
 
 /// Load covariance matrix from file
@@ -161,12 +174,12 @@ void FFactor::LoadCovMatrix ( char* d )
 
 TComplex FFactor::W (const TComplex &t, const double sign) {
 	TComplex cA,ct0v,cQ,cQin,cK,cZ,cRes;
-	cA(a[0],0);
+	cA(a[0].val,0);
 	ct0v(t0v,0);
 
 	cQ = cQ.Sqrt((t-ct0v)/ct0v);
 
-	if (t.Re() > a[0]) { // bad: cQ.Re() > a[0]!
+	if (t.Re() > a[0].val) { // bad: cQ.Re() > a[0].val!
 		cQ = cQ + 0.000001*kI;
 		//std::cout << "cQ: " << a[0] << " " << t << " " << cQ << std::endl;
 	}
@@ -194,15 +207,15 @@ TComplex FFactor::Value (TComplex t) {
 	cWn = FFactor::W(k0,1.);
 	cW = FFactor::W(t,1.);
 
-	cQrho = (a[1]-kI*a[2]/2.)*(a[1]-kI*a[2]/2.);
+	cQrho = (a[1].val-kI*a[2].val/2.)*(a[1].val-kI*a[2].val/2.);
 	cW1 = FFactor::W(cQrho,1.);
 	cW1c = cW1c.Conjugate(cW1);
 
-	cQrho1 = (a[3]-kI*a[4]/2.)*(a[3]-kI*a[4]/2.);
+	cQrho1 = (a[3].val-kI*a[4].val/2.)*(a[3].val-kI*a[4].val/2.);
 	cW2 = FFactor::W(cQrho1,-1.);
 	cW2c = cW2c.Conjugate(cW2);
 	
-	cQrho2 = (a[5]-kI*a[6]/2.)*(a[5]-kI*a[6]/2.);
+	cQrho2 = (a[5].val-kI*a[6].val/2.)*(a[5].val-kI*a[6].val/2.);
 	cW3 = FFactor::W(cQrho2,-1.);
 	cW3c = cW3c.Conjugate(cW3);
 
@@ -225,33 +238,37 @@ TComplex FFactor::Value (TComplex t) {
 	cNW2 = cNrho2/c3Sq/c3Sq;
 
 	pkv0 = pkv0.Power((cW3*cW3c)/(cW2*cW2c),2);
-	pkv1 = 1.+(a[9]*a[10])/(a[9]-a[10])*2.*cW1.Re()*(1.+1./(cW1*cW1c));
-	pkv2 = (1.-(1.-pkv1*c3Sq*c3Sq*cf3w)*a[7])/(1.-pkv0*cf4w);
-	pkv3 = (-1.)*pkv1*c3Sq*c3Sq*cf3w*a[7] - pkv0*cf4w*pkv2;
-	pkvc = (a[7] + pkv2 + pkv3);
+	pkv1 = 1.+(a[9].val*a[10].val)/(a[9].val-a[10].val)*2.*cW1.Re()*(1.+1./(cW1*cW1c));
+	pkv2 = (1.-(1.-pkv1*c3Sq*c3Sq*cf3w)*a[7].val)/(1.-pkv0*cf4w);
+	pkv3 = (-1.)*pkv1*c3Sq*c3Sq*cf3w*a[7].val - pkv0*cf4w*pkv2;
+	pkvc = (a[7].val + pkv2 + pkv3);
 
 	// Alternative constants
-	pkv3a = (cNW1-(cNW1-pkv1*cNrho)*a[7])/(cNW1-cNW2);
-	pkv2a = (-cNW2+(cNW2-pkv1*cNrho)*a[7])/(cNW1-cNW2);
+	pkv3a = (cNW1-(cNW1-pkv1*cNrho)*a[7].val)/(cNW1-cNW2);
+	pkv2a = (-cNW2+(cNW2-pkv1*cNrho)*a[7].val)/(cNW1-cNW2);
 	
 	cNorm = cNorm.Power((1.-cW*cW)/(1.-cWn*cWn),2);
-	cMult = (cW-a[9])*(cWn-a[10])/(cWn-a[9])/(cW-a[10]);
-	cFpi = cNorm*(cfw*a[7]+cf1w*pkv2+cf2w*pkv3)*cMult;
-	fazi = atan2((a[1]*a[2]),(a[1]*a[1]-massOm*massOm));
+	cMult = (cW-a[9].val)*(cWn-a[10].val)/(cWn-a[9].val)/(cW-a[10].val);
+	cFpi = cNorm*(cfw*a[7].val+cf1w*pkv2+cf2w*pkv3)*cMult;
+	fazi = atan2((a[1].val*a[2].val),(a[1].val*a[1].val-massOm*massOm));
 	cMomr = massOm*massOm - t - kI*massOm*widthOm;
 	cEp = cEp.Exp(kI*fazi);
 	
-	cSuma = cFpi + a[8]*cEp*massOm*massOm/cMomr;
+	cSuma = cFpi + a[8].val*cEp*massOm*massOm/cMomr;
 
 	return cSuma;
 }
 
+TComplex FFactor::AbsValue (TComplex t) {
+	TComplex vVa = FFactor::Value(t);
+	return vVa.Abs(vVa);
+}
+
 double FFactor::ValueSquared (TComplex t) {
-	TComplex vSq = FFactor::value(t);
+	TComplex vSq = FFactor::Value(t);
 	return vSq.Re()*vSq.Re()+vSq.Im()*vSq.Im();
 }
 
 	}  // namespace Minuit2
 
 }  // namespace ROOT
-#endif // _PionUam_H_
