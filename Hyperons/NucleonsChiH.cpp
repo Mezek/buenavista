@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-06-19 12:42:41 +0200 (Wed, 19 Jun 2013) $
- * $Revision: 377 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/NucleonsChiH.cpp $
- * $Id: NucleonsChiH.cpp 377 2013-06-19 10:42:41Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Chi2 calculation for nucleon form factors, v. hyperon.

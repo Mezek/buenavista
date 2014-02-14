@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-05-22 10:03:30 +0200 (Wed, 22 May 2013) $
- * $Revision: 348 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/Mesons.cpp $
- * $Id: Mesons.cpp 348 2013-05-22 08:03:30Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Calculate some values for mesons.

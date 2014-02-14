@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-10-02 13:45:42 +0200 (Wed, 02 Oct 2013) $
- * $Revision: 383 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/NucleonsPlot.cpp $
- * $Id: NucleonsPlot.cpp 383 2013-10-02 11:45:42Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Plot of nucleon form factors.

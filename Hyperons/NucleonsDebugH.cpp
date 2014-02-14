@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-06-19 12:42:41 +0200 (Wed, 19 Jun 2013) $
- * $Revision: 377 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/NucleonsDebugH.cpp $
- * $Id: NucleonsDebugH.cpp 377 2013-06-19 10:42:41Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Debug file, v. hyperon.

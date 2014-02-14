@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-05-14 12:50:49 +0200 (Tue, 14 May 2013) $
- * $Revision: 333 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/NucleonsDebug.cpp $
- * $Id: NucleonsDebug.cpp 333 2013-05-14 10:50:49Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Debug file.

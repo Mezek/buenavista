@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-05-22 10:09:53 +0200 (Wed, 22 May 2013) $
- * $Revision: 349 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/NucleonsPlotH.cpp $
- * $Id: NucleonsPlotH.cpp 349 2013-05-22 08:09:53Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Plot of nucleon form factors, v. hyperon.

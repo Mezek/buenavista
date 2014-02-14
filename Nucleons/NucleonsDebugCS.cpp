@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-05-30 14:45:21 +0200 (Thu, 30 May 2013) $
- * $Revision: 361 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/NucleonsDebugCS.cpp $
- * $Id: NucleonsDebugCS.cpp 361 2013-05-30 12:45:21Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Debug file, v. with cross section data.

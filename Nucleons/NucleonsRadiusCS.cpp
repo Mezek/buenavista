@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-06-13 11:02:11 +0200 (Thu, 13 Jun 2013) $
- * $Revision: 365 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/NucleonsRadiusCS.cpp $
- * $Id: NucleonsRadiusCS.cpp 365 2013-06-13 09:02:11Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Calculate proton radius value, v. with cross section data.

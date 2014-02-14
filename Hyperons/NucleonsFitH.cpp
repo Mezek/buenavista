@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-06-19 15:00:14 +0200 (Wed, 19 Jun 2013) $
- * $Revision: 380 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/NucleonsFitH.cpp $
- * $Id: NucleonsFitH.cpp 380 2013-06-19 13:00:14Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief	Fit of nucleon form factors, v. hyperon.

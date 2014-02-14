@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-05-22 09:44:15 +0200 (Wed, 22 May 2013) $
- * $Revision: 346 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/NucleonsRadiusMC.cpp $
- * $Id: NucleonsRadiusMC.cpp 346 2013-05-22 07:44:15Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * 
  * @file
  * @brief	Calculate proton radius value from file, v. MC.

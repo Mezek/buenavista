@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-09-25 13:52:09 +0200 (Wed, 25 Sep 2013) $
- * $Revision: 382 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/NucleonsUsageCS.cpp $
- * $Id: NucleonsUsageCS.cpp 382 2013-09-25 11:52:09Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * 
  * @file
  * @brief       Nucleon form factors usage, v. with cross section data.

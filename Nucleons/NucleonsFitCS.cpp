@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-05-23 15:48:49 +0200 (Thu, 23 May 2013) $
- * $Revision: 352 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/NucleonsFitCS.cpp $
- * $Id: NucleonsFitCS.cpp 352 2013-05-23 13:48:49Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * 
  * @file
  * @brief       Fit of nucleon form factors, v. with cross section data.

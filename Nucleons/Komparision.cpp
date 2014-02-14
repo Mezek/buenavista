@@ -1,12 +1,10 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
-/*
- * $Date: 2013-10-02 13:45:42 +0200 (Wed, 02 Oct 2013) $
- * $Revision: 383 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/Komparision.cpp $
- * $Id: Komparision.cpp 383 2013-10-02 11:45:42Z bartos $
+/**
+ * $Date$
+ * $Revision$
+ * $Author$
  *
- * Description: Comparision of parametrizations
+ * @file
+ * @brief	Comparision of parametrizations.
  */
 
 #include <iostream>

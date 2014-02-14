@@ -1,9 +1,7 @@
 /**
- * $Date: 2013-06-18 10:03:42 +0200 (Tue, 18 Jun 2013) $
- * $Revision: 371 $
- * $Author: bartos $
- * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/Hyperons.cpp $
- * $Id: Hyperons.cpp 371 2013-06-18 08:03:42Z bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  *
  * @file
  * @brief       Main programe for hyperon form factors.
