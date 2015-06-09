@@ -40,4 +40,5 @@ AM_CXXFLAGS = \
 
 
 SUBDIRS = \
-	Iachello
+	Iachello \
+	Delta

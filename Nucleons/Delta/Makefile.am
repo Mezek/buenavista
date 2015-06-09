@@ -1,0 +1,14 @@
+## Process this file with automake to produce Makefile.in
+
+
+bin_PROGRAMS =  \
+	DeltaMain
+
+DeltaMain_SOURCES =  \
+	DeltaMain.cpp
+
+AM_CXXFLAGS = -L/usr/lib64/root \
+	`root-config \
+	--libs` \
+	-lMinuit2 \
+	-I/usr/include/root

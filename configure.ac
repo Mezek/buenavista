@@ -43,6 +43,7 @@ Pions/Makefile
 src/Makefile
 po/Makefile.in
 Nucleons/Iachello/Makefile
+Nucleons/Delta/Makefile
 ])
 
 echo
