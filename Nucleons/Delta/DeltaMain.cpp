@@ -37,36 +37,19 @@
 #include "TStopwatch.h"
 
 ///@{
-/** Global form factor data file.*/
-//char dataFile[] = "../../Data/dataProtonRatios.dat";
-char dataFile1[] = "../../Data/dataProtonRatios.dat";  /**< Choose default data. */
-char dataFile2[] = "../../Data/dataEmpty.dat";
+/** Transition data files.*/
+char dataFileA[] = "../../Data/dataGMstar.dat";
+char dataFileB[] = "../../Data/dataREM.dat";
+char dataFileC[] = "../../Data/dataRSM.dat";
 ///@}
 
-///@{
-/** Single form factor data file.*/
-char dataFileA[] = "../../Data/dataProtonElectric.dat";
-char dataFileB[] = "../../Data/dataProtonMagnetic.dat";
-char dataFileC[] = "../../Data/dataNeutronElectric.dat";
-char dataFileD[] = "../../Data/dataNeutronMagnetic.dat";
-char dataFileE[] = "../../Data/dataProtonRatios.dat";
-char dataFileF[] = "../../Data/dataNeutronRatios.dat";
-///@}
-
-char parametersFile[] = "parNucIachello.dat";          ///< Input parameters.
-char outputFile[] = "outNucIachello.dat";              ///< Output parameters.
-char xiFile[] = "outXi.dat";                           ///< Chi2 output.
-char matrixFile[] = "covarianceMatrix.dat";            ///< Covariance matrix.
-char radiusFile[] = "outRadius.dat";                   ///< Radius output.
-char debugFile[] = "outDebug.dat";                     ///< Debug output.
-char tableFile[] = "outTable.dat";                     ///< Tabulation. 
+char parametersFile[] = "parElasticFF.dat";            ///< Input parameters.
+char outputFile[] = "outDelta.dat";                    ///< Output file.
 
 #include "../modules/ConstBasic.cpp"
 #include "../modules/ConstMesons.cpp"
-#include "../modules/ExperimentalData.cpp"
-#include "../modules/NucleonIachello.cpp"
+#include "../modules/Nucleon3G-D.cpp"
 #include "../modules/NucleonFcnCS.cpp"
-//#include "PlotGraphIachello.cpp"
 
 #include "Minuit2/MnUserParameters.h"
 #include "Minuit2/MnUserCovariance.h"
@@ -81,12 +64,8 @@ char tableFile[] = "outTable.dat";                     ///< Tabulation.
 #include "Minuit2/MnPrint.h"
 #include "Minuit2/MnUserFcn.h"
 
-/*#include "NucIachelloUsage.cpp"
-#include "NucIachelloChi.cpp"
-#include "NucIachelloPlot.cpp"
-#include "NucIachelloFit.cpp"
-#include "NucIachelloDebug.cpp"
-#include "NucIachelloTable.cpp"*/
+#include "DeltaData.cpp"
+#include "DeltaPlot.cpp"
 
 using namespace ROOT::Minuit2;
 
@@ -107,64 +86,61 @@ int main ( int argc, char **argv ) {
 	TApplication theApp("DeltaNucleon", &argc, argv);
 	std::cout << "\n> Start  : " << ctime (&rawtime) << std::endl;
 	
-	/// Get data
-	
-	std::vector<double> param;
-	std::vector<double> x, val, errUp, errDown;
-	std::vector<int> type;
-
-	/// Experimental points
-
-	std::cout << "\n>> World data:" << std::endl;
-	ExperimentalData A;
-	A.ReadData(dataFile1);	
-	A.ReadDataCrossSection(dataFile2);
-	A.DataInfo();
-
 	/// Set precision
 	std::cout.precision(15); 
 	//cout.setf(ios::scientific);
 
-	switch (1) { //globalArgs.fit) {
+	int graph = 0;
+	if (argc > 1 ) { graph = atoi(argv[1]); }
+	std::string dataFile;
+
+	switch (graph) {
 		case 0: {
 
-			/// Xi2: parameters, data
-
-			//performChi(globalArgs.parameters,globalArgs.ffdata,globalArgs.csdata);
-
-			/// Debug: parameters, debugFile
-
-			//if ( globalArgs.verbose == 1) {
-				//performRadius(globalArgs.parameters,matrixFile);
-				//performDebug(globalArgs.parameters,debugFile);
-			//}
-
-			/// Plot: parameters, data
-
-			//performPlot(globalArgs.parameters,globalArgs.ffdata,globalArgs.csdata);
-
-			//if ( globalArgs.tabulate == 1) { performTable(globalArgs.parameters,tableFile); }
+			/// Plot G_M^*
+			dataFile = "../../Data/dataGMstar.dat";
 				
 			break;
 		}
 		case 1: {
 
-			/// Fit: parameters, data
+			/// Plot R_EM
+			dataFile = "../../Data/dataREM.dat";
+				
+			break;
+		}
+		case 2: {
 
-			//performFit(globalArgs.parameters,globalArgs.ffdata,globalArgs.csdata,globalArgs.output);
-
-			//performChi(globalArgs.output,globalArgs.ffdata,globalArgs.csdata);
-
-			//performPlot(globalArgs.output,globalArgs.ffdata,globalArgs.csdata);
-
-			//if ( globalArgs.verbose == 1) { performDebug(globalArgs.output,debugFile); }
-			//if ( globalArgs.tabulate == 1) { performTable(globalArgs.output,tableFile); }
-
+			/// Plot R_SM
+			dataFile = "../../Data/dataRSM.dat";
+				
 			break;
 		}
 		default: 
 			break;
 	}
+	DeltaData A;
+	A.ReadData(dataFile.c_str());	
+	A.ShowData();
+
+	int num = A.size();
+	std::cout << "\nNumber of plotted points:      " << num << std::endl;
+	std::vector<double> x = A.X();
+	std::vector<double> val = A.Val();
+	std::vector<double> errUp = A.ErrUp();
+	std::vector<double> errDown = A.ErrDown();
+
+	double X[num], Y[num], U[num], D[num];
+	int k = 0;
+	for (int i = 0; i < num; i++) {
+		X[k] = -x[i];
+		Y[k] = val[i]/3.*(1.+X[k]/0.71)*(1.+X[k]/0.71);
+		D[k] = errDown[i];
+		U[k] = errUp[i];
+		++k;
+	}	
+	PlotGraph graf(1);
+	graf.viewData(num, X, Y);
 	
 	/// End output
 
