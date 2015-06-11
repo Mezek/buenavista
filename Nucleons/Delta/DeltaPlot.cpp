@@ -78,7 +78,7 @@ void PlotGraph::viewData (Int_t num, Double_t axisX[], Double_t axisY[]) {
 	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	gr1->Draw("AP");
 	gr1->SetMarkerStyle(22);
-	gr1->SetMarkerSize(.9);
+	gr1->SetMarkerSize(1.1);
 	gr1->SetMarkerColor(9);
 	++k;	
 }

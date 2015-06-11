@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-28 15:42:31 +0200 (Tue, 28 May 2013) $
- * $Revision: 358 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/Nucleon3G-D.cpp $
- * $Id: Nucleon3G-D.cpp 358 2013-05-28 13:42:31Z bartos $
+ * $Id$
  *
  * @file
  * @brief	U&A form factor for nucleons &mdash; 3 vector meson resonances, v. D.
@@ -194,7 +194,7 @@ void FFactor::PrintParameters ()
 		std::cout << i+1 << ". ";
 		std::cout.width(12);
 		std::cout << this->v[i].name;
-		std::cout.precision(10);
+		std::cout.precision(5);
 		std::cout.width(17);
 		std::cout << this->v[i].val << "   +/- ";
 		std::cout.width(17);
@@ -862,7 +862,7 @@ void FFactor::CheckParameters ()
 	}
 
 	if (handSome == false) {
-		std::cout << "> [OK] ... parameters" << std::endl;
+		std::cout << "[ OK ] ... parameters" << std::endl;
 	}	
 
 }

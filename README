@@ -1,4 +1,21 @@
 BuenaVista
 ==========
 
-The collection of programs to fit and to plot the various form factors.
+The collection of programs to calculate, fit and plot the various form factors.
+
+C++ version: <Erik.Bartos@gmail.com>
+
+
+Start
+=====
+
+> autoreconf (or try add options: --force --install)
+> intltoolize
+> automake --add-missing
+> ./configure
+> make
+
+Next from command line run the executables, e. g.,
+./Nucleons/NucleonsD
+./Nucleons/Delta/DeltaMain
+...

@@ -139,8 +139,33 @@ int main ( int argc, char **argv ) {
 		U[k] = errUp[i];
 		++k;
 	}	
-	PlotGraph graf(1);
+	PlotGraph graf(2);
 	graf.viewData(num, X, Y);
+
+	FFactor GMS(12);
+	GMS.LoadParameters(parametersFile);
+	GMS.CheckParameters();
+	//GMS.PrintParameters();
+
+	const int nPoints = 2500;
+	double tMin;
+	double tMax;
+	double tStep;
+	double tA;
+
+	double plotGX[nPoints], plotGY[nPoints];
+	tMin = 0.0;
+	tMax = -10.0;
+	tStep = (tMax-tMin)/nPoints;
+	tA = tMin;
+	
+	for (int i = 0; i < nPoints; i++) {
+		tA = tMin + i*tStep;
+		plotGX[i] = -tA;
+		plotGY[i] = GMS.AbsGEP(-tA);
+	}
+
+	graf.viewPlusData(nPoints, plotGX,plotGY, num, X, Y);
 	
 	/// End output
 
