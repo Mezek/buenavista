@@ -73,7 +73,7 @@ void PlotGraph::view (Int_t num, Double_t axisX[], Double_t axisY[], Char_t cons
 void PlotGraph::viewData (Int_t num, Double_t axisX[], Double_t axisY[]) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
-    c[k]->SetLogx(); // logarithmic scale
+    //c[k]->SetLogx(); // logarithmic scale
 	
 	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	gr1->Draw("AP");
@@ -88,7 +88,7 @@ void PlotGraph::viewData (Int_t num, Double_t axisX[], Double_t axisY[]) {
 void PlotGraph::viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[]) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
-    //c[k]->SetLogy(); // logarithmic scale
+    //c[k]->SetLogx();
 
     TGraph *gr1 = new TGraph (num, axisX, axisY);
 	gr1->Draw("AL");

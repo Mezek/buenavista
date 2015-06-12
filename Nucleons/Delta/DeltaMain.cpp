@@ -48,6 +48,7 @@ char outputFile[] = "outDelta.dat";                    ///< Output file.
 
 #include "../modules/ConstBasic.cpp"
 #include "../modules/ConstMesons.cpp"
+#include "../modules/ConstDelta.cpp"
 #include "../modules/Nucleon3G-D.cpp"
 #include "../modules/NucleonFcnCS.cpp"
 
@@ -90,7 +91,7 @@ int main ( int argc, char **argv ) {
 	std::cout.precision(15); 
 	//cout.setf(ios::scientific);
 
-	int graph = 0;
+	int graph = 1;
 	if (argc > 1 ) { graph = atoi(argv[1]); }
 	std::string dataFile;
 
@@ -134,7 +135,8 @@ int main ( int argc, char **argv ) {
 	int k = 0;
 	for (int i = 0; i < num; i++) {
 		X[k] = -x[i];
-		Y[k] = val[i]/3.*(1.+X[k]/0.71)*(1.+X[k]/0.71);
+		//Y[k] = val[i]/3.*(1.+X[k]/0.71)*(1.+X[k]/0.71);
+		Y[k] = val[i];
 		D[k] = errDown[i];
 		U[k] = errUp[i];
 		++k;
@@ -154,15 +156,21 @@ int main ( int argc, char **argv ) {
 	double tA;
 
 	double plotGX[nPoints], plotGY[nPoints];
-	tMin = 0.0;
+	tMin = -0.04;
 	tMax = -10.0;
 	tStep = (tMax-tMin)/nPoints;
 	tA = tMin;
 	
 	for (int i = 0; i < nPoints; i++) {
 		tA = tMin + i*tStep;
+		double gen = GMS.AbsGEN(tA);
+		double gmn = GMS.AbsGMN(tA);
+		double msq = massDi*massDi - massNucl*massNucl - (-tA);
+		double abq = sqrt((-tA + msq*msq)/(4.*massDi*massDi));
 		plotGX[i] = -tA;
-		plotGY[i] = GMS.AbsGEP(-tA);
+		plotGY[i] = abq*massNucl/(-tA)*gen/gmn;
+		//plotGY[i] = gen/gmn;
+		//std::cout << massNucl << " " << gen/tA << std::endl;
 	}
 
 	graf.viewPlusData(nPoints, plotGX,plotGY, num, X, Y);

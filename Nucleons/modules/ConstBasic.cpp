@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-20 14:30:44 +0200 (Mon, 20 May 2013) $
- * $Revision: 338 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/ConstBasic.cpp $
- * $Id: ConstBasic.cpp 338 2013-05-20 12:30:44Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Basic constants for numerical calculations.
@@ -20,6 +20,7 @@
 	/// Masses and widths are in GeV
 	static const double massP = 0.93827203;
 	static const double massN = 0.93956536;
+	static const double massNucl = (massP + massN)/2.;
 	static const double massL = 1.115683;
 	static const double massSp = 1.18937;
 	static const double massS0 = 1.192642;
