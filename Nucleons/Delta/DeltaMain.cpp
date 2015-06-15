@@ -91,7 +91,7 @@ int main ( int argc, char **argv ) {
 	std::cout.precision(15); 
 	//cout.setf(ios::scientific);
 
-	int graph = 1;
+	int graph = 0;
 	if (argc > 1 ) { graph = atoi(argv[1]); }
 	std::string dataFile;
 
@@ -150,30 +150,40 @@ int main ( int argc, char **argv ) {
 	//GMS.PrintParameters();
 
 	const int nPoints = 2500;
-	double tMin;
-	double tMax;
-	double tStep;
-	double tA;
+	double qMin;
+	double qMax;
+	double qStep;
+	double qA;
 
 	double plotGX[nPoints], plotGY[nPoints];
-	tMin = -0.04;
-	tMax = -10.0;
-	tStep = (tMax-tMin)/nPoints;
-	tA = tMin;
+	qMin = -3.0;
+	qMax = 3.0;
+	qStep = (qMax-qMin)/nPoints;
+	qA = qMin;
 	
 	for (int i = 0; i < nPoints; i++) {
-		tA = tMin + i*tStep;
-		double gen = GMS.AbsGEN(tA);
-		double gmn = GMS.AbsGMN(tA);
-		double msq = massDi*massDi - massNucl*massNucl - (-tA);
-		double abq = sqrt((-tA + msq*msq)/(4.*massDi*massDi));
-		plotGX[i] = -tA;
-		plotGY[i] = abq*massNucl/(-tA)*gen/gmn;
+		qA = qMin + i*qStep;
+		double qA2 = qA*qA;
+		double gen = GMS.AbsGEN(-qA2);
+		double gmn = GMS.AbsGMN(-qA2);
+		double msq = massDi*massDi - massNucl*massNucl - qA2;
+		double abq = sqrt((qA2 + msq*msq)/(4.*massDi*massDi));
+		plotGX[i] = qA2;
+		//plotGY[i] = abq*massNucl/qA2*gen/gmn;
 		//plotGY[i] = gen/gmn;
-		//std::cout << massNucl << " " << gen/tA << std::endl;
+		//std::cout << massNucl << " " << gen/qA2 << std::endl;
+		double mPlu = 0.5*(massDi + massNucl);
+		double mNom = 1. - qA2/(4.*mPlu*mPlu);
+		double mDen = 1. - qA2/(4.*massNucl*massNucl);
+		//plotGY[i] = sqrt(2.)/3.*(massDi+massNucl)/massNucl*mNom/mDen*gmn;
+		double mDip = 1. + qA2/0.71;
+		double gD = 1./mDip/mDip;
+		double gDmn = gD*(-muN);
+		plotGY[i] = sqrt(2.)*2./3.*gDmn;
+		//plotGY[i] = sqrt(2.)*2./3.*gmn;
 	}
 
-	graf.viewPlusData(nPoints, plotGX,plotGY, num, X, Y);
+	graf.viewPlusData(nPoints, plotGX, plotGY, num, X, Y);
 	
 	/// End output
 
