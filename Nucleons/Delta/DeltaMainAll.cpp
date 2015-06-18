@@ -67,7 +67,6 @@ char outputFile[] = "outDelta.dat";                    ///< Output file.
 
 #include "DeltaData.cpp"
 #include "DeltaPlot.cpp"
-#include "DeltaGMstar.cpp"
 
 using namespace ROOT::Minuit2;
 
@@ -92,18 +91,15 @@ int main ( int argc, char **argv ) {
 	std::cout.precision(15); 
 	//cout.setf(ios::scientific);
 
-	int graph = 0;
+	int graph = 2;
 	if (argc > 1 ) { graph = atoi(argv[1]); }
 	std::string dataFile;
 
-	DeltaPlot graf(3);
-	//graf.viewData(num, X, Y, "Data");
 	switch (graph) {
 		case 0: {
 
 			/// Plot G_M^*
 			dataFile = "../../Data/dataGMstar.dat";
-			graf.viewGMstar("GMstar");
 				
 			break;
 		}
@@ -145,6 +141,13 @@ int main ( int argc, char **argv ) {
 		U[k] = errUp[i];
 		++k;
 	}	
+	DeltaPlot graf(2);
+	graf.viewData(num, X, Y, "Data");
+
+	FFactor GMS(12);
+	GMS.LoadParameters(parametersFile);
+	GMS.CheckParameters();
+	//GMS.PrintParameters();
 
 	const int nPoints = 2500;
 	double qMin;
@@ -158,7 +161,7 @@ int main ( int argc, char **argv ) {
 	qStep = (qMax-qMin)/nPoints;
 	qA = qMin;
 	
-	/*for (int i = 0; i < nPoints; i++) {
+	for (int i = 0; i < nPoints; i++) {
 		qA = qMin + i*qStep;
 		double qA2 = qA*qA;
 		double gen = GMS.AbsGEN(-qA2);
@@ -178,8 +181,10 @@ int main ( int argc, char **argv ) {
 		double gDmn = gD*(-muN);
 		plotGY[i] = sqrt(2.)*2./3.*gDmn;
 		//plotGY[i] = sqrt(2.)*2./3.*gmn;
-	}*/
+	}
 
+	graf.viewPlusData(nPoints, plotGX, plotGY, num, X, Y, "title");
+	
 	/// End output
 
 	time ( &rawtime );
