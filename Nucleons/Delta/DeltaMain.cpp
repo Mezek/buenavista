@@ -68,6 +68,8 @@ char outputFile[] = "outDelta.dat";                    ///< Output file.
 #include "DeltaData.cpp"
 #include "DeltaPlot.cpp"
 #include "DeltaGMstar.cpp"
+#include "DeltaREM.cpp"
+#include "DeltaRSM.cpp"
 
 using namespace ROOT::Minuit2;
 
@@ -92,7 +94,7 @@ int main ( int argc, char **argv ) {
 	std::cout.precision(15); 
 	//cout.setf(ios::scientific);
 
-	int graph = 0;
+	int graph = 1;
 	if (argc > 1 ) { graph = atoi(argv[1]); }
 	std::string dataFile;
 
@@ -111,6 +113,7 @@ int main ( int argc, char **argv ) {
 
 			/// Plot R_EM
 			dataFile = "../../Data/dataREM.dat";
+			graf.viewREM("REM");
 				
 			break;
 		}
@@ -118,6 +121,7 @@ int main ( int argc, char **argv ) {
 
 			/// Plot R_SM
 			dataFile = "../../Data/dataRSM.dat";
+			graf.viewRSM("RSM");
 				
 			break;
 		}
@@ -145,7 +149,12 @@ int main ( int argc, char **argv ) {
 		U[k] = errUp[i];
 		++k;
 	}	
-
+	graf.viewData(num, X, Y, "Data");
+	
+	FFactor aGMS(12);
+	aGMS.LoadParameters(parametersFile);
+	aGMS.CheckParameters();
+	
 	const int nPoints = 2500;
 	double qMin;
 	double qMax;
@@ -158,15 +167,16 @@ int main ( int argc, char **argv ) {
 	qStep = (qMax-qMin)/nPoints;
 	qA = qMin;
 	
-	/*for (int i = 0; i < nPoints; i++) {
+	for (int i = 0; i < nPoints; i++) {
 		qA = qMin + i*qStep;
 		double qA2 = qA*qA;
-		double gen = GMS.AbsGEN(-qA2);
-		double gmn = GMS.AbsGMN(-qA2);
+		double gen = aGMS.AbsGEN(-qA2);
+		double gmn = aGMS.AbsGMN(-qA2);
 		double msq = massDi*massDi - massNucl*massNucl - qA2;
 		double abq = sqrt((qA2 + msq*msq)/(4.*massDi*massDi));
 		plotGX[i] = qA2;
-		//plotGY[i] = abq*massNucl/qA2*gen/gmn;
+		plotGY[i] = massNucl/abq/2.*gen/gmn;
+		//plotGY[i] = -massNucl*100.*gen/gmn;
 		//plotGY[i] = gen/gmn;
 		//std::cout << massNucl << " " << gen/qA2 << std::endl;
 		double mPlu = 0.5*(massDi + massNucl);
@@ -176,10 +186,12 @@ int main ( int argc, char **argv ) {
 		double mDip = 1. + qA2/0.71;
 		double gD = 1./mDip/mDip;
 		double gDmn = gD*(-muN);
-		plotGY[i] = sqrt(2.)*2./3.*gDmn;
+		//plotGY[i] = sqrt(2.)*2./3.*gDmn;
 		//plotGY[i] = sqrt(2.)*2./3.*gmn;
-	}*/
+	}
 
+	graf.viewPlusData(nPoints, plotGX, plotGY, num, X, Y, "title");
+	
 	/// End output
 
 	time ( &rawtime );

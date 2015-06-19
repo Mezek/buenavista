@@ -45,6 +45,8 @@ class DeltaPlot {
 	void viewData (Int_t num, Double_t axisX[], Double_t axisY[], Char_t const*);
 	void viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Char_t const*);
 	void viewGMstar (Char_t const*);
+	void viewREM (Char_t const*);
+	void viewRSM (Char_t const*);
 };
 
 #endif // _DeltaPlot_H_

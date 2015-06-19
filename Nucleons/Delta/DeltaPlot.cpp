@@ -81,7 +81,7 @@ void DeltaPlot::viewData (Int_t num, Double_t axisX[], Double_t axisY[], Char_t 
 void DeltaPlot::viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Char_t const* title) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
-	c[k]->SetLogy(); // logarithmic scale
+	//c[k]->SetLogy(); // logarithmic scale
 
 	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	gr1->Draw("AL");
@@ -99,20 +99,3 @@ void DeltaPlot::viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int
 	gr2->SetMarkerSize(.5);
 	++k;	
 }
-
-/*
- * 	Double_t X1[] = {2.8, 4.0};
-	Double_t Y1[] = {-2.0, -3.1};
-	Double_t U1[] = {1.3, 1.3};
-	Double_t D1[] = {1.3, 1.3};
-	g[1] = new TGraph (2, X1, Y1);
-	//gr1->SetTitle(title);
-	g[1]->SetMarkerColor(kBlue);
-	g[1]->SetMarkerStyle(21);
-	mg->Add(g[1]);
-
-	Double_t X2[] = {2.8, 4.0};
-	Double_t Y2[] = {-2.0, -3.1};
-	Double_t U2[] = {1.3, 1.3};
-	Double_t D2[] = {1.3, 1.3};
-	*/
