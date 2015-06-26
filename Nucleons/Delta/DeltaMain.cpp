@@ -94,7 +94,7 @@ int main ( int argc, char **argv ) {
 	std::cout.precision(15); 
 	//cout.setf(ios::scientific);
 
-	int graph = 1;
+	int graph = 2;
 	if (argc > 1 ) { graph = atoi(argv[1]); }
 	std::string dataFile;
 
@@ -149,7 +149,7 @@ int main ( int argc, char **argv ) {
 		U[k] = errUp[i];
 		++k;
 	}	
-	graf.viewData(num, X, Y, "Data");
+	//graf.viewData(num, X, Y, "Data");
 	
 	FFactor aGMS(12);
 	aGMS.LoadParameters(parametersFile);
@@ -190,7 +190,7 @@ int main ( int argc, char **argv ) {
 		//plotGY[i] = sqrt(2.)*2./3.*gmn;
 	}
 
-	graf.viewPlusData(nPoints, plotGX, plotGY, num, X, Y, "title");
+	//graf.viewPlusData(nPoints, plotGX, plotGY, num, X, Y, "title");
 	
 	/// End output
 

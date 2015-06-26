@@ -149,7 +149,7 @@ void DeltaPlot::viewREM (Char_t const* title)
 	aX->CenterTitle();
 
 	TAxis *aY = mg->GetYaxis();
-	aY->SetTitle("G_{M}^{*}");
+	aY->SetTitle("R_{EM} [%]");
 	//aY->SetRangeUser(0.6,1.8);
 	aY->SetTitleOffset(1.2);
 	aY->CenterTitle();
@@ -160,6 +160,8 @@ void DeltaPlot::viewREM (Char_t const* title)
 	leg->SetFillStyle(0);
 
 	c[k]->Modified();
+
+	c[k]->SaveAs("imgREM.pdf");
 	
 	++k;	
 }

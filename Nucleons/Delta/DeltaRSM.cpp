@@ -26,8 +26,8 @@ void DeltaPlot::viewRSM (Char_t const* title)
 	double qStep;
 	double qA;
 
-	double DX[nPoints], DY[nPoints];
-	qMin = 0.004;
+	double DX[nPoints], DY[nPoints], RY[nPoints];
+	qMin = 0.03;
 	qMax = 3.0;
 	qStep = (qMax-qMin)/nPoints;
 	qA = qMin;
@@ -43,8 +43,14 @@ void DeltaPlot::viewRSM (Char_t const* title)
 		double mDip = 1. + qA2/0.71;
 		double gD = 1./mDip/mDip;
 		double gDmn = gD*(-muN);
-		DY[i] = sqrt(2.)*2./3.*gDmn;
-
+		//DY[i] = sqrt(2.)*2./3.*gDmn;
+		double masst = qA2/(4.*massNucl*massNucl);
+		double pa = 0.9;
+		double pd = 1.75;
+		DY[i] = 100.*pa*masst/(1.+pd*masst)*(-1.)*massNucl/qA/2.;
+		//std::cout << i << " "<< qA2 << " " << gen << " " << gmn << std::endl;
+		RY[i] = -100.*gen/gmn;
+		//DY[i] = 100.*massNucl*massDi/qA2/2.*gen/gmn;
 	}	
 	
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
@@ -115,18 +121,34 @@ void DeltaPlot::viewRSM (Char_t const* title)
 	g[5]->SetMarkerStyle(24);
 	mg->Add(g[5]);
 	
-	// Dipole formula
-	TGraph *gD = new TGraph (nPoints, DX, DY);
-	gD->SetTitle("Dipole formulae");
-	gD->SetFillColor(0);
-	mg->Add(gD);
-
 	for (int i=1; i<nG; ++i)
 	{
 		g[i]->SetFillColor(0);
 		//g[i]->SetLineColor(4);
 		g[i]->SetMarkerSize(1.2);
 	}
+	
+	// Formula D
+	TGraph *gD = new TGraph (nPoints, DX, DY);
+	gD->SetTitle("Dipole formulae");
+	gD->SetFillColor(0);
+	gD->SetLineWidth(3);
+	gD->SetMarkerSize(0.3);
+	gD->SetMarkerStyle(21);
+	gD->SetMarkerColor(4);
+	gD->SetLineColor(4);
+	mg->Add(gD);
+	
+	// Formula A
+	TGraph *gA = new TGraph (nPoints, DX, RY);
+	gA->SetTitle("Our result");
+	gA->SetFillColor(0);
+	gA->SetLineWidth(3);
+	gA->SetMarkerSize(0.3);
+	gA->SetMarkerStyle(21);
+	//gA->SetLineColor(3);
+	mg->Add(gA);
+
 	mg->Draw("AP");
 
 	//TF1 *fg = new TF1 ("fg", "[1]*x + [0]");
@@ -139,7 +161,7 @@ void DeltaPlot::viewRSM (Char_t const* title)
 	aX->CenterTitle();
 
 	TAxis *aY = mg->GetYaxis();
-	aY->SetTitle("RSM [%]");
+	aY->SetTitle("R_{SM} [%]");
 	//aY->SetRangeUser(0.6,1.8);
 	aY->SetTitleOffset(1.2);
 	aY->CenterTitle();
@@ -150,6 +172,8 @@ void DeltaPlot::viewRSM (Char_t const* title)
 	leg->SetFillStyle(0);
 
 	c[k]->Modified();
+
+	c[k]->SaveAs("imgRSM.pdf");
 	
 	++k;	
 }

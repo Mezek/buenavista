@@ -133,6 +133,8 @@ void DeltaPlot::viewGMstar (Char_t const* title)
 	leg->SetFillStyle(0);
 
 	c[k]->Modified();
+
+	c[k]->SaveAs("imgGMstar.pdf");
 	
 	++k;	
 }
