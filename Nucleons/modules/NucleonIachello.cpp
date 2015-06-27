@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-10-08 11:34:47 +0200 (Tue, 08 Oct 2013) $
- * $Revision: 387 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/NucleonIachello.cpp $
- * $Id: NucleonIachello.cpp 387 2013-10-08 09:34:47Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Model of Iachello form factor for nucleons.

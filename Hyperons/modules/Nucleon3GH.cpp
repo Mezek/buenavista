@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-06-19 13:54:42 +0200 (Wed, 19 Jun 2013) $
- * $Revision: 379 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/modules/Nucleon3GH.cpp $
- * $Id: Nucleon3GH.cpp 379 2013-06-19 11:54:42Z bartos $
+ * $Id$
  *
  * @file
  * @brief	U&A form factor for nucleons &mdash; 3 vector meson resonances, v. hyperon.

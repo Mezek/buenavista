@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-30 14:45:21 +0200 (Thu, 30 May 2013) $
- * $Revision: 361 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/NucleonFcnCS.cpp $
- * $Id: NucleonFcnCS.cpp 361 2013-05-30 12:45:21Z bartos $
+ * $Id$
  *
  * @file
  * @brief	FCN function of nucleon FF.

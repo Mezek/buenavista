@@ -1,4 +1,4 @@
-% $Id: dataMainzRatioMin.dat 378 2013-06-19 10:43:14Z bartos $
+% $Id$
 % Sigma_exp data
 % t [GeV^2/c^2] | sigma_exp/sigma_dip | delta sigma_exp/sigma_dip | theta | E_in [MeV]
 # Type=100

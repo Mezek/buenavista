@@ -35,10 +35,10 @@ void DeltaPlot::viewRSM (Char_t const* title)
 	for (int i = 0; i < nPoints; i++) {
 		qA = qMin + i*qStep;
 		double qA2 = qA*qA;
-		double gen = GMS.AbsGEN(-qA2);
-		double gmn = GMS.AbsGMN(-qA2);
+		double gen = GMS.GEN(-qA2);
+		double gmn = GMS.GMN(-qA2);
 		double msq = massDi*massDi - massNucl*massNucl - qA2;
-		double abq = sqrt((qA2 + msq*msq)/(4.*massDi*massDi));
+		double abq = sqrt(qA2 + msq*msq/(4.*massDi*massDi));
 		DX[i] = qA2;
 		double mDip = 1. + qA2/0.71;
 		double gD = 1./mDip/mDip;
@@ -47,10 +47,10 @@ void DeltaPlot::viewRSM (Char_t const* title)
 		double masst = qA2/(4.*massNucl*massNucl);
 		double pa = 0.9;
 		double pd = 1.75;
-		DY[i] = 100.*pa*masst/(1.+pd*masst)*(-1.)*massNucl/qA/2.;
-		//std::cout << i << " "<< qA2 << " " << gen << " " << gmn << std::endl;
-		RY[i] = -100.*gen/gmn;
-		//DY[i] = 100.*massNucl*massDi/qA2/2.*gen/gmn;
+		DY[i] = 100.*pa*masst/(1.+pd*masst)*(-1.)*massNucl*abq/qA2/2.;
+		double gmo = (GMS.ScalarOne(-qA2)-GMS.VectorOne(-qA2))/qA2+(GMS.ScalarTwo(-qA2)-GMS.VectorTwo(-qA2))/massN/massN/4.;
+		RY[i] = -100.*massNucl/6.*abq*gmo/gmn - 3.;
+		//RY[i] = -100.*massNucl/6.*abq*gen/gmn/qA2;
 	}	
 	
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
@@ -157,6 +157,7 @@ void DeltaPlot::viewRSM (Char_t const* title)
 	TAxis *aX = mg->GetXaxis();
 	aX->SetTitle("Q^{2} [GeV^{2}]");
 	//aX->SetLimits(0.,10.);
+	aX->SetRangeUser(-0.0,7.);
 	aX->SetTitleOffset(1.2);
 	aX->CenterTitle();
 

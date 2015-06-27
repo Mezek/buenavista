@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-27 14:56:24 +0200 (Mon, 27 May 2013) $
- * $Revision: 356 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/Nucleon3G.cpp $
- * $Id: Nucleon3G.cpp 356 2013-05-27 12:56:24Z bartos $
+ * $Id$
  *
  * @file
  * @brief	U&A form factor for nucleons &mdash; 3 vector meson resonances.

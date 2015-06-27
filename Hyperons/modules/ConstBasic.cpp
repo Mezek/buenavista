@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-20 14:30:44 +0200 (Mon, 20 May 2013) $
- * $Revision: 338 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/modules/ConstBasic.cpp $
- * $Id: ConstBasic.cpp 338 2013-05-20 12:30:44Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Basic constants for numerical calculations.

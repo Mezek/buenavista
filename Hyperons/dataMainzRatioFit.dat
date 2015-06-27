@@ -1,4 +1,4 @@
-% $Id: dataMainzRatioFit.dat 370 2013-06-17 09:35:19Z bartos $
+% $Id$
 % Sigma_exp data
 % t [GeV^2/c^2] | sigma_exp/sigma_dip | delta sigma_exp/sigma_dip | theta | E_in [MeV]
 # Type=100

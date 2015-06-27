@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-22 09:56:01 +0200 (Wed, 22 May 2013) $
- * $Revision: 347 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/modules/NucleonFcnH.h $
- * $Id: NucleonFcnH.h 347 2013-05-22 07:56:01Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Header for FCN function of nucleon FF, v. hyperon.

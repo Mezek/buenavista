@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-22 09:44:15 +0200 (Wed, 22 May 2013) $
- * $Revision: 346 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/ConstMesons-D.cpp $
- * $Id: ConstMesons-D.cpp 346 2013-05-22 07:44:15Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Meson constants, multiple of mass of &pi; meson, v. D.

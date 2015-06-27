@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-10-02 13:45:42 +0200 (Wed, 02 Oct 2013) $
- * $Revision: 383 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/PlotGraph.cpp $
- * $Id: PlotGraph.cpp 383 2013-10-02 11:45:42Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Preview of functions and data.

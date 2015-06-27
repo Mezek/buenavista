@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-29 11:53:18 +0200 (Wed, 29 May 2013) $
- * $Revision: 360 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/ExperimentalData.h $
- * $Id: ExperimentalData.h 360 2013-05-29 09:53:18Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Header for experimental data input.

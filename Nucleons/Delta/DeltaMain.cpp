@@ -94,7 +94,7 @@ int main ( int argc, char **argv ) {
 	std::cout.precision(15); 
 	//cout.setf(ios::scientific);
 
-	int graph = 2;
+	int graph = 0;
 	if (argc > 1 ) { graph = atoi(argv[1]); }
 	std::string dataFile;
 

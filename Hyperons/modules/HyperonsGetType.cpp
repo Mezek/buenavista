@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-21 10:51:25 +0200 (Tue, 21 May 2013) $
- * $Revision: 340 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/modules/HyperonsGetType.cpp $
- * $Id: HyperonsGetType.cpp 340 2013-05-21 08:51:25Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Get type of a hyperon.

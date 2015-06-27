@@ -1,9 +1,9 @@
 /**
- * $Date: 2013-05-22 09:35:03 +0200 (Wed, 22 May 2013) $
- * $Revision: 345 $
- * $Author: bartos $
+ * $Date$
+ * $Revision$
+ * $Author$
  * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/ConstMesons.cpp $
- * $Id: ConstMesons.cpp 345 2013-05-22 07:35:03Z bartos $
+ * $Id$
  *
  * @file
  * @brief	Meson constants for numerical calculations.

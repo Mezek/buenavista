@@ -26,7 +26,7 @@ void DeltaPlot::viewGMstar (Char_t const* title)
 	double qStep;
 	double qA;
 
-	double DX[nPoints], DY[nPoints];
+	double DX[nPoints], DY[nPoints], RY[nPoints];
 	qMin = 0.004;
 	qMax = 3.0;
 	qStep = (qMax-qMin)/nPoints;
@@ -39,12 +39,15 @@ void DeltaPlot::viewGMstar (Char_t const* title)
 		double gmn = GMS.AbsGMN(-qA2);
 		double msq = massDi*massDi - massNucl*massNucl - qA2;
 		double abq = sqrt((qA2 + msq*msq)/(4.*massDi*massDi));
+		double jsc = (massDi+massNucl)/2./massNucl*(1.-qA2/4./massDi/massDi)*(1.-qA2/4./massNucl/massNucl);
 		DX[i] = qA2;
 		double mDip = 1. + qA2/0.71;
 		double gD = 1./mDip/mDip;
 		double gDmn = gD*(-muN);
-		DY[i] = sqrt(2.)*2./3.*gDmn;
-
+		DY[i] = sqrt(2.)*2./3.*gDmn*jsc;
+		double masst = qA2/(4.*massNucl*massNucl);
+		double gmo = (GMS.ScalarOne(-qA2)-GMS.VectorOne(-qA2))/qA2+(GMS.ScalarTwo(-qA2)-GMS.VectorTwo(-qA2))/massN/massN/4.;
+		RY[i] = sqrt(2.)*2./3.*gmn*jsc;
 	}	
 	
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
@@ -98,18 +101,34 @@ void DeltaPlot::viewGMstar (Char_t const* title)
 	g[4]->SetMarkerStyle(23);
 	mg->Add(g[4]);
 
-	// Dipole formula
-	TGraph *gD = new TGraph (nPoints, DX, DY);
-	gD->SetTitle("Dipole formulae");
-	gD->SetFillColor(0);
-	mg->Add(gD);
-
 	for (int i=0; i<4; ++i)
 	{
 		g[i+1]->SetFillColor(0);
 		//g[i+1]->SetLineColor(4);
 		g[i+1]->SetMarkerSize(1.2);
 	}
+
+	// Formula D
+	TGraph *gD = new TGraph (nPoints, DX, DY);
+	gD->SetTitle("Dipole formulae");
+	gD->SetFillColor(0);
+	gD->SetLineWidth(3);
+	gD->SetMarkerSize(0.3);
+	gD->SetMarkerStyle(21);
+	gD->SetMarkerColor(4);
+	gD->SetLineColor(4);
+	mg->Add(gD);
+	
+	// Formula A
+	TGraph *gA = new TGraph (nPoints, DX, RY);
+	gA->SetTitle("Our result");
+	gA->SetFillColor(0);
+	gA->SetLineWidth(3);
+	gA->SetMarkerSize(0.3);
+	gA->SetMarkerStyle(21);
+	//gA->SetLineColor(3);
+	mg->Add(gA);
+
 	mg->Draw("AP");
 
 	//TF1 *fg = new TF1 ("fg", "[1]*x + [0]");
@@ -118,6 +137,7 @@ void DeltaPlot::viewGMstar (Char_t const* title)
 	TAxis *aX = mg->GetXaxis();
 	aX->SetTitle("Q^{2} [GeV^{2}]");
 	//aX->SetLimits(0.,10.);
+	aX->SetRangeUser(-0.01,7.0);
 	aX->SetTitleOffset(1.2);
 	aX->CenterTitle();
 

@@ -129,7 +129,7 @@ void DeltaPlot::viewREM (Char_t const* title)
 	TGraph *gD = new TGraph (nPoints, DX, DY);
 	gD->SetTitle("Dipole formulae");
 	gD->SetFillColor(0);
-	mg->Add(gD);
+	//mg->Add(gD);
 
 	for (int i=1; i<nG; ++i)
 	{
