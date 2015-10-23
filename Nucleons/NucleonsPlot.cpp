@@ -143,7 +143,7 @@ void performPlot ( char* p, char* f ) {
 	PlotGraph graf1(13),graf2(13),graf3(13),graf4(13),graf5(13),graf6(13),graf7(13),graf8(13);
 	Char_t const* title;
 	title = "|G_{E}^{p}|";
-	//graf1.viewPlusData(nPoints,plotX,plotY0,k0,dataX0,dataY0,title);
+	graf1.viewPlusData(nPoints,plotX,plotY0,k0,dataX0,dataY0,title);
 	//graf5.viewPlusDataAE(nPoints,plotX,plotY0,k0,dataX0,dataY0,0,0,dataD0,dataU0,title);
 	title = "|G_{M}^{p}|";
 	//graf2.viewPlusData(nPoints,plotX,plotY1,k1,dataX1,dataY1,title);
@@ -157,7 +157,7 @@ void performPlot ( char* p, char* f ) {
 	
 	PlotGraph graf9(13);
 	//graf9.view4(nPoints,plotX,plotY0,plotY1,plotY2,plotY3);
-	graf9.view4Exp(nPoints,plotX,plotY0,plotY1,plotY2,plotY3,k0,dataX0,dataY0,k1,dataX1,dataY1,k2,dataX2,dataY2,k3,dataX3,dataY3);
+	//graf9.view4Exp(nPoints,plotX,plotY0,plotY1,plotY2,plotY3,k0,dataX0,dataY0,k1,dataX1,dataY1,k2,dataX2,dataY2,k3,dataX3,dataY3);
 
 	
 	/// Plot ratios
