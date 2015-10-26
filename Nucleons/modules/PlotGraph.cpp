@@ -14,13 +14,13 @@
 PlotGraph::PlotGraph ( std::size_t p ): k(0), c(p) {
 
 	// To set white color for graph
-    TStyle *plain = new TStyle("Plain","Plain Style(no colors/fill areas)");
+	TStyle *plain = new TStyle("Plain","Plain Style(no colors/fill areas)");
 	plain->SetCanvasBorderMode(0);
-    plain->SetPadBorderMode(0);
-    plain->SetPadColor(0);
-    plain->SetCanvasColor(0);
-    plain->SetTitleColor(1);
-    plain->SetStatColor(0);
+	plain->SetPadBorderMode(0);
+	plain->SetPadColor(0);
+	plain->SetCanvasColor(0);
+	plain->SetTitleColor(1);
+	plain->SetStatColor(0);
 	plain->SetTitleBorderSize(0);
 	//gROOT->SetStyle(plain);
 	plain->cd();
@@ -37,14 +37,14 @@ PlotGraph::PlotGraph ( std::size_t p ): k(0), c(p) {
 void PlotGraph::view (Int_t num, Double_t axisX[], Double_t axisY[]) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
-    c[k]->SetLogy(); // logarithmic scale
+	c[k]->SetLogy(); // logarithmic scale
 
-    TGraph *gr1 = new TGraph (num, axisX, axisY);
+	TGraph *gr1 = new TGraph (num, axisX, axisY);
 
 	gr1->Draw("AL");
-    gr1->SetTitle(title);
-    gr1->GetXaxis()->CenterTitle();
-    gr1->GetYaxis()->CenterTitle();
+	gr1->SetTitle(title);
+	gr1->GetXaxis()->CenterTitle();
+	gr1->GetYaxis()->CenterTitle();
 	++k;
 }
 
@@ -57,9 +57,9 @@ void PlotGraph::view (Int_t num, Double_t axisX[], Double_t axisY[], Char_t cons
 	
 	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	
-    gr1->Draw("AL");
-    gr1->GetXaxis()->CenterTitle();
-    gr1->GetYaxis()->CenterTitle();
+	gr1->Draw("AL");
+	gr1->GetXaxis()->CenterTitle();
+	gr1->GetYaxis()->CenterTitle();
 
 	gr1->GetXaxis()->SetTitle("t [GeV^{2}]");
 	gr1->GetYaxis()->SetTitle(title);
@@ -73,12 +73,12 @@ void PlotGraph::view (Int_t num, Double_t axisX[], Double_t axisY[], Char_t cons
 void PlotGraph::view2 (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[]) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, 1.5*w, h);
-    c[k]->SetLogy(); // logarithmic scale
+	c[k]->SetLogy(); // logarithmic scale
 	c[k]->Divide(2,1);
 
 	c[k]->cd(1);
 	gPad->SetLogy();
-    TGraph *gr1 = new TGraph (num, axisX, axisY1);
+	TGraph *gr1 = new TGraph (num, axisX, axisY1);
 	gr1->SetTitle("Graph 1");
 	gr1->Draw("AL");
 	
@@ -95,7 +95,7 @@ void PlotGraph::view2 (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t 
 void PlotGraph::viewData (Int_t num, Double_t axisX[], Double_t axisY[]) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
-    //c[k]->SetLogy(); // logarithmic scale
+	//c[k]->SetLogy(); // logarithmic scale
 	
 	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	gr1->Draw("AP");
@@ -109,16 +109,16 @@ void PlotGraph::viewData (Int_t num, Double_t axisX[], Double_t axisY[]) {
 void PlotGraph::viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[]) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
-    //c[k]->SetLogy(); // logarithmic scale
+	//c[k]->SetLogy(); // logarithmic scale
 
-    TGraph *gr1 = new TGraph (num, axisX, axisY);
+	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	gr1->Draw("AL");
-    //gr1->SetTitle("Function with experimental points");
-    gr1->SetTitle("");
-    gr1->GetXaxis()->CenterTitle();
-    gr1->GetYaxis()->CenterTitle();
+	//gr1->SetTitle("Function with experimental points");
+	gr1->SetTitle("");
+	gr1->GetXaxis()->CenterTitle();
+	gr1->GetYaxis()->CenterTitle();
 
-    TGraph *gr2 = new TGraph (numD, axisXD, axisYD);
+	TGraph *gr2 = new TGraph (numD, axisXD, axisYD);
 	gr2->Draw("P");
 	gr2->SetMarkerStyle(21);
 	gr2->SetMarkerSize(.5);
@@ -134,15 +134,15 @@ void PlotGraph::viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int
 
 	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	gr1->Draw("AL");
-    //gr1->SetTitle("Function with experimental points");
-    gr1->SetTitle(title);
-    gr1->GetXaxis()->CenterTitle();
-    gr1->GetYaxis()->CenterTitle();
+	//gr1->SetTitle("Function with experimental points");
+	gr1->SetTitle(title);
+	gr1->GetXaxis()->CenterTitle();
+	gr1->GetYaxis()->CenterTitle();
 	//gr1->GetXaxis()->SetLimits(0.5,0.);
 	//tl = new TLatex();
 	//tl->DrawLatex(0.22,0.15,"#sqrt{s} = 500(GeV)");
 
-    TGraph *gr2 = new TGraph (numD, axisXD, axisYD);
+	TGraph *gr2 = new TGraph (numD, axisXD, axisYD);
 	gr2->Draw("P");
 	gr2->SetMarkerStyle(21);
 	gr2->SetMarkerSize(.5);
@@ -154,16 +154,16 @@ void PlotGraph::viewPlusData (Int_t num, Double_t axisX[], Double_t axisY[], Int
 void PlotGraph::viewPlusDataE (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Double_t axisXED[], Double_t axisYED[], const Char_t* title) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
-    c[k]->SetLogy(); // logarithmic scale
+	c[k]->SetLogy(); // logarithmic scale
 
-    TGraph *gr1 = new TGraph (num, axisX, axisY);
+	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	gr1->Draw("AL");
 	gr1->GetXaxis()->SetTitle("t [GeV^{2}]");
 	gr1->GetYaxis()->SetTitle(title);
-    //gr1->SetTitle(title);
-    gr1->SetTitle();
-    gr1->GetXaxis()->CenterTitle();
-    gr1->GetYaxis()->CenterTitle();
+	//gr1->SetTitle(title);
+	gr1->SetTitle();
+	gr1->GetXaxis()->CenterTitle();
+	gr1->GetYaxis()->CenterTitle();
 	gr1->SetMaximum(2.);
 
     TGraphErrors *gr2 = new TGraphErrors (numD, axisXD, axisYD, axisXED, axisYED);
@@ -180,11 +180,11 @@ void PlotGraph::viewPlusDataE (Int_t num, Double_t axisX[], Double_t axisY[], In
 void PlotGraph::viewPlusDataAE (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Double_t axisXExl[], Double_t axisXExh[], Double_t axisYEyl[], Double_t axisYEyh[], Char_t const* title) {
 
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
-    c[k]->SetLogy(); // logarithmic scale
+	c[k]->SetLogy(); // logarithmic scale
 
 	TMultiGraph *mgr1 = new TMultiGraph();
 
-    TGraph *gr1 = new TGraph (num, axisX, axisY);
+	TGraph *gr1 = new TGraph (num, axisX, axisY);
 	TGraphAsymmErrors *gr2 = new TGraphAsymmErrors (numD, axisXD, axisYD, axisXExl, axisXExh, axisYEyl, axisYEyh);
 	gr2->SetMarkerStyle(21);
 	gr2->SetMarkerSize(.7);
@@ -196,8 +196,8 @@ void PlotGraph::viewPlusDataAE (Int_t num, Double_t axisX[], Double_t axisY[], I
 
 	mgr1->GetXaxis()->SetTitle("t [GeV^{2}]");
 	mgr1->GetYaxis()->SetTitle(title);
-    mgr1->GetXaxis()->CenterTitle();
-    mgr1->GetYaxis()->CenterTitle();
+	mgr1->GetXaxis()->CenterTitle();
+	mgr1->GetYaxis()->CenterTitle();
 
 	// Change the axis limits
 	gPad->Modified();
@@ -253,19 +253,19 @@ void PlotGraph::view4 (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t 
 	c[k]->Divide(2,2);
 	
 	c[k]->cd(1);
-    gPad->SetLogy();
+	gPad->SetLogy();
 	TGraph *gr1 = new TGraph (num, axisX, axisY1);
 	gr1->SetTitle("Graph 1");
 	gr1->Draw("AL");
 
 	c[k]->cd(2);
-    gPad->SetLogy();	
-    TGraph *gr2 = new TGraph (num, axisX, axisY2);
+	gPad->SetLogy();	
+	TGraph *gr2 = new TGraph (num, axisX, axisY2);
 	gr2->SetTitle("Graph 2");
 	gr2->Draw("AL");
 	
 	c[k]->cd(3);
-    gPad->SetLogy();
+	gPad->SetLogy();
 	TGraph *gr3 = new TGraph (num, axisX, axisY3);
 	gr3->SetTitle("Graph 3");
 	gr3->Draw("AL");
@@ -287,31 +287,31 @@ void PlotGraph::view4Exp (Int_t num, Double_t axisX[], Double_t axisY1[], Double
 	c[k]->Divide(2,2);
 
 	c[k]->cd(1);
-    gPad->SetLogy();
+	gPad->SetLogy();
 	TGraph *gr1 = new TGraph (num, axisX, axisY1);
 	gr1->SetTitle("|G_{E}^{p}|");
 	gr1->Draw("AL");
-    TGraph *gr2 = new TGraph (num1, axisEX1, axisEY1);
+	TGraph *gr2 = new TGraph (num1, axisEX1, axisEY1);
 	gr2->Draw("P");
 	gr2->SetMarkerStyle(21);
 	gr2->SetMarkerSize(.5);
 
 	c[k]->cd(2);
-    gPad->SetLogy();	
-    TGraph *gr3 = new TGraph (num, axisX, axisY2);
+	gPad->SetLogy();	
+	TGraph *gr3 = new TGraph (num, axisX, axisY2);
 	gr3->SetTitle("|G_{M}^{p}|");
 	gr3->Draw("AL");
-    TGraph *gr4 = new TGraph (num2, axisEX2, axisEY2);
+	TGraph *gr4 = new TGraph (num2, axisEX2, axisEY2);
 	gr4->Draw("P");
 	gr4->SetMarkerStyle(21);
 	gr4->SetMarkerSize(.5);
 	
 	c[k]->cd(3);
-    gPad->SetLogy();
+	gPad->SetLogy();
 	TGraph *gr5 = new TGraph (num, axisX, axisY3);
 	gr5->SetTitle("|G_{E}^{n}|");
 	gr5->Draw("AL");
-    TGraph *gr6 = new TGraph (num3, axisEX3, axisEY3);
+	TGraph *gr6 = new TGraph (num3, axisEX3, axisEY3);
 	gr6->Draw("P");
 	gr6->SetMarkerStyle(21);
 	gr6->SetMarkerSize(.5);
@@ -321,7 +321,7 @@ void PlotGraph::view4Exp (Int_t num, Double_t axisX[], Double_t axisY1[], Double
 	TGraph *gr7 = new TGraph (num, axisX, axisY4);
 	gr7->SetTitle("|G_{M}^{n}|");
 	gr7->Draw("AL");
-    TGraph *gr8 = new TGraph (num4, axisEX4, axisEY4);
+	TGraph *gr8 = new TGraph (num4, axisEX4, axisEY4);
 	gr8->Draw("P");
 	gr8->SetMarkerStyle(21);
 	gr8->SetMarkerSize(.5);

@@ -112,8 +112,8 @@ int main ( int argc, char **argv ) {
 
 	std::cout << "\n>> World data:" << std::endl;
 	ExperimentalData A;
-	A.ReadData(dataFile1);	
-	A.ReadDataCrossSection(dataFile2);
+	A.ReadData(dataFile);	
+	//A.ReadDataCrossSection(dataFile2);
 	A.DataInfo();
 
 	/// Set precision

@@ -391,7 +391,23 @@ TComplex FFactor::ScalarTwo (TComplex t)
 	TComplex norm,normA,suma;
 	norm = (1.-v*v)/(1.-vN*vN);
 	normA = normA.Power(norm,6);
+	// choice Dubnicka
 	suma = normA*(FF[2].nor*mul[3]*mul[4]*mul[5] +
+	  (mul[0]*mul[4]*mul[5]*(sub[4]-sub[0])/(sub[4]-sub[2])*(sub[5]-sub[0])/(sub[5]-sub[2]) +
+	   mul[0]*mul[2]*mul[5]*(sub[2]-sub[0])/(sub[2]-sub[4])*(sub[5]-sub[0])/(sub[5]-sub[4]) +
+	   mul[0]*mul[2]*mul[4]*(sub[2]-sub[0])/(sub[2]-sub[5])*(sub[4]-sub[0])/(sub[4]-sub[5]) -
+	   mul[2]*mul[4]*mul[5])*a[9].val +
+	  (mul[1]*mul[4]*mul[5]*(sub[4]-sub[1])/(sub[4]-sub[2])*(sub[5]-sub[1])/(sub[5]-sub[2]) +
+	   mul[1]*mul[2]*mul[5]*(sub[2]-sub[1])/(sub[2]-sub[4])*(sub[5]-sub[1])/(sub[5]-sub[4]) +
+	   mul[1]*mul[2]*mul[4]*(sub[2]-sub[1])/(sub[2]-sub[5])*(sub[4]-sub[1])/(sub[4]-sub[5]) -
+	   mul[2]*mul[4]*mul[5])*a[10].val +
+	  (mul[3]*mul[4]*mul[5]*(sub[4]-sub[3])/(sub[4]-sub[2])*(sub[5]-sub[3])/(sub[5]-sub[2]) +
+	   mul[3]*mul[2]*mul[5]*(sub[2]-sub[3])/(sub[2]-sub[4])*(sub[5]-sub[3])/(sub[5]-sub[4]) +
+	   mul[3]*mul[2]*mul[4]*(sub[2]-sub[3])/(sub[2]-sub[5])*(sub[4]-sub[3])/(sub[4]-sub[5]) -
+	   mul[2]*mul[4]*mul[5])*a[11].val);
+	
+/*	// choice Bartos
+	suma = normA*(FF[2].nor*mul[2]*mul[4]*mul[5] +
 	  (mul[0]*mul[4]*mul[5]*(sub[4]-sub[0])/(sub[4]-sub[3])*(sub[5]-sub[0])/(sub[5]-sub[3]) +
 	   mul[0]*mul[3]*mul[5]*(sub[3]-sub[0])/(sub[3]-sub[4])*(sub[5]-sub[0])/(sub[5]-sub[4]) +
 	   mul[0]*mul[3]*mul[4]*(sub[3]-sub[0])/(sub[3]-sub[5])*(sub[4]-sub[0])/(sub[4]-sub[5]) -
@@ -404,7 +420,7 @@ TComplex FFactor::ScalarTwo (TComplex t)
 	   mul[2]*mul[3]*mul[5]*(sub[3]-sub[2])/(sub[3]-sub[4])*(sub[5]-sub[2])/(sub[5]-sub[4]) +
 	   mul[2]*mul[3]*mul[4]*(sub[3]-sub[2])/(sub[3]-sub[5])*(sub[4]-sub[2])/(sub[4]-sub[5]) -
 	   mul[3]*mul[4]*mul[5])*a[11].val);
-
+*/
 	return suma;
 }
 

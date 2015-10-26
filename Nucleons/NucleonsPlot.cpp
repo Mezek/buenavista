@@ -13,29 +13,33 @@ using namespace ROOT::Minuit2;
 
 void performPlot ( char* p, char* f ) {
 
-	std::cout << "\n> Plotted parameters: '" << p << "'" << std::endl;
-	std::cout << "> Plotted data:       '" << f << "'" << std::endl;
+	std::cout << "\n> Plotting:" << std::endl;
+	std::cout << "> Plotted parameters:          `" << p << "'" << std::endl;
+	std::cout << "> Plotted form factor data:    `" << f << "'" << std::endl;
 
-	FFactor nPlot(12);
-	nPlot.LoadParameters(p);
-	//nPlot.PrintParameters();
-	nPlot.CheckFormFactor("all", 0.01);
-	
-	ExperimentalData W;
-	W.ReadData(f);
-	std::cout << "\nNumber of plotted points:      " << W.size() << std::endl;
-	std::vector<double> x = W.X();
-	std::vector<double> val = W.Val();
-	std::vector<double> errUp = W.ErrUp();
-	std::vector<double> errDown = W.ErrDown();
-	std::vector<int> type = W.Type();	
-	
 	const int nPoints = 2500;
 	double tMin;
 	double tMax;
 	double tStep;
 	double tA;
 
+	ExperimentalData W;
+	W.ReadData(f);
+	int numG = W.size();
+	std::cout << "\nNumber of plotted points:      " << numG << std::endl;
+	std::vector<int> type = W.Type();
+	std::vector<double> x = W.X();
+	std::vector<double> val = W.Val();
+	std::vector<double> errUp = W.ErrUp();
+	std::vector<double> errDown = W.ErrDown();
+	std::vector<double> theta = W.Theta();
+	std::vector<double> energy = W.Energy();
+
+	FFactor nPlot(12);
+	nPlot.LoadParameters(p);
+	//nPlot.PrintParameters();
+	nPlot.CheckFormFactor("all", 0.01);
+	
 	double plotX[nPoints], plotY0[nPoints], plotY1[nPoints], plotY2[nPoints], plotY3[nPoints];
 	int numA = W.typeN(1)+W.typeN(2);
 	int numB = W.typeN(3)+W.typeN(4);
@@ -58,13 +62,7 @@ void performPlot ( char* p, char* f ) {
 	for (int i = 0; i < nPoints; ++i) {
 		tA = tMin + i*tStep;
 		plotX[i] = tA;
-		//~???
- 		//~if (tA < t0v) { 
  		z = tMin + i*tStep;
- 		//~}
- 		//~else {
- 			//~z = z0 + i*shag;
- 		//~}
 
 		/*
 		gA = nPlot.ScalarOne(z);
@@ -75,7 +73,8 @@ void performPlot ( char* p, char* f ) {
 		plotY0[i] = TComplex::Abs(gA+gB + z/(4*massP*massP)*(gC+gD));
 		plotY1[i] = TComplex::Abs(gA+gB + gC+gD);
 		plotY2[i] = TComplex::Abs(gA-gB + z/(4*massN*massN)*(gC-gD));
-		plotY3[i] = TComplex::Abs(gA-gB + gC-gD);*/
+		plotY3[i] = TComplex::Abs(gA-gB + gC-gD);
+		*/
 
 		plotY0[i] = nPlot.AbsGEP(z);
 		plotY1[i] = nPlot.AbsGMP(z);
@@ -143,7 +142,7 @@ void performPlot ( char* p, char* f ) {
 	PlotGraph graf1(13),graf2(13),graf3(13),graf4(13),graf5(13),graf6(13),graf7(13),graf8(13);
 	Char_t const* title;
 	title = "|G_{E}^{p}|";
-	graf1.viewPlusData(nPoints,plotX,plotY0,k0,dataX0,dataY0,title);
+	//graf1.viewPlusData(nPoints,plotX,plotY0,k0,dataX0,dataY0,title);
 	//graf5.viewPlusDataAE(nPoints,plotX,plotY0,k0,dataX0,dataY0,0,0,dataD0,dataU0,title);
 	title = "|G_{M}^{p}|";
 	//graf2.viewPlusData(nPoints,plotX,plotY1,k1,dataX1,dataY1,title);
@@ -157,10 +156,10 @@ void performPlot ( char* p, char* f ) {
 	
 	PlotGraph graf9(13);
 	//graf9.view4(nPoints,plotX,plotY0,plotY1,plotY2,plotY3);
-	//graf9.view4Exp(nPoints,plotX,plotY0,plotY1,plotY2,plotY3,k0,dataX0,dataY0,k1,dataX1,dataY1,k2,dataX2,dataY2,k3,dataX3,dataY3);
+	graf9.view4Exp(nPoints,plotX,plotY0,plotY1,plotY2,plotY3,k0,dataX0,dataY0,k1,dataX1,dataY1,k2,dataX2,dataY2,k3,dataX3,dataY3);
 
-	
-	/// Plot ratios
+
+/*	/// Plot ratios
 	FFactor pPlot(12);
 	pPlot.LoadParameters(p);
 
@@ -171,6 +170,7 @@ void performPlot ( char* p, char* f ) {
 	double dataY4[numE], dataY5[numF];
 	double dataU4[numE], dataU5[numF];
 	double dataD4[numE], dataD5[numF];
+	double tZ = 0.;
 	
 	tMin = 0.0;
 	tMax = 19.0;
@@ -211,17 +211,19 @@ void performPlot ( char* p, char* f ) {
 
 		plotRpY[i] = (1+ammP)*hA/hB;
 		plotRnY[i] = (ammN)*hC/hD;
-		//std::cout << i << ". " << w << " " << hA <<  std::endl;
+		//std::cout << i << ". " << plotRpY[i] << " " << tA <<  std::endl;
+		if (plotRpY[i] > 0.) { tZ = tA; }
     }
-
-	PlotGraph grafR(2);
+	std::cout << "Zero point at [ GeV^2 ] :      " << tZ << std::endl;
+*/
+/*	PlotGraph grafR(2);
 	Char_t const* titleR;
 	titleR = "mu_p*G_E^p/G_M^p";
 	grafR.viewPlusDataAE(nPoints,plotRX,plotRpY,numE,dataX4,dataY4,0,0,dataU4,dataD4,titleR);
 	titleR = "mu_n*G_E^n/G_M^n";
 	//grafR.viewPlusDataAE(nPoints,plotRX,plotRnY,numF,dataX5,dataY5,0,0,dataU5,dataD5,titleR);
-
-	/*/// Plot isoFF
+*/
+/*	/// Plot isoFF
 	FFactor oPlot(12);
 	oPlot.LoadParameters(outputFile);
 	oPlot.PerformCheck("all", 0.001);
@@ -250,6 +252,6 @@ void performPlot ( char* p, char* f ) {
 	PlotGraph grafI;
 	const Char_t* tit = "IsoFF";
 	grafI.view(nPoints,plotIX,plotIY,tit);
-	*/
+*/
 
 }
