@@ -33,7 +33,7 @@ void performChi ( char* p, char* f ) {
 	bornTBW.CheckParameters();
 	bornTBW.PrintParameters();
 	int nP = C.size();
-	double limChi = 7.;
+	double limChi = 50.;
 	double chi = 0.;
 	double chi2 = 0.;
 	double Chi2 = 0.;
@@ -104,4 +104,5 @@ void performChi ( char* p, char* f ) {
 	myOutputXi.close();
 	std::cout << "\n> Chi2  : " << Chi2 << std::endl;
 	std::cout << "> Points: " << nP << std::endl;
+	std::cout << "> Chi2/P: " << Chi2/nP << std::endl;
 }
