@@ -19,6 +19,8 @@ void performChi ( char* p, char* f ) {
 
 	ExperimentalData C;
 	C.ReadData(f);
+	int nDat = C.size();
+
 	std::vector<int> type = C.Type();
 	std::vector<double> x = C.X();
 	std::vector<double> val = C.Val();
@@ -32,7 +34,8 @@ void performChi ( char* p, char* f ) {
 	bornTBW.LoadParameters(p);
 	bornTBW.CheckParameters();
 	bornTBW.PrintParameters();
-	int nP = C.size();
+	int nPar = bornTBW.numberOfParameters;
+
 	double limChi = 50.;
 	double chi = 0.;
 	double chi2 = 0.;
@@ -42,7 +45,7 @@ void performChi ( char* p, char* f ) {
 	double Asym = 0.;
 	TComplex nFv,nE,nM;
 	myOutputXi << "Partial Chi > " << limChi << std::endl;
-	for(int n = 0; n < nP; ++n) {
+	for(int n = 0; n < nDat; ++n) {
 		/** "protonElectric" */
 		if ((type[n] == 1) || (type[n] == 2)) {
 			nFv = bornTBW.AbsGEP(x[n]);
@@ -103,6 +106,6 @@ void performChi ( char* p, char* f ) {
 	myOutputXi << "Chi2: " << Chi2 << std::endl;
 	myOutputXi.close();
 	std::cout << "\n> Chi2  : " << Chi2 << std::endl;
-	std::cout << "> Points: " << nP << std::endl;
-	std::cout << "> Chi2/P: " << Chi2/nP << std::endl;
+	std::cout << "> Points  : " << nDat << std::endl;
+	std::cout << "> Chi2/ndf: " << Chi2/(nDat-nPar) << std::endl;
 }

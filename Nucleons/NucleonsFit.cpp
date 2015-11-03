@@ -22,7 +22,7 @@ void performFit ( char* p, char* f, char* o) {
 	FFactor pFF(12);
 	pFF.LoadParameters(p);
 	int nPar = pFF.numberOfParameters;
-	std::cout << "Number of FF parameters:       " << nPar << std::endl;
+	std::cout << "> Number of FF parameters:       " << nPar << std::endl;
 	//pFF.PrintParameters();
 
 	ExperimentalData Z;
@@ -80,6 +80,8 @@ void performFit ( char* p, char* f, char* o) {
 
 	minimize.Fix(0.);
 	minimize.Fix(1.);
+	minimize.Fix(2.);
+	minimize.Fix(3.);
 	//std::cout << "> ... 2. minimalization..." << std::endl;
 	//FunctionMinimum min2 = migrad(10000,1.);
 
@@ -92,11 +94,15 @@ void performFit ( char* p, char* f, char* o) {
 
 	/// Standard output
 	std::cout << "> Minimum: " << min9 << std::endl;
-	std::cout << "> FCN value: " << min9.Fval() << std::endl;
+	std::cout << "> FCN value:     " << min9.Fval() << std::endl;
+	std::cout << "> FCN value/ndf: " << min9.Fval()/(nData-nPar) << std::endl;
+	std::cout << "> Points       : " << nData << std::endl;
+
+	std::cout << min9.UserState() << std::endl;
+	std::cout << min9.UserCovariance() << std::endl;
+
 	std::cout << "> Real time of minimalization: " << timer.RealTime() << " sec." << std::endl;
 
-	//pFF.PrintParameters();
-	
 	//~ // Scan and Plot parameters
  	//~ {
     //~ MnScan scan(fFCN, upar, 1);
@@ -111,15 +117,18 @@ void performFit ( char* p, char* f, char* o) {
     //~ std::cout << scan.Parameters() << std::endl;
 	//~ }
 
-	// Output parameters
-	ofstream myOutputParam (o);
+	/// Output parameters
+	std::ofstream os;
+	os.open(o);
+	os.precision(8);
 	for (int i = 0; i < nPar; ++i) {
-		double pV = min9.UserParameters().Value(i);
-		myOutputParam << i+1 << ", " << min9.UserParameters().Name(i) << ", ";
-		//std::cout << "a: " << pFF.val[i] << std::endl;
-		myOutputParam << std::setprecision(10) << pV << ", ";
-		myOutputParam << pFF.v[i].down << ", " << pFF.v[i].up << std::endl;
+		os << i+1 << ", " << min9.UserParameters().Name(i) << ", ";
+		os.width(12);
+		os << min9.UserParameters().Value(i) << ", ";
+		os.width(12);
+		os << min9.UserParameters().Error(i) << ", ";
+		os << pFF.v[i].down << ", " << pFF.v[i].up << std::endl;
 	}
-	myOutputParam.close();
+	os.close();
 
 }

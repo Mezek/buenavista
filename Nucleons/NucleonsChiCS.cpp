@@ -26,7 +26,7 @@ void performChi ( char* p, char* f1, char* f2 ) {
 	//C.RemoveDataType(133);
 	//C.RemoveDataType(128);
 	int nDat = C.size();
-	
+
 	std::vector<int> type = C.Type();
 	std::vector<double> x = C.X();
 	std::vector<double> val = C.Val();

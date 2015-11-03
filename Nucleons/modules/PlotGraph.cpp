@@ -296,6 +296,7 @@ void PlotGraph::view4Exp (Int_t num, Double_t axisX[], Double_t axisY1[], Double
 	gr1->SetLineColor(kAzure);
 	gr1->GetXaxis()->SetTitle("t [GeV^{2}]");	
 	TGraph *gr2 = new TGraph (num1, axisEX1, axisEY1);
+	//TGraphErrors *gr2 = new TGraphErrors (num1, axisEX1, axisEY1, axisXED, axisYED);
 	gr2->Draw("P");
 	gr2->SetMarkerStyle(21);
 	gr2->SetMarkerSize(.5);

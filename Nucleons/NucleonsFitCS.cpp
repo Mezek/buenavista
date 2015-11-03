@@ -112,7 +112,7 @@ void performFit ( char* p, char* f1, char* f2, char* o) {
 
 	std::cout << min9.UserState() << std::endl;
 	std::cout << min9.UserCovariance() << std::endl;
-	
+
 	std::cout << "> Real time of minimalization: " << timer.RealTime() << " sec." << std::endl;
 
 	/// Output parameters
