@@ -37,20 +37,19 @@
 #include "TStopwatch.h"
 
 ///@{
-char dataFile[] = "dataNucleonsMin.dat";           /**< Form factor data. */
-//char dataFile0[] = "dataNucleonsCleared.dat";
-char dataFile1[] = "dataNucleonsApprox.dat";
-char dataFile2[] = "dataNucleonsDubnicka.dat";
+char dataFile[] = "dataNucleonsApproxPlusMainz.dat";           /**< Form factor data. */
+//char dataFile0[] = "dataNucleonsApproxPlusMainz.dat";
+char dataFile1[] = "dataNucleonsHDubnicka.dat";
 ///@}
 
 ///@{
 /** Single form factor data file.*/
-char dataFileA[] = "../Data/dataProtonElectric.dat";
-char dataFileB[] = "../Data/dataProtonMagnetic.dat";
-char dataFileC[] = "../Data/dataNeutronElectric.dat";
-char dataFileD[] = "../Data/dataNeutronMagnetic.dat";
-char dataFileE[] = "../Data/dataProtonRatios.dat";
-char dataFileF[] = "../Data/dataNeutronRatios.dat";
+//char dataFileA[] = "../Data/dataProtonElectric.dat";
+//char dataFileB[] = "../Data/dataProtonMagnetic.dat";
+//char dataFileC[] = "../Data/dataNeutronElectric.dat";
+//char dataFileD[] = "../Data/dataNeutronMagnetic.dat";
+//char dataFileE[] = "../Data/dataProtonRatios.dat";
+//char dataFileF[] = "../Data/dataNeutronRatios.dat";
 ///@}
 
 char parametersFile[] = "parNucleons-Fit.dat";         ///< Input parameters.

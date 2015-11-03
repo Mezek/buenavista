@@ -179,6 +179,7 @@ void PlotGraph::viewPlusDataE (Int_t num, Double_t axisX[], Double_t axisY[], In
 
 void PlotGraph::viewPlusDataAE (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Double_t axisXExl[], Double_t axisXExh[], Double_t axisYEyl[], Double_t axisYEyh[], Char_t const* title) {
 
+	k = 10;
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
 	c[k]->SetLogy(); // logarithmic scale
 
@@ -256,6 +257,7 @@ void PlotGraph::view4 (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t 
 	gPad->SetLogy();
 	TGraph *gr1 = new TGraph (num, axisX, axisY1);
 	gr1->SetTitle("Graph 1");
+	gr1->SetLineColor(kBlue+2);
 	gr1->Draw("AL");
 
 	c[k]->cd(2);
@@ -291,40 +293,52 @@ void PlotGraph::view4Exp (Int_t num, Double_t axisX[], Double_t axisY1[], Double
 	TGraph *gr1 = new TGraph (num, axisX, axisY1);
 	gr1->SetTitle("|G_{E}^{p}|");
 	gr1->Draw("AL");
+	gr1->SetLineColor(kAzure);
+	gr1->GetXaxis()->SetTitle("t [GeV^{2}]");	
 	TGraph *gr2 = new TGraph (num1, axisEX1, axisEY1);
 	gr2->Draw("P");
 	gr2->SetMarkerStyle(21);
 	gr2->SetMarkerSize(.5);
+	gr2->SetMarkerColor(kBlue+2);
 
 	c[k]->cd(2);
 	gPad->SetLogy();	
 	TGraph *gr3 = new TGraph (num, axisX, axisY2);
 	gr3->SetTitle("|G_{M}^{p}|");
 	gr3->Draw("AL");
+	gr3->SetLineColor(kAzure);
+	gr3->GetXaxis()->SetTitle("t [GeV^{2}]");	
 	TGraph *gr4 = new TGraph (num2, axisEX2, axisEY2);
 	gr4->Draw("P");
 	gr4->SetMarkerStyle(21);
 	gr4->SetMarkerSize(.5);
+	gr4->SetMarkerColor(kBlue+2);
 	
 	c[k]->cd(3);
 	gPad->SetLogy();
 	TGraph *gr5 = new TGraph (num, axisX, axisY3);
 	gr5->SetTitle("|G_{E}^{n}|");
 	gr5->Draw("AL");
+	gr5->SetLineColor(kAzure);
+	gr5->GetXaxis()->SetTitle("t [GeV^{2}]");	
 	TGraph *gr6 = new TGraph (num3, axisEX3, axisEY3);
 	gr6->Draw("P");
 	gr6->SetMarkerStyle(21);
 	gr6->SetMarkerSize(.5);
-
+	gr6->SetMarkerColor(kBlue+2);
+	
 	c[k]->cd(4);
 	gPad->SetLogy();
 	TGraph *gr7 = new TGraph (num, axisX, axisY4);
 	gr7->SetTitle("|G_{M}^{n}|");
 	gr7->Draw("AL");
+	gr7->SetLineColor(kAzure);
+	gr7->GetXaxis()->SetTitle("t [GeV^{2}]");	
 	TGraph *gr8 = new TGraph (num4, axisEX4, axisEY4);
 	gr8->Draw("P");
 	gr8->SetMarkerStyle(21);
 	gr8->SetMarkerSize(.5);
-
+	gr8->SetMarkerColor(kBlue+2);
+	
 	++k;	
 }

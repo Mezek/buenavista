@@ -159,7 +159,7 @@ void performPlot ( char* p, char* f ) {
 	graf9.view4Exp(nPoints,plotX,plotY0,plotY1,plotY2,plotY3,k0,dataX0,dataY0,k1,dataX1,dataY1,k2,dataX2,dataY2,k3,dataX3,dataY3);
 
 
-/*	/// Plot ratios
+	/// Plot ratios
 	FFactor pPlot(12);
 	pPlot.LoadParameters(p);
 
@@ -215,14 +215,14 @@ void performPlot ( char* p, char* f ) {
 		if (plotRpY[i] > 0.) { tZ = tA; }
     }
 	std::cout << "Zero point at [ GeV^2 ] :      " << tZ << std::endl;
-*/
-/*	PlotGraph grafR(2);
+
+	PlotGraph grafR(2);
 	Char_t const* titleR;
 	titleR = "mu_p*G_E^p/G_M^p";
 	grafR.viewPlusDataAE(nPoints,plotRX,plotRpY,numE,dataX4,dataY4,0,0,dataU4,dataD4,titleR);
 	titleR = "mu_n*G_E^n/G_M^n";
 	//grafR.viewPlusDataAE(nPoints,plotRX,plotRnY,numF,dataX5,dataY5,0,0,dataU5,dataD5,titleR);
-*/
+
 /*	/// Plot isoFF
 	FFactor oPlot(12);
 	oPlot.LoadParameters(outputFile);
