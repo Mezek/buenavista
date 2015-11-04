@@ -219,9 +219,9 @@ void performPlot ( char* p, char* f ) {
 	PlotGraph grafR(2);
 	Char_t const* titleR;
 	titleR = "mu_p*G_E^p/G_M^p";
-	grafR.viewPlusDataAE(nPoints,plotRX,plotRpY,numE,dataX4,dataY4,0,0,dataU4,dataD4,titleR);
+	//grafR.viewPlusDataAE(nPoints,plotRX,plotRpY,numE,dataX4,dataY4,0,0,dataU4,dataD4,titleR);
 	titleR = "mu_n*G_E^n/G_M^n";
-	//grafR.viewPlusDataAE(nPoints,plotRX,plotRnY,numF,dataX5,dataY5,0,0,dataU5,dataD5,titleR);
+	grafR.viewPlusDataAE(nPoints,plotRX,plotRnY,numF,dataX5,dataY5,0,0,dataU5,dataD5,titleR);
 
 /*	/// Plot isoFF
 	FFactor oPlot(12);

@@ -102,6 +102,12 @@ void performChi ( char* p, char* f ) {
 		if ( chi2 > limChi ) {
 			myOutputXi << "\n" << n << "\t" << type[n] << "\t" << x[n] << "\t" << val[n] << "\t" << chi2 << std::endl;
 		}
+		std::cout << std::setw(6) << std::right << n
+                  << std::setw(6) << std::right << type[n]
+				  << std::setw(12) << std::right << x[n]
+				  << std::setw(12) << std::right << val[n]
+				  << std::setw(12) << std::right << std::setprecision(4) << std::fixed << chi2
+				  << std::endl;
 	}
 	myOutputXi << "Chi2: " << Chi2 << std::endl;
 	myOutputXi.close();

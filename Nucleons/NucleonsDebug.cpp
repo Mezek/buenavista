@@ -59,9 +59,9 @@ void performDebug ( char* p, char* f ) {
 		std::cout << "> Proton radius: " << dM.RadiusEP(s) << " step: " << s << std::endl;
 	}
 	
-	/*
-	double tD = -0.5;
-	for (int i = 0; i < 50; ++i) {
+
+	double tD = -0.2;
+	for (int i = 0; i < 10; ++i) {
 		std::cout << "\n>> Debug:" << std::endl;
 		std::cout << tD << " " << dM.ScalarOne(tD) << std::endl;
 		std::cout << tD << " " << dM.VectorOne(tD) << std::endl;
@@ -72,9 +72,9 @@ void performDebug ( char* p, char* f ) {
 		std::cout << tD << " " << dM.AbsGEN(tD) << std::endl;
 		std::cout << tD << " " << dM.AbsGMN(tD) << std::endl;
 		tD = tD + .05;
-	}*/
+	}
 
-	ofstream myOutput (f);
+/*	ofstream myOutput (f);
 	const int dPoints = 10000;
 	double tMin = -10.;
 	double tMax = 10.;
@@ -95,5 +95,5 @@ void performDebug ( char* p, char* f ) {
 		myOutput << z.Re() << "\t" << gC.Re() << "\t" << gC.Im() << std::endl;
 		myOutput << z.Re() << "\t" << gD.Re() << "\t" << gD.Im() << std::endl;
     }
-	myOutput.close();
+	myOutput.close();*/
 }
