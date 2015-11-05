@@ -179,7 +179,6 @@ void PlotGraph::viewPlusDataE (Int_t num, Double_t axisX[], Double_t axisY[], In
 
 void PlotGraph::viewPlusDataAE (Int_t num, Double_t axisX[], Double_t axisY[], Int_t numD, Double_t axisXD[], Double_t axisYD[], Double_t axisXExl[], Double_t axisXExh[], Double_t axisYEyl[], Double_t axisYEyh[], Char_t const* title) {
 
-	k = 10;
 	c[k] = new TCanvas (uName("c",k), uName("Graph_",k), x0+k*s, y0+k*s, w, h);
 	c[k]->SetLogy(); // logarithmic scale
 
@@ -213,7 +212,7 @@ void PlotGraph::viewPlusDataAE (Int_t num, Double_t axisX[], Double_t axisY[], I
 	lg1->SetTextSize(0.03);
 	lg1->Draw();
 	
-	c[k]->Print("viewPlusDataAE.eps");
+	//c[k]->Print("viewPlusDataAE.eps");
 	++k;
 }
 
