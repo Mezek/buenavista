@@ -223,12 +223,34 @@ void FFactor::PrintParameters ()
 	std::cout << "F2v\t" << "\t" << "\t"<< "\t" << "\t" << "\t" << std::endl;
 
 	// Mesons under/over threshold
-	std::cout << "\n>> Mesons near threshold:" << std::endl;
-	std::cout << "\t" << "Under\t" << "Over\t" << "All\t" << std::endl;
+	std::cout << "\n>> Mesons placement to threshold:" << std::endl;
+	std::cout << "       Under  Over  All" << std::endl;
 
 	for (int i = 0; i < 4; ++i) {
-		std::cout << FF[i].name << "\t" << FF[i].tresh << "\t" << 
-				     FF[i].mesons-FF[i].tresh << "\t" << FF[i].mesons << std::endl;
+		int d = 0;
+		int u = 0;
+		double t;
+		for (int j = 0; j < FF[i].mesons; ++j) {
+			if ( i%2 == 0 ) {
+				t = mS[j]*mS[j]-wS[j]*wS[j]/4.;
+			} else {
+				t = mV[j]*mV[j]-wV[j]*wV[j]/4.;
+			}
+			if ( t < a[i].val ) {
+				d = d + 1;
+			} else {
+				u = u + 1;
+			}
+		}
+		std::cout.width(4);
+		std::cout << FF[i].name;
+		std::cout.width(6);
+		std::cout << d;
+		std::cout.width(6);
+		std::cout << u;
+		std::cout.width(6);
+		std::cout << u + d;
+		std::cout << std::endl;
 	}
 }
 
@@ -329,8 +351,8 @@ TComplex FFactor::ScalarOne (TComplex t)
 	double sign,threshold;
 	for (int i = 0; i < FF[0].mesons; i++) {
 		threshold = mS[i]*mS[i]-wS[i]*wS[i]/4.;
-		//if (threshold > a[0]) {
-		if ( i < FF[0].tresh ) {
+		if ( a[0].val < threshold ) {
+		//if ( i < FF[0].tresh ) {
 			sign = 1.;
 		}
 		else {
@@ -375,8 +397,8 @@ TComplex FFactor::ScalarTwo (TComplex t)
 	double sign,threshold;
 	for (int i = 0; i < FF[2].mesons; i++) {
 		threshold = mS[i]*mS[i]-wS[i]*wS[i]/4.;
-		//if (threshold > a[2]) {
-		if ( i < FF[2].tresh ) {
+		if ( a[2].val < threshold ) {
+		//if ( i < FF[2].tresh ) {
 			sign = 1.;
 		}
 		else {
@@ -439,8 +461,8 @@ TComplex FFactor::VectorOne (TComplex t)
 	double sign,threshold;
 	for (int i = 0; i < FF[1].mesons; i++) {
 		threshold = mV[i]*mV[i]-wV[i]*wV[i]/4.;
-		//if (threshold > a[1]) {
-		if ( i < FF[1].tresh ) {
+		if ( a[1].val < threshold ) {
+		//if ( i < FF[1].tresh ) {
 			sign = 1.;
 		}
 		else {
@@ -477,8 +499,8 @@ TComplex FFactor::VectorTwo (TComplex t)
 	double sign,threshold;
 	for (int i = 0; i < FF[3].mesons; i++) {
 		threshold = mV[i]*mV[i]-wV[i]*wV[i]/4.;
-		//if (threshold > a[3]) {
-		if ( i < FF[3].tresh ) {
+		if ( a[3].val < threshold ) {
+		//if ( i < FF[3].tresh ) {
 			sign = 1.;
 		}
 		else {
@@ -853,33 +875,35 @@ void FFactor::CheckParameters ()
 	double mL = 0;
 	int j;
 	for (int i = 0; i < 4; ++i) {
-		if ((i == 0) || (i == 2)) {
-			j = FF[i].tresh;
-			mH = mS[j]*mS[j]-wS[j]*wS[j]/4.;
-			mL = mS[j-1]*mS[j-1]-wS[j-1]*wS[j-1]/4.;
-		} else {
-			mH = mV[j]*mV[j]-wV[j]*wV[j]/4.;
-			mH = mV[j-1]*mV[j-1]-wV[j-1]*wV[j-1]/4.;
-		}
-		if ( v[i].val > mH ) {
+		if ( (v[i].val < v[i].down) || (v[i].val > v[i].up) ) {
 			std::cout << "> CheckParameters: Error!" << std::endl;
-			std::cout << "> Change value or limits for parameter: " << v[i].name << std::endl;
-			std::cout << "> Value:            " << v[i].val << std::endl;
-			std::cout << "> Higher limit:     " << mH << std::endl;
-			handSome = true;
-		}		
-		if ( v[i].val < mL ) {
-			std::cout << "> CheckParameters: Error!" << std::endl;
-			std::cout << "> Change value or limits for parameter: " << v[i].name << std::endl;
-			std::cout << "> Value:            " << v[i].val << std::endl;
-			std::cout << "> Lower limit:      " << mL << std::endl;
+			std::cout << v[i].name << " ";
+			std::cout.width(12);
+			std::cout << v[i].down << " ";
+			std::cout.width(12);
+			std::cout << v[i].val << " ";
+			std::cout.width(12);
+			std::cout << v[i].up << std::endl;
 			handSome = true;
 		}		
 	}
 
 	if (handSome == false) {
 		std::cout << "[ OK ] ... parameters" << std::endl;
-	}	
+	} else {
+		std::cout << "> Change value or limits for parameter(s)" << std::endl;
+		std::cout << "S: ";
+		for (int j = 0; j < FF[0].mesons; ++j) {
+			std::cout << mS[j]*mS[j]-wS[j]*wS[j]/4. << " ";
+		}
+		std::cout << std::endl;
+
+		std::cout << "V: ";
+		for (int j = 0; j < FF[1].mesons; ++j) {
+			std::cout << mV[j]*mV[j]-wV[j]*wV[j]/4. << " ";
+		}
+		std::cout << std::endl;
+	}
 
 }
 

@@ -74,8 +74,6 @@ void performChi ( char* p, char* f ) {
 			nE = bornTBW.GEP(x[n]);
 			nM = bornTBW.GMP(x[n]);
 			nFv = nFv.Abs((1.+ammP)*nE/nM);
-			errUp[n] = errUp[n]/10.;
-			errDown[n] = errDown[n]/10.;
 		}
 		/** "neutronRatios" */
 		if (type[n] == 10) {
@@ -104,14 +102,14 @@ void performChi ( char* p, char* f ) {
 		if ( chi2 > limChi ) {
 			myOutputXi << "\n" << n << "\t" << type[n] << "\t" << x[n] << "\t" << val[n] << "\t" << chi2 << std::endl;
 		}
-		if ( chi2 > limChi ) {
+		/*if ( chi2 > limChi ) {
 		std::cout << std::setw(6) << std::right << n
                   << std::setw(6) << std::right << type[n]
 				  << std::setw(12) << std::right << x[n]
 				  << std::setw(12) << std::right << val[n]
 				  << std::setw(12) << std::right << std::setprecision(4) << std::fixed << chi2
 				  << std::endl;
-		}
+		}*/
 	}
 	myOutputXi << "Chi2: " << Chi2 << std::endl;
 	myOutputXi.close();
