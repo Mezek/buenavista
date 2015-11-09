@@ -51,7 +51,7 @@ FFactor::FFactor ( std::size_t size ): a(size), v(size)
 	t(1.,0.00001);
 	//std::cout << ">> FFactor is empty! Value of t: " << t << std::endl;
 
-	// izo :: name, nor, mesons, tresh
+	// izo :: name, nor, mesons
 
 	// Names
 	FF[0].name = "F1s";
@@ -70,12 +70,6 @@ FFactor::FFactor ( std::size_t size ): a(size), v(size)
 	FF[1].mesons = 3;
 	FF[2].mesons = 6;
 	FF[3].mesons = 3;
-
-	// Mesons under threshold
-	FF[0].tresh = 3;
-	FF[1].tresh = 2;
-	FF[2].tresh = 3;
-	FF[3].tresh = 2;
 
 	// Masses and widths
 	mS[0] = massOm;
@@ -321,6 +315,9 @@ TComplex FFactor::W (const TComplex &t, const TComplex &t0, const TComplex &tin,
 	cK = cK.Sqrt(cQin+cQ);
 	cZ = cZ.Sqrt(cQin-cQ);
 	cRes = kI*(cK-sign*cZ)/(cK+sign*cZ);
+	//std::cout << "W: " << t << " " << t0 << " " << tin << std::endl;
+	//std::cout << "   " << cQ << " " << cQin << std::endl;
+	//std::cout << "   " << cK << " " << cZ << std::endl;
 	return cRes;
 }
 
@@ -346,23 +343,26 @@ TComplex FFactor::ScalarOne (TComplex t)
 {
 	TComplex v = FFactor::W(t,t0s,a[0].val,1.);
 	TComplex vN = FFactor::W(k0,t0s,a[0].val,1.);
-	//std::cout << ">> ScalarOne: "<< a[0] << " " << v << " " << vN << std::endl;
+	//std::cout << "F1s: v = " << v << " vN = " << vN << std::cout << std::endl;
 	
-	double sign,threshold;
+	double sign, mt;
 	for (int i = 0; i < FF[0].mesons; i++) {
-		threshold = mS[i]*mS[i]-wS[i]*wS[i]/4.;
-		if ( a[0].val < threshold ) {
-		//if ( i < FF[0].tresh ) {
+		mt = mS[i]*mS[i]-wS[i]*wS[i]/4.;
+		if ( mt < a[0].val ) {
 			sign = 1.;
 		}
 		else {
 			sign = -1.;
 		}
+		//std::cout << "Masses: " << i << " mwS2 = " << mwS2[i] << std::endl;
 		vM[i] = FFactor::W(mwS2[i],t0s,a[0].val,sign);
 		vMc[i] = vMc[i].Conjugate(vM[i]);
 		mul[i] = eL(v,vN,vM[i],vMc[i],sign);
 		sub[i] = sI(vN,vM[i],vMc[i],sign);
+		//std::cout << "F1s: " << i << ". " << mul[i] << " " << sub[i] << std::endl;
+		//std::cout << "vM: " << i << " vM = " << vM[i] << " vMc = " << vMc[i] << std::endl;
 	}
+	//std::cout << std::endl;
 	//std::cout << ">> 0-2: "<< mul[0] << " " << mul[1] << " " << mul[2] << std::endl;
 	//std::cout << ">> 3-6: "<< mul[3] << " " << mul[4] << " " << mul[5] <<  " " << mul[6] << std::endl;
 
@@ -394,11 +394,10 @@ TComplex FFactor::ScalarTwo (TComplex t)
 	TComplex v = FFactor::W(t,t0s,a[2].val,1.);
 	TComplex vN = FFactor::W(k0,t0s,a[2].val,1.);
 	
-	double sign,threshold;
+	double sign, mt;
 	for (int i = 0; i < FF[2].mesons; i++) {
-		threshold = mS[i]*mS[i]-wS[i]*wS[i]/4.;
-		if ( a[2].val < threshold ) {
-		//if ( i < FF[2].tresh ) {
+		mt = mS[i]*mS[i]-wS[i]*wS[i]/4.;
+		if ( mt < a[2].val ) {
 			sign = 1.;
 		}
 		else {
@@ -414,7 +413,7 @@ TComplex FFactor::ScalarTwo (TComplex t)
 	norm = (1.-v*v)/(1.-vN*vN);
 	normA = normA.Power(norm,6);
 	// choice Dubnicka
-	suma = normA*(FF[2].nor*mul[3]*mul[4]*mul[5] +
+	suma = normA*(FF[2].nor*mul[2]*mul[4]*mul[5] +
 	  (mul[0]*mul[4]*mul[5]*(sub[4]-sub[0])/(sub[4]-sub[2])*(sub[5]-sub[0])/(sub[5]-sub[2]) +
 	   mul[0]*mul[2]*mul[5]*(sub[2]-sub[0])/(sub[2]-sub[4])*(sub[5]-sub[0])/(sub[5]-sub[4]) +
 	   mul[0]*mul[2]*mul[4]*(sub[2]-sub[0])/(sub[2]-sub[5])*(sub[4]-sub[0])/(sub[4]-sub[5]) -
@@ -429,7 +428,7 @@ TComplex FFactor::ScalarTwo (TComplex t)
 	   mul[2]*mul[4]*mul[5])*a[11].val);
 	
 /*	// choice Bartos
-	suma = normA*(FF[2].nor*mul[2]*mul[4]*mul[5] +
+	suma = normA*(FF[2].nor*mul[3]*mul[4]*mul[5] +
 	  (mul[0]*mul[4]*mul[5]*(sub[4]-sub[0])/(sub[4]-sub[3])*(sub[5]-sub[0])/(sub[5]-sub[3]) +
 	   mul[0]*mul[3]*mul[5]*(sub[3]-sub[0])/(sub[3]-sub[4])*(sub[5]-sub[0])/(sub[5]-sub[4]) +
 	   mul[0]*mul[3]*mul[4]*(sub[3]-sub[0])/(sub[3]-sub[5])*(sub[4]-sub[0])/(sub[4]-sub[5]) -
@@ -452,17 +451,17 @@ TComplex FFactor::VectorOne (TComplex t)
 {
 	TComplex v = FFactor::W(t,t0v,a[1].val,1.);
 	TComplex vN = FFactor::W(k0,t0v,a[1].val,1.);
-
+	//std::cout << "F1v: v = " << v << " vN = " << vN << std::cout << std::endl;
+	
 	/*// Mass and width of Rho4P are parameters
 	mV[4] = a[14].val;
 	wV[4] = a[15].val;
 	mV2[4] = (mV[4]-kI*wV[4]/2.)*(mV[4]-kI*wV[4]/2.);*/	
 	
-	double sign,threshold;
+	double sign, mt;
 	for (int i = 0; i < FF[1].mesons; i++) {
-		threshold = mV[i]*mV[i]-wV[i]*wV[i]/4.;
-		if ( a[1].val < threshold ) {
-		//if ( i < FF[1].tresh ) {
+		mt = mV[i]*mV[i]-wV[i]*wV[i]/4.;
+		if ( mt < a[1].val ) {
 			sign = 1.;
 		}
 		else {
@@ -496,11 +495,10 @@ TComplex FFactor::VectorTwo (TComplex t)
 	wV[4] = a[15].val;	
 	mV2[4] = (mV[4]-kI*wV[4]/2.)*(mV[4]-kI*wV[4]/2.);*/	
 	
-	double sign,threshold;
+	double sign, mt;
 	for (int i = 0; i < FF[3].mesons; i++) {
-		threshold = mV[i]*mV[i]-wV[i]*wV[i]/4.;
-		if ( a[3].val < threshold ) {
-		//if ( i < FF[3].tresh ) {
+		mt = mV[i]*mV[i]-wV[i]*wV[i]/4.;
+		if ( mt < a[3].val ) {
 			sign = 1.;
 		}
 		else {

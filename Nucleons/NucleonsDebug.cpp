@@ -50,6 +50,7 @@ void performDebug ( char* p, char* f ) {
 
 	FFactor dM(12);
     dM.LoadParameters(p);
+
 	double r = 0.1;
 	for (int i = 0; i < 6; ++i) {
 		double s = 1.;
@@ -60,9 +61,9 @@ void performDebug ( char* p, char* f ) {
 	}
 	
 
-	double tD = -0.2;
-	for (int i = 0; i < 10; ++i) {
-		std::cout << "\n>> Debug:" << std::endl;
+	/*double tD = -1.;
+	for (int i = 0; i < 30; ++i) {
+		std::cout << "\n>> Debug: t = " << tD << std::endl;
 		std::cout << tD << " " << dM.ScalarOne(tD) << std::endl;
 		std::cout << tD << " " << dM.VectorOne(tD) << std::endl;
 		std::cout << tD << " " << dM.ScalarTwo(tD) << std::endl;
@@ -72,8 +73,23 @@ void performDebug ( char* p, char* f ) {
 		std::cout << tD << " " << dM.AbsGEN(tD) << std::endl;
 		std::cout << tD << " " << dM.AbsGMN(tD) << std::endl;
 		tD = tD + .05;
-	}
+	}*/
 
+	/*TComplex a(1.,0.);
+	TComplex t0s(t0s,0.);
+	TComplex ct(1.05,0.5);
+	std::cout << "\n>> Debug: t = " << ct << std::endl;
+	std::cout << ct << " " << dM.ScalarOne(ct) << std::endl;*/
+
+	/*ct(1.05,0.);
+	std::cout << "\n>> Debug: t = " << ct << std::endl;
+	std::cout << ct << " " << dM.ScalarOne(ct) << std::endl;
+
+	ct(1.05,-0.5);
+	std::cout << "\n>> Debug: t = " << ct << std::endl;
+	std::cout << ct << " " << dM.ScalarOne(ct) << std::endl;*/
+
+	
 /*	ofstream myOutput (f);
 	const int dPoints = 10000;
 	double tMin = -10.;
