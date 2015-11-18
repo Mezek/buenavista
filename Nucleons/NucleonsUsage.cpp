@@ -76,19 +76,19 @@ void performUsage ( int argc, char **argv ) {
 			case 'p':
 				globalArgs.parameters = optarg;
 				break;
-				
+
 			case 'o':
 				globalArgs.output = optarg;
 				break;
-				
+
 			case 'd':
 				globalArgs.data = optarg;
 				break;
-				
+
 			case 'h':
 				displayUsage();
 				break;
-				
+
 			case '?':
 				displayUsage();
 				break;

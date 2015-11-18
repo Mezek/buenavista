@@ -16,17 +16,18 @@ void performPlot ( char* p, char* f ) {
 
 	FFactor nPlot(0);
 	nPlot.LoadParameters(p);
-	//nPlot.PrintParameters();
-	nPlot.CheckFormFactor("all", 0.01);
+	nPlot.PrintParameters();
+	//nPlot.CheckFormFactor("all", 0.01);
+	nPlot.CheckParameters();
 
-	std::cout << nPlot.ScalarOne(0.) << std::endl;
+	/*std::cout << nPlot.ScalarOne(0.) << std::endl;
 	std::cout << nPlot.ScalarTwo(0.) << std::endl;
 	std::cout << nPlot.VectorOne(0.) << std::endl;
 	std::cout << nPlot.VectorTwo(0.) << std::endl;
 	std::cout << nPlot.GE1(0.) << std::endl;
 	std::cout << nPlot.GM1(0.) << std::endl;
 	std::cout << nPlot.GE2(0.) << std::endl;
-	std::cout << nPlot.GM2(0.) << std::endl;
+	std::cout << nPlot.GM2(0.) << std::endl;*/
 
 	// Plot graphs
 	const int nPoints = 2500;
@@ -62,26 +63,37 @@ void performPlot ( char* p, char* f ) {
 	
 	graf.view4(nPoints,plotX,plotY0,plotY1,plotY2,plotY3);
 
-	//graf.view(nPoints,plotX,plotY0,"|G_{E}^{P1}|");
-	//graf.view(nPoints,plotX,plotY1,"|G_{M}^{P2}|");
-	//graf.view(nPoints,plotX,plotY2,"|G_{E}^{P1}|");
-	//graf.view(nPoints,plotX,plotY3,"|G_{M}^{P2}|");
-
-	graf.view(nPoints,plotX,plotY0,"|G_{E}^{#Sigma^{+}}|");
-	graf.view(nPoints,plotX,plotY1,"|G_{M}^{#Sigma^{+}}|");
-	graf.view(nPoints,plotX,plotY2,"|G_{E}^{#Sigma^{-}}|");
-	graf.view(nPoints,plotX,plotY3,"|G_{M}^{#Sigma^{-}}|");
-
-	//graf.view(nPoints,plotX,plotY0,"|G_{E}^{#Xi^{-}}|");
-	//graf.view(nPoints,plotX,plotY1,"|G_{M}^{#Xi^{-}}|");
-	//graf.view(nPoints,plotX,plotY2,"|G_{E}^{#Xi^{0}}|");
-	//graf.view(nPoints,plotX,plotY3,"|G_{M}^{#Xi^{0}}|");
-
-	//graf.view(nPoints,plotX,plotY0,"|G_{E}^{#Sigma^{0}}|");
-	//graf.view(nPoints,plotX,plotY1,"|G_{M}^{#Sigma^{0}}|");
-
-	//graf.view(nPoints,plotX,plotY0,"|G_{E}^{#Lambda}|");
-	//graf.view(nPoints,plotX,plotY1,"|G_{M}^{#Lambda}|");
+	int particleType = nPlot.GetParticle();	
+	switch (particleType) {
+		case 1: // just for completness
+			graf.view(nPoints,plotX,plotY0,"|G_{E}^{P1}|");
+			graf.view(nPoints,plotX,plotY1,"|G_{M}^{P2}|");
+			graf.view(nPoints,plotX,plotY2,"|G_{E}^{P1}|");
+			graf.view(nPoints,plotX,plotY3,"|G_{M}^{P2}|");
+			break;
+		case 2:
+			graf.view(nPoints,plotX,plotY0,"|G_{E}^{#Lambda}|");
+			graf.view(nPoints,plotX,plotY1,"|G_{M}^{#Lambda}|");
+			break;
+		case 3:
+			graf.view(nPoints,plotX,plotY0,"|G_{E}^{#Sigma^{+}}|");
+			graf.view(nPoints,plotX,plotY1,"|G_{M}^{#Sigma^{+}}|");
+			graf.view(nPoints,plotX,plotY2,"|G_{E}^{#Sigma^{-}}|");
+			graf.view(nPoints,plotX,plotY3,"|G_{M}^{#Sigma^{-}}|");
+			break;
+		case 4:
+			graf.view(nPoints,plotX,plotY0,"|G_{E}^{#Sigma^{0}}|");
+			graf.view(nPoints,plotX,plotY1,"|G_{M}^{#Sigma^{0}}|");
+			break;			
+		case 5:
+			graf.view(nPoints,plotX,plotY0,"|G_{E}^{#Xi^{-}}|");
+			graf.view(nPoints,plotX,plotY1,"|G_{M}^{#Xi^{-}}|");
+			graf.view(nPoints,plotX,plotY2,"|G_{E}^{#Xi^{0}}|");
+			graf.view(nPoints,plotX,plotY3,"|G_{M}^{#Xi^{0}}|");
+			break;
+		default:
+		std::cout << ">> Error: No particle type defined!" << std::endl;
+	}
 
 /*
 	// Plot cross sections

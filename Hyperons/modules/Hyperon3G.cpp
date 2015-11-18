@@ -178,6 +178,13 @@ void FFactor::SetParticle ( int myParticle )
 	FF[3].mesons = 3;
 }
 
+/// Get particle type
+
+int FFactor::GetParticle( void )
+{
+	return particleType;
+}
+
 /// Load parameters from file
 
 void FFactor::LoadParameters (char* ds)
@@ -458,7 +465,7 @@ void FFactor::TransformSU3 ()
 	a[11].val = fOp[1][1]/fuO[1];
 	a[12].val = fRp[1][0]/fuR[0];
 	FFactor::FixParameters();	
-	std::cout << ">> SU(3) transformation of coupling constants done." << std::endl;
+	std::cout << ">> SU(3) transformation of coupling constants... done." << std::endl;
 	
 }
 

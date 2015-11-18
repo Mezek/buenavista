@@ -27,19 +27,22 @@ static struct option longOpts[] =
 	{NULL, no_argument, NULL, 0}
 };
 
-// Display program usage, and exit.
+/// Display program usage and exit.
+
 void displayUsage( void )
 {
 	std::cout << "\nUsage: ./Hyperons [options]" << std::endl;
 	std::cout << "\nOptions:" << std::endl;	
-	std::cout << " -p, --parameters       parametersFile, default='" << dataFile << "'" << std::endl;
+	std::cout << " -p, --parameters       parametersFile, default='" << parametersFile << "'" << std::endl;
 	std::cout << " -o, --output           outputFile,     default='" << outputFile << "'" << std::endl;
-	std::cout << " -d, --data             dataFile,       default='" << parametersFile << "'" << std::endl;
+	std::cout << " -d, --data             dataFile,       default='" << dataFile << "'" << std::endl;
 	std::cout << " -h, --help             display usage" << std::endl;
 	std::cout << "     --verbose          print some debug stuff\n" << std::endl;
 
 	exit( EXIT_FAILURE );
 }
+
+/// Process global and optional arguments.
 
 void performUsage ( int argc, char **argv ) {
 

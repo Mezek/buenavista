@@ -57,6 +57,7 @@ class FFactor {
 	int numberOfParameters;
 	std::vector<hod> v;
 	void SetParticle ( int );
+	int GetParticle ( void );
 	void LoadParameters ( char* );
 	void SetParameter ( const int , const double );
 	void SetParameters ( const std::vector<double>& );
