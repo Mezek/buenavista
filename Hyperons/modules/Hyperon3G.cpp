@@ -2,14 +2,14 @@
  * $Date$
  * $Revision$
  * $Author$
- * $HeadURL: http://triglav/repos/BuenaVista/Nucleons/modules/Nucleon3G.cpp $
+ * $HeadURL: http://triglav/repos/BuenaVista/Hyperons/modules/Nucleon3GH.cpp $
  * $Id$
  *
  * @file
- * @brief	U&A form factor for nucleons &mdash; 3 vector meson resonances.
+ * @brief	U&A form factor for nucleons &mdash; 3 vector meson resonances, v. hyperon.
  */
 
-#include "NucleonUam.h"
+#include "NucleonUamH.h"
 
 /**
  * Namespace for some useful functions.
@@ -45,31 +45,28 @@ std::string signum ( double n )
 namespace ROOT {
 
 	namespace Minuit2 {
-		
-FFactor::FFactor ( std::size_t size ): a(size), v(size)
-{ 
-	t(1.,0.00001);
-	//std::cout << ">> FFactor is empty! Value of t: " << t << std::endl;
 
-	// izo :: name, nor, mesons
+	// Explicitly define number of parameters for used FF
+	const int globalFF = 13;
 
-	// Names
-	FF[0].name = "F1s";
-	FF[1].name = "F1v";
-	FF[2].name = "F2s";
-	FF[3].name = "F2v";
-		
-	// Norms
-	FF[0].nor = 0.5;
-	FF[1].nor = 0.5;
-	FF[2].nor = 0.5*(ammP+ammN);
-	FF[3].nor = 0.5*(ammP-ammN);
+FFactor::FFactor (): a(globalFF), v(globalFF), particleType(1)
+{
+	FFactor::SetParticle(particleType);
+}
 
-	// All mesons in model
-	FF[0].mesons = 6;
-	FF[1].mesons = 3;
-	FF[2].mesons = 6;
-	FF[3].mesons = 3;
+FFactor::FFactor ( int myParticle ): a(globalFF), v(globalFF), particleType(myParticle)
+{
+	FFactor::SetParticle(particleType);
+}
+
+void FFactor::SetParticle ( int myParticle )
+{
+	//std::cout << "\n>> FFactor has type: " << myParticle << std::endl;
+	particleType = myParticle;
+	
+	modelPar = globalFF;
+	numberOfParameters = modelPar;
+	handSome = false;
 
 	// Masses and widths
 	mS[0] = massOm;
@@ -103,12 +100,82 @@ FFactor::FFactor ( std::size_t size ): a(size), v(size)
 	for (int i = 0; i < 6; ++i) {
 		mwS2[i] = (mS[i]-kI*wS[i]/2.)*(mS[i]-kI*wS[i]/2.);
 		mwV2[i] = (mV[i]-kI*wV[i]/2.)*(mV[i]-kI*wV[i]/2.);
+	}	
+
+	// izo :: name, nor, mesons
+
+	// Names
+	FF[0].name = "F1s";
+	FF[1].name = "F1v";
+	FF[2].name = "F2s";
+	FF[3].name = "F2v";
+
+	// Norms
+	while ( HyperonsCheckRange(particleType) != 1 ) {
+		particleType = HyperonsGetType();
+		std::cout << ">> FFactor has type: " << particleType << std::endl;
 	}
 
-	handSome = false;
-	modelPar = a.size();
-	numberOfParameters = modelPar;
-	cov.ResizeTo(modelPar,modelPar);
+	switch (particleType) {
+		case 1:
+			FF[0].nor = 0.5;
+			FF[1].nor = 0.5;
+			FF[2].nor = 0.5*(muP+muN-1.);
+			FF[3].nor = 0.5*(muP-muN-1.);
+			massH1 = massP;
+			massH2 = massN;
+			particleName1 = "p";
+			particleName2 = "n";
+			break;
+		case 2:
+			FF[0].nor = 0.;
+			FF[1].nor = 0.;
+			FF[2].nor = muL;
+			FF[3].nor = 0.;
+			massH1 = massL;
+			massH2 = 0.;
+			particleName1 = "Lambda";
+			particleName2 = "-";
+			break;
+		case 3:
+			FF[0].nor = 0.;
+			FF[1].nor = 1.;
+			FF[2].nor = 0.5*(muSp+muSm);
+			FF[3].nor = 0.5*(muSp-muSm-2.);
+			massH1 = massSp;
+			massH2 = massSm;
+			particleName1 = "Sigma+";
+			particleName2 = "Sigma-";
+			break;
+		case 4:
+			FF[0].nor = 0.;
+			FF[1].nor = 0.;
+			FF[2].nor = 0.5*(muSp+muSm);
+			FF[3].nor = 0.;
+			massH1 = massS0;
+			massH2 = 0.;
+			particleName1 = "Sigma0";
+			particleName2 = "-";
+			break;			
+		case 5:
+			FF[0].nor = -0.5;
+			FF[1].nor = 0.5;
+			FF[2].nor = 0.5*(muX0+muXm+1.);
+			FF[3].nor = 0.5*(muX0-muXm-1.);
+			massH1 = massX0;
+			massH2 = massXm;
+			particleName1 = "Xi0";
+			particleName2 = "Xim";
+			break;
+		default:
+			std::cout << ">> Error: No particle type defined!" << std::endl;
+	}
+
+	// All mesons in model
+	FF[0].mesons = 6;
+	FF[1].mesons = 3;
+	FF[2].mesons = 6;
+	FF[3].mesons = 3;
 }
 
 /// Load parameters from file
@@ -157,6 +224,20 @@ void FFactor::LoadParameters (char* ds)
 	}
 	else std::cerr << ">> LoadParameters: Error! Unable to open parametric file: '" << ds << "'!" << std::endl;
 
+	FFactor::FixParameters();
+	// debug: if ( particleType == 1 ) { particleType = 5; }	
+	if ( particleType != 1 ) { FFactor::TransformSU3(); }
+}
+
+void FFactor::FixParameters ()
+{
+	for (int i = 0; i < modelPar; ++i) {
+		v[i].name = a[i].name;
+		v[i].val = a[i].val;
+		v[i].err = a[i].err;
+		v[i].down = a[i].down;
+		v[i].up = a[i].up;
+	}
 }
 
 /// Set parameters from other source than file
@@ -214,7 +295,8 @@ void FFactor::PrintParameters ()
 		shortCut::signum(this->v[11].val) << std::endl;
 	std::cout << "F1v\t" << "\t" << "\t"<< "\t" << "\t" <<
 		shortCut::signum(this->v[8].val) << std::endl;
-	std::cout << "F2v\t" << "\t" << "\t"<< "\t" << "\t" << "\t" << std::endl;
+	std::cout << "F2v\t" << "\t" << "\t"<< "\t" << "\t" <<
+		shortCut::signum(this->v[12].val) << std::endl;
 
 	// Mesons under/over threshold
 	std::cout << "\n>> Mesons placement to threshold:" << std::endl;
@@ -246,6 +328,138 @@ void FFactor::PrintParameters ()
 		std::cout << u + d;
 		std::cout << std::endl;
 	}
+}
+
+double Duo ( double &a, double &b )
+{
+	return a/(a-b);
+}
+
+double Trio ( double &a, double &b, double &c )
+{
+	return (a-b)/(a-c);
+}
+
+void FFactor::TransformSU3 ()
+{
+	// Calculate SU(3) relations
+	double th = 40.46*TMath::DegToRad();
+	double k1 = TMath::Cos(th)/TMath::Sqrt(2.);
+	double k2 = TMath::Sin(th)/TMath::Sqrt(3.);
+	double k3 = TMath::Sin(th)/TMath::Sqrt(2.);
+	double k4 = TMath::Cos(th)/TMath::Sqrt(3.);
+
+	double fuO[3], fuP[3], fuR[3]; // universal coupling constants
+	fuO[0] = 17.0576;
+	fuP[0] = 13.4448;
+	fuR[0] = 4.9569;
+	fuO[1] = 47.5897;
+	fuP[1] = 37.0510;
+	fuR[1] = 13.6455;
+	fuO[2] = 48.3651;
+	fuP[2] = 0.;
+	fuR[2] = 22.5275;
+
+	double fO[2][3], fP[2][3], fR[2][3];
+	fO[0][0] = a[4].val*fuO[0];
+	fP[0][0] = a[5].val*fuP[0];
+	fR[0][0] = a[8].val*fuR[0];
+	fO[1][0] = a[9].val*fuO[0];
+	fP[1][0] = a[10].val*fuP[0];
+	fR[1][0] = a[12].val*fuR[0];
+
+	fO[0][1] = a[6].val*fuO[1];
+	fP[0][1] = a[7].val*fuP[1];
+	fR[0][1] = (FF[1].nor*Duo(mV2[2],mV2[1]) -
+		Trio(mV2[2],mV2[0],mV2[1])*a[8].val)*fuR[1];
+	fO[1][1] = a[11].val*fuO[1];
+	fP[1][1] = (FF[2].nor*Duo(mS2[4],mS2[3])*Duo(mS2[5],mS2[3]) -
+		a[9].val*Trio(mS2[4],mS2[0],mS2[3])*Trio(mS2[5],mS2[0],mS2[3]) -
+		a[10].val*Trio(mS2[4],mS2[1],mS2[3])*Trio(mS2[5],mS2[1],mS2[3]) -
+		a[11].val*Trio(mS2[4],mS2[2],mS2[3])*Trio(mS2[5],mS2[2],mS2[3]))*fuP[1];
+	fR[1][1] = (FF[3].nor*Duo(mV2[2],mV2[1]) -
+		Trio(mV2[2],mV2[0],mV2[1])*a[12].val)*fuR[1];
+
+	fO[0][2] = (FF[0].nor*Duo(mS2[5],mS2[4]) -
+		a[4].val*Trio(mS2[5],mS2[0],mS2[4]) -
+		a[5].val*Trio(mS2[5],mS2[1],mS2[4]) -
+		a[6].val*Trio(mS2[5],mS2[2],mS2[4]) -
+		a[7].val*Trio(mS2[5],mS2[3],mS2[4]))*fuO[2];
+	fP[0][2] = (FF[0].nor*Duo(mS2[4],mS2[5]) -
+		a[4].val*Trio(mS2[4],mS2[0],mS2[5]) -
+		a[5].val*Trio(mS2[4],mS2[1],mS2[5]) -
+		a[6].val*Trio(mS2[4],mS2[2],mS2[5]) -
+		a[7].val*Trio(mS2[4],mS2[3],mS2[5]))*fuP[2];
+	fR[0][2] = (FF[1].nor*Duo(mV2[1],mV2[2]) -
+		Trio(mV2[1],mV2[0],mV2[2])*a[8].val)*fuR[2];
+	fO[1][2] = (FF[2].nor*Duo(mS2[3],mS2[4])*Duo(mS2[5],mS2[4]) -
+		a[9].val*Trio(mS2[3],mS2[0],mS2[4])*Trio(mS2[5],mS2[0],mS2[4]) -
+		a[10].val*Trio(mS2[3],mS2[1],mS2[4])*Trio(mS2[5],mS2[1],mS2[4]) -
+		a[11].val*Trio(mS2[3],mS2[2],mS2[4])*Trio(mS2[5],mS2[2],mS2[4]))*fuO[2];
+	fP[1][2] = (FF[2].nor*Duo(mS2[3],mS2[5])*Duo(mS2[4],mS2[5]) -
+		a[9].val*Trio(mS2[3],mS2[0],mS2[5])*Trio(mS2[4],mS2[0],mS2[5]) -
+		a[10].val*Trio(mS2[3],mS2[1],mS2[5])*Trio(mS2[4],mS2[1],mS2[5]) -
+		a[11].val*Trio(mS2[3],mS2[2],mS2[5])*Trio(mS2[4],mS2[2],mS2[5]))*fuP[2];
+	fR[1][2] = (FF[3].nor*Duo(mV2[1],mV2[2]) -
+		Trio(mV2[1],mV2[0],mV2[2])*a[12].val)*fuR[2];
+
+	// Inverse equations
+	double fD[2][3], fF[2][3], fS[2][3];
+	double fOp[2][3], fPp[2][3], fRp[2][3];
+	for (int j = 0; j < 3; ++j) {
+		for (int i = 0; i < 2; ++i) {
+			fD[i][j] = ((6.*k1*k4+6.*k2*k3)*fR[i][j] -
+				2.*k1*fP[i][j]+2.*k3*fO[i][j])/(4.*k1*k4+k3*k3+3.*k2*k3);
+			fF[i][j] = ((2.*k1*k4+2.*k3*k3)*fR[i][j] +
+				2.*k1*fP[i][j]-2.*k3*fO[i][j])/(4.*k1*k4+k3*k3+3.*k2*k3);
+			fS[i][j] = -((3.*k3*k4-3*k2*k4)*fR[i][j]-k3*fP[i][j] -
+				3.*k2*fP[i][j]-4.*k4*fO[i][j])/(4.*k1*k4+k3*k3+3.*k2*k3);
+			//std::cout << i << " " << fD[i][j] << " " << fF[i][j] << " " << fS[i][j] << std::endl;
+
+			switch (particleType) {
+				case 1: // just for completness
+					fOp[i][j] = fO[i][j];
+					fPp[i][j] = fP[i][j];
+					fRp[i][j] = fR[i][j];
+					break;
+				case 2:
+					fOp[i][j] = k1*fS[i][j] + k2*fD[i][j];
+					fPp[i][j] = k3*fS[i][j] - k4*fD[i][j];
+					fRp[i][j] = 0.;
+					break;
+				case 3:
+					fOp[i][j] = k1*fS[i][j] - k3*fD[i][j];
+					fPp[i][j] = k3*fS[i][j] + k4*fD[i][j];
+					fRp[i][j] = -fF[i][j];
+					break;
+				case 4:
+					fOp[i][j] = k1*fS[i][j] - k3*fD[i][j];
+					fPp[i][j] = k3*fS[i][j] + k4*fD[i][j];
+					fRp[i][j] = -fF[i][j];
+					break;			
+				case 5:
+					fOp[i][j] = k1*fS[i][j] + 3./2.*k2*fF[i][j] + k2/2.*fD[i][j];
+					fPp[i][j] = k3*fS[i][j] - 3./2.*k4*fF[i][j] - k4/2.*fD[i][j];
+					fRp[i][j] = (fD[i][j] - fF[i][j])/2.;
+					break;
+				default:
+					std::cout << ">> Error: No particle type defined!" << std::endl;
+			}
+		}
+	}
+
+	a[4].val = fOp[0][0]/fuO[0];
+	a[5].val = fPp[0][0]/fuP[0];
+	a[6].val = fOp[0][1]/fuO[1];
+	a[7].val = fPp[0][1]/fuP[1];
+	a[8].val = fRp[0][0]/fuR[0];
+	a[9].val = fOp[1][0]/fuO[0];
+	a[10].val = fPp[1][0]/fuP[0];
+	a[11].val = fOp[1][1]/fuO[1];
+	a[12].val = fRp[1][0]/fuR[0];
+	FFactor::FixParameters();	
+	std::cout << ">> SU(3) transformation of coupling constants done." << std::endl;
+	
 }
 
 /// Return value of i. parameter
@@ -340,7 +554,7 @@ TComplex FFactor::ScalarOne (TComplex t)
 {
 	TComplex v = FFactor::W(t,t0s,a[0].val,1.);
 	TComplex vN = FFactor::W(k0,t0s,a[0].val,1.);
-	//std::cout << "F1s: v = " << v << " vN = " << vN << std::cout << std::endl;
+	//std::cout << ">> ScalarOne: "<< a[0] << " " << v << " " << vN << std::endl;
 	
 	double sign, mt;
 	for (int i = 0; i < FF[0].mesons; i++) {
@@ -505,20 +719,23 @@ TComplex FFactor::VectorTwo (TComplex t)
 	TComplex norm,normA,suma;
 	norm = (1.-v*v)/(1.-vN*vN);
 	normA = normA.Power(norm,6);
-	suma = normA*FF[3].nor*mul[0]*mul[1]*mul[2];
+	suma = normA*(FF[3].nor*mul[1]*mul[2] +
+	  (mul[0]*mul[2]*(sub[2]-sub[0])/(sub[2]-sub[1]) +
+	   mul[1]*mul[0]*(sub[1]-sub[0])/(sub[1]-sub[2]) -
+	   mul[1]*mul[2])*a[12].val);
 	return suma;
 }
 
-TComplex FFactor::GEP (TComplex t)
+TComplex FFactor::GE1 (TComplex t)
 {
 	TComplex a = FFactor::ScalarOne(t);
 	TComplex b = FFactor::VectorOne(t);
 	TComplex c = FFactor::ScalarTwo(t);
 	TComplex d = FFactor::VectorTwo(t);
-	return a+b+t/(4.*massP*massP)*(c+d);
+	return a+b+t/(4.*massH1*massH1)*(c+d);
 }
 
-TComplex FFactor::GMP (TComplex t)
+TComplex FFactor::GM1 (TComplex t)
 {
 	TComplex a = FFactor::ScalarOne(t);
 	TComplex b = FFactor::VectorOne(t);
@@ -527,16 +744,16 @@ TComplex FFactor::GMP (TComplex t)
 	return a+b+c+d;
 }
 
-TComplex FFactor::GEN (TComplex t)
+TComplex FFactor::GE2 (TComplex t)
 {
 	TComplex a = FFactor::ScalarOne(t);
 	TComplex b = FFactor::VectorOne(t);
 	TComplex c = FFactor::ScalarTwo(t);
 	TComplex d = FFactor::VectorTwo(t);
-	return a-b+t/(4.*massN*massN)*(c-d);
+	return a-b+t/(4.*massH2*massH2)*(c-d);
 }
 
-TComplex FFactor::GMN (TComplex t)
+TComplex FFactor::GM2 (TComplex t)
 {
 	TComplex a = FFactor::ScalarOne(t);
 	TComplex b = FFactor::VectorOne(t);
@@ -545,43 +762,48 @@ TComplex FFactor::GMN (TComplex t)
 	return a-b+c-d;
 }
 
-double FFactor::AbsGEP (TComplex t)
+double FFactor::GE1N ( void ) { return FF[0].nor + FF[1].nor; }
+double FFactor::GM1N ( void ) { return FF[0].nor + FF[1].nor + FF[2].nor + FF[3].nor; }
+double FFactor::GE2N ( void ) { return FF[0].nor - FF[1].nor; }
+double FFactor::GM2N ( void ) { return FF[0].nor - FF[1].nor + FF[2].nor - FF[3].nor; }
+
+double FFactor::AbsGE1 (TComplex t)
 {
-	return FFactor::GEP(t).Rho();
+	return FFactor::GE1(t).Rho();
 }
 
-double FFactor::AbsGMP (TComplex t)
+double FFactor::AbsGM1 (TComplex t)
 {
-	return FFactor::GMP(t).Rho();
+	return FFactor::GM1(t).Rho();
 }
 
-double FFactor::AbsGEN (TComplex t)
+double FFactor::AbsGE2 (TComplex t)
 {
-	return FFactor::GEN(t).Rho();
+	return FFactor::GE2(t).Rho();
 }
 
-double FFactor::AbsGMN (TComplex t)
+double FFactor::AbsGM2 (TComplex t)
 {
-	return FFactor::GMN(t).Rho();
+	return FFactor::GM2(t).Rho();
 }
 
-double FFactor::SigmaTotalP ( const TComplex &t )
+double FFactor::SigmaTotal1 ( const TComplex &t )
 {
-	TComplex a = a.Abs(FFactor::GMP(t));
-	TComplex b = b.Abs(FFactor::GEP(t));
+	TComplex a = a.Abs(FFactor::GM1(t));
+	TComplex b = b.Abs(FFactor::GE1(t));
 	TComplex k = 4./3.*TMath::Pi()*alpha*alpha/t;
-	TComplex r = r.Sqrt(1.-4*massP*massP/t);
-	TComplex v = k*r*(a*a+2.*massP*massP/t*b*b);
+	TComplex r = r.Sqrt(1.-4*massH1*massH1/t);
+	TComplex v = k*r*(a*a+2.*massH1*massH1/t*b*b);
 	return v;
 }
 
-double FFactor::SigmaTotalN ( const TComplex &t )
+double FFactor::SigmaTotal2 ( const TComplex &t )
 {
-	TComplex a = a.Abs(FFactor::GMN(t));
-	TComplex b = b.Abs(FFactor::GEN(t));
+	TComplex a = a.Abs(FFactor::GM2(t));
+	TComplex b = b.Abs(FFactor::GE2(t));
 	TComplex k = 4./3.*TMath::Pi()*alpha*alpha/t;
-	TComplex r = r.Sqrt(1.-4*massN*massN/t);
-	TComplex v = k*r*(a*a+2.*massN*massN/t*b*b);
+	TComplex r = r.Sqrt(1.-4*massH2*massH2/t);
+	TComplex v = k*r*(a*a+2.*massH2*massH2/t*b*b);
 	return v;
 }
 
@@ -591,31 +813,31 @@ TComplex FFactor::TypeDefVal ( const int &type, const TComplex &t, const double 
 	double tau,eps,th,Es,Mott,DipFF,InvDipFF;
 
 	/** "protonElectric" */
-	if ((type == 1) || (type == 2)) { val = FFactor::AbsGEP(t);	}
+	if ((type == 1) || (type == 2)) { val = FFactor::AbsGE1(t);	}
 	/** "protonMagnetic" */
-	if ((type == 3) || (type == 4)) { val = FFactor::AbsGMP(t);	}
+	if ((type == 3) || (type == 4)) { val = FFactor::AbsGM1(t);	}
 	/** "neutronElectric" */
-	if ((type == 5) || (type == 6)) { val = FFactor::AbsGEN(t);	}
+	if ((type == 5) || (type == 6)) { val = FFactor::AbsGE2(t);	}
 	/** "neutronMagnetic" */
-	if (type == 7) { val = FFactor::GMN(t); }
-	if (type == 8) { val = FFactor::AbsGMN(t); }
+	if (type == 7) { val = FFactor::GM2(t); }
+	if (type == 8) { val = FFactor::AbsGM2(t); }
 	/** "protonRatios" */
 	if (type == 9) {
-		nE = FFactor::AbsGEP(t);
-		nM = FFactor::AbsGMP(t);
+		nE = FFactor::AbsGE1(t);
+		nM = FFactor::AbsGM1(t);
 		val = val.Abs((1.+ammP)*nE/nM);
 	}
 	/** "neutronRatios" */
 	if (type == 10) {
-		nE = FFactor::AbsGEN(t);
-		nM = FFactor::AbsGMN(t);
+		nE = FFactor::AbsGE2(t);
+		nM = FFactor::AbsGM2(t);
 		val = val.Abs(ammN*nE/nM);
 	}
 	/** "Mainz Ratios" */
 	if (type >= 100) {		
 		th = theta/180.*TMath::Pi();
-		nE = FFactor::AbsGEP(t);
-		nM = FFactor::AbsGMP(t);
+		nE = FFactor::AbsGE1(t);
+		nM = FFactor::AbsGM1(t);
 		tau = t/(4*massP*massP);
 		eps = 1./(1.+2.*(1.+tau)*tan(th/2.)*tan(th/2.));
 		Es = energy/(1.+energy/massP*(1.-cos(th)));
@@ -626,234 +848,61 @@ TComplex FFactor::TypeDefVal ( const int &type, const TComplex &t, const double 
 	return val;
 }
 
-/// First derivation in point t, with arbitrary step
-
-double FFactor::Derive ( const TComplex &t, const double step )
-{
-	TComplex zp,zm;
-	zp = FFactor::GEP(t+step);
-	zm = FFactor::GEP(t-step);
-	TComplex r = (zp-zm)/(2.*step);
-	return r;
-}
-
-/// Second derivation according to t and a_i parameter, in point t, with arbitrary step
-
-double FFactor::DeriveXA ( const TComplex &t, int i, const double step )
-{
-	double b;
-	TComplex zp,zm;
-	b = a[i].val;
-	FFactor::SetParameter(i,b+step);
-	zp = FFactor::GEP(t+step) - FFactor::GEP(t-step);
-	FFactor::SetParameter(i,b-step);
-	zm = FFactor::GEP(t+step) - FFactor::GEP(t-step);
-	FFactor::SetParameter(i,b);
-	TComplex r = (zp-zm)/(4.*step*step);
-	return r;
-}
-
-double FFactor::RadiusEP ( const double step )
+double FFactor::RadiusE1 ( const double step )
 {
 	if (step > t0v) {
-		std::cout << "\n> RadiusEP: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
+		std::cout << "\n> RadiusE1: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
 	}
-	TComplex d = FFactor::Derive(0.,step);
-	TComplex v2 = 6.*d*0.1*hTransC2;
-	double v = sqrt(v2.Re());
-	return v;
+	TComplex b = FFactor::GE1(step);
+	TComplex a = FFactor::GE1(-step);
+	TComplex v2 = 3.*(b-a)/step*0.1*hTransC2;
+	double FN = 1.;	
+	std::cout << "> " << FN << " " << FFactor::GE1(0.) << std::endl;	
+	return v2.Re();
 }
 
-double FFactor::RadiusEPUncer ( const double step )
+double FFactor::RadiusE2 ( const double step )
 {
-	// Check step value
-	if (step > t0v) {
-		std::cout << "\n> RadiusEPUncer: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
-	}
+	TComplex b = FFactor::GE2(step);
+	TComplex a = FFactor::GE2(-step);
+	TComplex v2 = 3.*(b-a)/step*0.1*hTransC2;
 
-	double d[modelPar];
-	TVectorD vecE(modelPar);
-
-	for (int i = 0; i < modelPar; ++i) {
-		d[i] = fabs(FFactor::DeriveXA(0.,i,step));
-		vecE(i) = d[i];
-		//std::cout << d[i] << " ";
-	}
-	//std::cout << std::endl;
-
-	double sig = 0.;
-	for (int i = 0; i < modelPar; ++i) {
-		for (int j = 0; j < modelPar; ++j) {
-			sig = sig + d[i]*d[j]*cov(i,j);
-		}
-	}
-
-	// Alternative calculation only with vectors
-	TVectorD vecT = cov*vecE;
-	double sig2 = vecE*vecT;
-
-	/*double sig = 0.;
-	for (int i = 0; i < modelPar; ++i) {
-		sig = sig + d[i]*d[i]*cov(i,i);
-	}*/
-
-	//double v = sqrt(sig)*3.*0.1*hTransC2/FFactor::RadiusEP(step);
-	double v = sqrt(sig)*2./FFactor::RadiusEP(step);
-	return v;
+	double FN = 1.;
+	if ( (particleType == 3) || (particleType == 5) ) { FN = -1.; } // norm. factor
+	std::cout << "> " << FN << " " << FFactor::GE2(0.) << std::endl;
+	return v2.Re()/FN;
 }
 
-void FFactor::RadiusEPUncerMC ( const double step, const double nIter )
+double FFactor::RadiusM1 ( const double step )
 {
-	// Check step value
-	if (step > t0v) {
-		std::cout << "\n> RadiusEPUncerMC: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
-	}
-
-	// Get Cholesky decomposition of correlation matrix
-	TDecompChol matA(cov);
-	matA.Decompose();
-
-	// Get lower matrix
-	TMatrixD matB(modelPar,modelPar);
-	matB=matA.GetU();
-	matB.Transpose(matB);
-	//matB.Print();
-
-	TVectorD parMean(modelPar), parSigma(modelPar);
-
-	for (int i = 0; i < modelPar; ++i) {
-		parMean(i) = FFactor::A(i);
-		// Sigma of parameters, transform too?!
-		parSigma(i) = FFactor::E(i)*FFactor::E(i); // parSigma(i) = Z.cov[i][i];
-	}
-
-	TRandom3 gen_val;
-	//gen_val.SetSeed(0);
-	//std::cout << gen_val.GetSeed() << std::endl;
-	TVectorD vecX(modelPar);
-	double mc_mean = FFactor::RadiusEP(step);
-	double mc_sigma;
-	double mc_variance = 0.;
-	double mc_mean_check = 0.;
-	int mc_num = nIter;
-	for (int k = 0; k < mc_num; ++k) {
-		std::vector<double> tempVal, tempValX;
-		tempVal.resize(modelPar);
-		tempValX.resize(modelPar);
-		for (int i = 0; i < modelPar; ++i) {
-			//vecX[i] = gen_val.Gaus(parMean(i),parSigma(i));
-			vecX(i) = gen_val.Gaus(0.,1.);
-			tempValX[i] = vecX(i);
-		}
-		// Transform vector by matrix
-		vecX *= matB; // implemented: vector = matrix*vector
-		// (Un)correlated values
-		for (int i = 0; i < modelPar; ++i) {
-			tempVal[i] = vecX(i)+parMean(i);
-			//std::cout << tempValX[i] << " : " << vecX(i) << " : " << parMean(i) << " : " << tempVal[i] << std::endl;
-		}
-		FFactor::SetParameters(tempVal);
-		double x_i = FFactor::RadiusEP(step);
-		if (k%1000 == 0) {
-			std::cout << "\r>> " << k/1000+1 << " / " << mc_num/1000 << "k";
-			//std::cout << "= \b";
-			fflush(stdout);
-		}
-		mc_variance = (x_i-mc_mean)*(x_i-mc_mean) + mc_variance;
-		mc_mean_check = mc_mean_check + x_i;
-	}
-	mc_sigma = sqrt(mc_variance/(mc_num-1));
-	mc_mean_check = mc_mean_check/mc_num;
-
-	std::cout << "\n>> Proton radius value : Proton radius uncertainty" << std::endl;
-	std::cout.width(17); std::cout << mc_mean;
-	std::cout.width(17); std::cout << sqrt(mc_sigma) << " " << mc_sigma/sqrt(mc_num) << std::endl;
-	std::cout << ">> Proton radius value check" << std::endl;
-	std::cout.width(17); std::cout << mc_mean_check;
+	TComplex b = FFactor::GM1(step);
+	TComplex a = FFactor::GM1(-step);
+	TComplex v2 = 3.*(b-a)/step*0.1*hTransC2;
+	double FN = FFactor::GM1N();
+	std::cout << "> " << b.Re() << std::endl;
+	std::cout << "> " << a.Re() << std::endl;
+	std::cout << "> " << b-a << std::endl;
+	std::cout << "> " << FN << " " << FFactor::GM1(0.) << std::endl;
+	return v2.Re()/FN;
 }
 
+double FFactor::RadiusM2 ( const double step )
+{
+	TComplex b = FFactor::GM2(step);
+	TComplex a = FFactor::GM2(-step);
+	TComplex v2 = 3.*(b-a)/step*0.1*hTransC2;
+	double FN = FFactor::GM2N();
+	std::cout << "> " << b.Re() << std::endl;
+	std::cout << "> " << a.Re() << std::endl;
+	std::cout << "> " << b-a << std::endl;
+	std::cout << "> " << FN << " " << FFactor::GM2(0.) << std::endl;
+	return v2.Re()/FN;
+}
 
-/// Options: proton, neutron, all
-
+// Options: all
 void FFactor::CheckFormFactor ( const char* nameString, double sD )
 {
-	std::cout << "\n>> Standard checks for `" << nameString << "' form factors:" << std::endl;
-	double chkA, chkB, chkD, chkF;
-	double normaG, normaT;
-	
-	// Threshold
-	handSome = false;
-
-	if ( (nameString == "proton") || (nameString == "all") ) {
-		chkA = FFactor::GEP(trashP).Re();
-		chkB = FFactor::GMP(trashP).Re();
-		chkF = shortCut::howDiff(chkA,chkB,sD);
-		if ( chkF == 1 ) {
-			chkD = fabs(chkA-chkB);
-			std::cout << "> CheckFormFactor: Warning!" << std::endl;
-			std::cout << "> GEp-GMp at threshold = " << chkD << " > " << sD << std::endl;
-			handSome = true;
-		}
-	}
-
-	if ( (nameString == "neutron") || (nameString == "all") ) {
-		chkA = FFactor::GEN(trashN).Re();
-		chkB = FFactor::GMN(trashN).Re();
-		chkF = shortCut::howDiff(chkA,chkB,sD);
-		if ( chkF == 1 ) {
-			chkD = fabs(chkA-chkB);
-			std::cout << "> CheckFormFactor: Warning!" << std::endl;
-			std::cout << "> GEn-GMn at threshold = " << chkD << " > " << sD << std::endl;
-			handSome = true;
-		}
-	}
-
-	if (handSome == false) {
-		std::cout << "> [OK] ... value at threshold" << std::endl;
-	}
-	
-	// Normalization
-	handSome = false;
-
-	if ( (nameString == "proton") || (nameString == "all") ) {
-		normaG = FFactor::GEP(k0).Re();
-		normaT = 1.;
-		chkF = shortCut::howDiff(normaG, normaT,sD);
-		if ( chkF == 1) {
-			std::cout << "> CheckFormFactor: Warning! GEp(0) = " << normaG << std::endl;
-			handSome = true;
-		}
-
-		normaG = FFactor::GMP(k0).Re();
-		normaT = 1.+ammP;
-		chkF = shortCut::howDiff(normaG, normaT,sD);
-		if ( chkF == 1) {
-			std::cout << "> CheckFormFactor: Warning! GMp(0) = " << normaG << std::endl;
-			handSome = true;
-		}
-	}
-
-	if ( (nameString == "neutron") || (nameString == "all") ) {
-		normaG = FFactor::GEN(k0).Re();
-		normaT = 0.;
-		chkF = shortCut::howDiff(normaG, normaT,sD);
-		if ( chkF == 1) {
-			std::cout << "> CheckFormFactor: Warning! GEn(0) = " << normaG << std::endl;
-			handSome = true;
-		}
-
-		normaG = FFactor::GMN(k0).Re();
-		normaT = ammN;
-		chkF = shortCut::howDiff(normaG, normaT,sD);
-		if ( chkF == 1) {
-			std::cout << "> CheckFormFactor: Warning! GMn(0) = " << normaG << std::endl;
-			handSome = true;
-		}
-	}
-
-	if (handSome == false) {
-		std::cout << "> [OK] ... normalization" << std::endl;
-	}	
+	std::cout << "\n>> Standard checks for `" << nameString << "' form factors is empty!" << std::endl;
 }
 
 void FFactor::CheckParameters ()

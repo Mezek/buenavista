@@ -52,7 +52,7 @@ char dataFileE[] = "../Data/dataProtonRatios.dat";
 char dataFileF[] = "../Data/dataNeutronRatios.dat";
 ///@}
 
-char parametersFile[] = "outNucleonsH.dat";            ///< Input parameters.
+char parametersFile[] = "parHyperons.dat";             ///< Input parameters.
 char outputFile[] = "outHyperons.dat";                 ///< Output parameters.
 char xiFile[] = "outXiHyperons.dat";                   ///< Chi2 output.
 char debugFile[] = "outDebugHyperons.dat";             ///< Debug output.
@@ -62,7 +62,7 @@ char debugFile[] = "outDebugHyperons.dat";             ///< Debug output.
 #include "modules/ExperimentalData.cpp"
 #include "modules/PlotGraphH.cpp"
 #include "modules/HyperonsGetType.cpp"
-#include "modules/Nucleon3GH.cpp"
+#include "modules/Hyperon3G.cpp"
 #include "modules/NucleonFcnH.cpp"
 
 #include "HyperonsUsage.cpp"
@@ -97,7 +97,7 @@ int main ( int argc, char **argv ) {
 
 	performPlot(globalArgs.parameters,globalArgs.data);
 
-	performRadii(globalArgs.parameters,globalArgs.output);
+	//performRadii(globalArgs.parameters,globalArgs.output);
 
 	/// Debug: parameters, debugFile
 

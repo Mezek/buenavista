@@ -19,6 +19,15 @@ void performPlot ( char* p, char* f ) {
 	//nPlot.PrintParameters();
 	nPlot.CheckFormFactor("all", 0.01);
 
+	std::cout << nPlot.ScalarOne(0.) << std::endl;
+	std::cout << nPlot.ScalarTwo(0.) << std::endl;
+	std::cout << nPlot.VectorOne(0.) << std::endl;
+	std::cout << nPlot.VectorTwo(0.) << std::endl;
+	std::cout << nPlot.GE1(0.) << std::endl;
+	std::cout << nPlot.GM1(0.) << std::endl;
+	std::cout << nPlot.GE2(0.) << std::endl;
+	std::cout << nPlot.GM2(0.) << std::endl;
+
 	// Plot graphs
 	const int nPoints = 2500;
 	double plotX[nPoints], plotY0[nPoints], plotY1[nPoints], plotY2[nPoints], plotY3[nPoints];
