@@ -37,7 +37,7 @@
 #include "TStopwatch.h"
 
 ///@{
-char dataFile[] = "dataNucleonsApproxPlusMainz.dat";           /**< Form factor data. */
+char dataFile[] = "dataNucleonsDubnickaSelected.dat";           /**< Form factor data. */
 //char dataFile0[] = "dataNucleonsApproxPlusMainz.dat";
 char dataFile1[] = "dataNucleonsHDubnicka.dat";
 ///@}

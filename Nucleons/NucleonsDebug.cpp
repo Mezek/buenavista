@@ -27,15 +27,15 @@ void performDebug ( char* p, char* f ) {
 	std::cout << "-d: " << globalArgs.data << std::endl;
 	std::cout << "-v: " << globalArgs.verbose << std::endl;*/
 
-	/*// Convert parameters
-	double q1 = 3.365414;
-	double q2 = 3.375674;
-	double q3 = 5.971356;
-	double q4 = 5.384470;
+	// Convert parameters
+	double q1 = 2.2181;
+	double q2 = 2.2203;
+	double q3 = 6.0527;
+	double q4 = 5.3767;
 	std::cout << ">> 1s : "<< (q1*q1+1.)*t0s << std::endl;
 	std::cout << ">> 1v : "<< (q3*q3+1.)*t0v << std::endl;
 	std::cout << ">> 2s : "<< (q2*q2+1.)*t0s << std::endl;
-	std::cout << ">> 2v : "<< (q4*q4+1.)*t0v << std::endl;*/
+	std::cout << ">> 2v : "<< (q4*q4+1.)*t0v << std::endl;
 	
 
 	/*// Inverse Convert parameters
