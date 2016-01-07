@@ -1,21 +1,15 @@
-dnl Process this file with autoconf to produce a configure script.
+Idnl Process this file with autoconf to produce a configure script.
 dnl Author: Erik.Bartos@gmail.com
 
 AC_INIT(buenavista, 0.3)
 
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([1.13])
+AM_INIT_AUTOMAKE([1.15])
 
 AM_SILENT_RULES([yes])
 
 AC_PROG_CXX
-
-
-dnl ***************************************************************************
-dnl Internationalization
-dnl ***************************************************************************
-IT_PROG_INTLTOOL([0.35.0])
 
 GETTEXT_PACKAGE=buenavista
 AC_SUBST(GETTEXT_PACKAGE)
@@ -32,7 +26,6 @@ Hyperons/Makefile
 Nucleons/Makefile
 Pions/Makefile
 src/Makefile
-po/Makefile.in
 Nucleons/Iachello/Makefile
 Nucleons/Delta/Makefile
 ])

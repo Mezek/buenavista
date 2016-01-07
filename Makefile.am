@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Author: Erik.Bartos@gmail.com
 
-SUBDIRS = src po Data Docs Hyperons Nucleons Pions Pions
+SUBDIRS = src Data Docs Hyperons Nucleons Pions Pions
 
 buenavistadocdir = ${prefix}/doc/buenavista
 buenavistadoc_DATA = \
@@ -12,19 +12,7 @@ buenavistadoc_DATA = \
 	INSTALL\
 	NEWS
 
-
-INTLTOOL_FILES = intltool-extract.in \
-	intltool-merge.in \
-	intltool-update.in
-
-EXTRA_DIST = $(buenavistadoc_DATA) \
-	$(INTLTOOL_FILES)
-
-DISTCLEANFILES = intltool-extract \
-	intltool-merge \
-	intltool-update \
-	po/.intltool-merge-cache
-
+EXTRA_DIST = $(buenavistadoc_DATA) 
 
 # Remove doc directory on uninstall
 uninstall-local:
