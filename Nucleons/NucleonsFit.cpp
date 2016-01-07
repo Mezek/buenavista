@@ -78,10 +78,10 @@ void performFit ( char* p, char* f, char* o) {
 	std::cout << "> 1. minimalization..." << std::endl;	
 	//FunctionMinimum min = migrad(100000,100.);
 
-	//minimize.Fix(0.);
-	//minimize.Fix(1.);
-	//minimize.Fix(2.);
-	//minimize.Fix(3.);
+	minimize.Fix(0.);
+	minimize.Fix(1.);
+	minimize.Fix(2.);
+	minimize.Fix(3.);
 	//std::cout << "> ... 2. minimalization..." << std::endl;
 	//FunctionMinimum min2 = migrad(10000,1.);
 

@@ -75,8 +75,13 @@ class FFactor {
 	double AbsGMN ( TComplex );
 	double SigmaTotalP ( const TComplex & );
 	double SigmaTotalN ( const TComplex & );
-	double Derive ( const TComplex &, const double );
-	double DeriveXA ( const TComplex &, int, const double );
+	double Derive ( const int, const TComplex &, const double );
+	double DeriveXA ( const int, const TComplex &, int, const double );
+	double Radius ( const int, const double );
+	double RadiusUncer ( const int, const double );
+	void RadiusUncerMC ( const int, const double, const double );
+	double DeriveOld ( const TComplex &, const double );
+	double DeriveXAOld ( const TComplex &, int, const double );
 	double RadiusEP ( const double );
 	double RadiusEPUncer ( const double );
 	void RadiusEPUncerMC ( const double, const double );

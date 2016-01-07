@@ -164,5 +164,6 @@ int main ( int argc, char **argv ) {
 }
 
 /**
- * @todo	new fit, check chi squared
+ * @todo	assymetric errors, make parallel evaluation of chi squared
+ * @todo	assymetric errors, set lower value to zero
  */

@@ -600,7 +600,16 @@ TComplex FFactor::TypeDefVal ( const int &type, const TComplex &t, const double 
 
 /// First derivation in point t, with arbitrary step
 
-double FFactor::Derive ( const TComplex &t, const double step )
+double FFactor::Derive ( const int fftype, const TComplex &t, const double step )
+{
+	TComplex zp,zm;
+	zp = FFactor::GEP(t+step);
+	zm = FFactor::GEP(t-step);
+	TComplex r = (zp-zm)/(2.*step);
+	return r;
+}
+
+double FFactor::DeriveOld ( const TComplex &t, const double step )
 {
 	TComplex zp,zm;
 	zp = FFactor::GEP(t+step);
@@ -611,7 +620,21 @@ double FFactor::Derive ( const TComplex &t, const double step )
 
 /// Second derivation according to t and a_i parameter, in point t, with arbitrary step
 
-double FFactor::DeriveXA ( const TComplex &t, int i, const double step )
+double FFactor::DeriveXA ( const int fftype, const TComplex &t, int i, const double step )
+{
+	double b;
+	TComplex zp,zm;
+	b = a[i].val;
+	FFactor::SetParameter(i,b+step);
+	zp = FFactor::GEP(t+step) - FFactor::GEP(t-step);
+	FFactor::SetParameter(i,b-step);
+	zm = FFactor::GEP(t+step) - FFactor::GEP(t-step);
+	FFactor::SetParameter(i,b);
+	TComplex r = (zp-zm)/(4.*step*step);
+	return r;
+}
+
+double FFactor::DeriveXAOld ( const TComplex &t, int i, const double step )
 {
 	double b;
 	TComplex zp,zm;
@@ -630,7 +653,7 @@ double FFactor::RadiusEP ( const double step )
 	if (step > t0v) {
 		std::cout << "\n> RadiusEP: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
 	}
-	TComplex d = FFactor::Derive(0.,step);
+	TComplex d = FFactor::DeriveOld(0.,step);
 	TComplex v2 = 6.*d*0.1*hTransC2;
 	double v = sqrt(v2.Re());
 	return v;
@@ -647,7 +670,7 @@ double FFactor::RadiusEPUncer ( const double step )
 	TVectorD vecE(modelPar);
 
 	for (int i = 0; i < modelPar; ++i) {
-		d[i] = fabs(FFactor::DeriveXA(0.,i,step));
+		d[i] = fabs(FFactor::DeriveXAOld(0.,i,step));
 		vecE(i) = d[i];
 		//std::cout << d[i] << " ";
 	}

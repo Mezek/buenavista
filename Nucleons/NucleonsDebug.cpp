@@ -59,7 +59,11 @@ void performDebug ( char* p, char* f ) {
 		}
 		std::cout << "> Proton radius: " << dM.RadiusEP(s) << " step: " << s << std::endl;
 	}
-	
+
+	//std::cout << dM.Derive(0, 0., 0.001) << std::endl;
+	std::cout << dM.DeriveOld(0., 0.001) << std::endl;
+	//std::cout << dM.Derive(1, 0., 0.001) << std::endl;
+
 
 	/*double tD = -1.;
 	for (int i = 0; i < 30; ++i) {

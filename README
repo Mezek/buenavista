@@ -10,7 +10,6 @@ Start
 =====
 
 > autoreconf (or try add options: --force --install)
-> intltoolize
 > automake --add-missing
 > ./configure
 > make
