@@ -648,6 +648,17 @@ double FFactor::DeriveXAOld ( const TComplex &t, int i, const double step )
 	return r;
 }
 
+double FFactor::Radius ( const int fftype, const double step )
+{
+	if (step > t0v) {
+		std::cout << "\n> RadiusEP: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
+	}
+	TComplex d = FFactor::Derive(fftype, 0., step);
+	TComplex v2 = 6.*d*0.1*hTransC2;
+	double v = sqrt(v2.Re());
+	return v;
+}
+
 double FFactor::RadiusEP ( const double step )
 {
 	if (step > t0v) {

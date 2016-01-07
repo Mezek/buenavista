@@ -52,18 +52,21 @@ void performDebug ( char* p, char* f ) {
     dM.LoadParameters(p);
 
 	double r = 0.1;
+
+	std::cout << "> Radii: " << std::endl;
 	for (int i = 0; i < 6; ++i) {
 		double s = 1.;
 		for (int j = 0; j < i+1; ++j) {
 			s = s*r;
 		}
-		std::cout << "> Proton radius: " << dM.RadiusEP(s) << " step: " << s << std::endl;
+		std::cout << "> Proton  E: " << dM.Radius(0, s) << " step: " << s << std::endl;
+		std::cout << "> Proton  M: " << dM.Radius(1, s) << " step: " << s << std::endl;
+		std::cout << "> Neutron E: " << dM.Radius(2, s) << " step: " << s << std::endl;
+		std::cout << "> Neutron M: " << dM.Radius(3, s) << " step: " << s << std::endl;
 	}
 
 	//std::cout << dM.Derive(0, 0., 0.001) << std::endl;
-	std::cout << dM.DeriveOld(0., 0.001) << std::endl;
-	//std::cout << dM.Derive(1, 0., 0.001) << std::endl;
-
+	//std::cout << dM.DeriveOld(0., 0.001) << std::endl;
 
 	/*double tD = -1.;
 	for (int i = 0; i < 30; ++i) {

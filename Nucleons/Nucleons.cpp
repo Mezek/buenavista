@@ -52,8 +52,8 @@ char dataFile1[] = "dataNucleonsHDubnicka.dat";
 //char dataFileF[] = "../Data/dataNeutronRatios.dat";
 ///@}
 
-char parametersFile[] = "parNucleons-Fit.dat";         ///< Input parameters.
-char outputFile[] = "outNucleons-Fit.dat";             ///< Output parameters.
+char parametersFile[] = "parNucleons-FitC.dat";         ///< Input parameters.
+char outputFile[] = "outNucleons-temp.dat";             ///< Output parameters.
 char xiFile[] = "outXi.dat";                           ///< Chi2 output.
 char debugFile[] = "outDebug.dat";                     ///< Debug output.
 

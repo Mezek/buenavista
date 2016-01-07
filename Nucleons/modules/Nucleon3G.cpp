@@ -626,7 +626,7 @@ TComplex FFactor::TypeDefVal ( const int &type, const TComplex &t, const double 
 	return val;
 }
 
-/// First derivation in point t, with arbitrary step
+/// First derivation in point t, with arbitrary step for defined form factor
 
 double FFactor::Derive ( const int fftype, const TComplex &t, const double step )
 {
@@ -662,6 +662,7 @@ double FFactor::DeriveOld ( const TComplex &t, const double step )
 }
 
 /// Second derivation according to t and a_i parameter, in point t, with arbitrary step
+/// for defined form factor
 
 double FFactor::DeriveXA ( const int fftype, const TComplex &t, int i, const double step )
 {
@@ -669,9 +670,33 @@ double FFactor::DeriveXA ( const int fftype, const TComplex &t, int i, const dou
 	TComplex zp,zm;
 	b = a[i].val;
 	FFactor::SetParameter(i,b+step);
-	zp = FFactor::GEP(t+step) - FFactor::GEP(t-step);
+	switch (fftype) {
+		case 1:
+			zp = FFactor::GMP(t+step) - FFactor::GMP(t-step);
+			break;
+		case 2:
+			zp = FFactor::GEN(t+step) - FFactor::GEN(t-step);
+			break;
+		case 3:
+			zp = FFactor::GMN(t+step) - FFactor::GMN(t-step);
+			break;
+		default:
+			zp = FFactor::GEP(t+step) - FFactor::GEP(t-step);
+	}
 	FFactor::SetParameter(i,b-step);
-	zm = FFactor::GEP(t+step) - FFactor::GEP(t-step);
+	switch (fftype) {
+		case 1:
+			zm = FFactor::GMP(t+step) - FFactor::GMP(t-step);
+			break;
+		case 2:
+			zm = FFactor::GEN(t+step) - FFactor::GEN(t-step);
+			break;
+		case 3:
+			zm = FFactor::GMN(t+step) - FFactor::GMN(t-step);
+			break;
+		default:
+			zm = FFactor::GEP(t+step) - FFactor::GEP(t-step);
+	}
 	FFactor::SetParameter(i,b);
 	TComplex r = (zp-zm)/(4.*step*step);
 	return r;
@@ -689,6 +714,70 @@ double FFactor::DeriveXAOld ( const TComplex &t, int i, const double step )
 	FFactor::SetParameter(i,b);
 	TComplex r = (zp-zm)/(4.*step*step);
 	return r;
+}
+
+/// Calculate radius for defined form factor
+
+double FFactor::Radius ( const int fftype, const double step )
+{
+	if (step > t0v) {
+		std::cout << "\n> Radius: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
+	}
+	TComplex d = FFactor::Derive(fftype, 0., step);
+	TComplex v2 = 6.*d*0.1*hTransC2;
+	double v;
+	switch (fftype) {
+		case 1:
+			v = sqrt(v2.Re());
+			break;
+		case 2:
+			v = sqrt(fabs(v2.Re()));
+			break;
+		case 3:
+			v = sqrt(fabs(v2.Re()));
+			break;
+		default:
+			v = sqrt(v2.Re());
+	}
+	return v;
+}
+
+double FFactor::RadiusUncer ( const int fftype, const double step )
+{
+	// Check step value
+	if (step > t0v) {
+		std::cout << "\n> RadiusUncer: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
+	}
+
+	double d[modelPar];
+	TVectorD vecE(modelPar);
+
+	for (int i = 0; i < modelPar; ++i) {
+		d[i] = fabs(FFactor::DeriveXA(fftype, 0., i, step));
+		vecE(i) = d[i];
+		//std::cout << d[i] << " ";
+	}
+	//std::cout << std::endl;
+
+	double sig = 0.;
+	for (int i = 0; i < modelPar; ++i) {
+		for (int j = 0; j < modelPar; ++j) {
+			sig = sig + d[i]*d[j]*cov(i,j);
+		}
+	}
+
+	// Alternative calculation only with vectors
+	TVectorD vecT = cov*vecE;
+	double sig2 = vecE*vecT;
+
+	/*double sig = 0.;
+	for (int i = 0; i < modelPar; ++i) {
+		sig = sig + d[i]*d[i]*cov(i,i);
+	}*/
+
+	//double v = sqrt(sig)*3.*0.1*hTransC2/FFactor::RadiusEP(step);
+	double v = sqrt(sig)*2./FFactor::Radius(fftype, step);
+	return v;
 }
 
 double FFactor::RadiusEP ( const double step )
