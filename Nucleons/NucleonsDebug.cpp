@@ -29,13 +29,25 @@ void performDebug ( char* p, char* f ) {
 
 	// Convert parameters
 	double q1 = 2.2181;
+	double eq1 = 0.0005;
 	double q2 = 2.2203;
+	double eq2 = 0.0035;
 	double q3 = 6.0527;
+	double eq3 = 0.0110;
 	double q4 = 5.3767;
-	std::cout << ">> 1s : "<< (q1*q1+1.)*t0s << std::endl;
-	std::cout << ">> 1v : "<< (q3*q3+1.)*t0v << std::endl;
-	std::cout << ">> 2s : "<< (q2*q2+1.)*t0s << std::endl;
-	std::cout << ">> 2v : "<< (q4*q4+1.)*t0v << std::endl;
+	double eq4 = 0.0178;
+	double h1 = (q1*q1+1.)*t0s;
+	double eh1 = 2.*h1*eq1;
+	double h2 = (q2*q2+1.)*t0s;
+	double eh2 = 2.*h2*eq2;
+	double h3 = (q3*q3+1.)*t0v;
+	double eh3 = 2.*h3*eq3;
+	double h4 = (q4*q4+1.)*t0v;
+	double eh4 = 2.*h4*eq4;
+	std::cout << ">> 1s : "<< h1 << " +/- " << eh1 << std::endl;
+	std::cout << ">> 1v : "<< h3 << " +/- " << eh3 << std::endl;
+	std::cout << ">> 2s : "<< h2 << " +/- " << eh2 << std::endl;
+	std::cout << ">> 2v : "<< h4 << " +/- " << eh4 << std::endl;
 	
 
 	/*// Inverse Convert parameters
@@ -60,13 +72,10 @@ void performDebug ( char* p, char* f ) {
 			s = s*r;
 		}
 		std::cout << "> Proton  E: " << dM.Radius(0, s) << " step: " << s << std::endl;
-		std::cout << "> Proton  M: " << dM.Radius(1, s) << " step: " << s << std::endl;
-		std::cout << "> Neutron E: " << dM.Radius(2, s) << " step: " << s << std::endl;
-		std::cout << "> Neutron M: " << dM.Radius(3, s) << " step: " << s << std::endl;
+		//std::cout << "> Proton  M: " << dM.Radius(1, s) << " step: " << s << std::endl;
+		//std::cout << "> Neutron E: " << dM.Radius(2, s) << " step: " << s << std::endl;
+		//std::cout << "> Neutron M: " << dM.Radius(3, s) << " step: " << s << std::endl;
 	}
-
-	//std::cout << dM.Derive(0, 0., 0.001) << std::endl;
-	//std::cout << dM.DeriveOld(0., 0.001) << std::endl;
 
 	/*double tD = -1.;
 	for (int i = 0; i < 30; ++i) {

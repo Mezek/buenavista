@@ -83,6 +83,10 @@ void performChi ( char* p, char* f ) {
 		}
 
 		delta = nFv.Re()-val[n];
+		//if ( type[n] == 7 ) {
+		//	std::cout << n << ": " << nFv.Re() << " " << val[n] << std::endl;
+		//}
+		//std::cout << n << ": " << type[n] << " " << nFv.Re() << " " << val[n] << std::endl;
 		sigmaAverage = (errUp[n] + errDown[n])/2.;
 		chi = delta/sigmaAverage;
 		chi2 = chi*chi;

@@ -43,26 +43,29 @@ void performRadius ( char* p, char* c ) {
  */
 	
 	std::cout << "> Diagonal elements and parameter errors:" << std::endl;
-	std::cout << ">> | No. | Difference | Diagonal element of cov. matrix | Parameter's error |" << std::endl;
+	std::cout << " || No. | Difference | Diagonal element of cov. matrix | Parameter's error ||" << std::endl;
 	for (int i = 0; i < nPar; ++i) {
 		std::cout << i+1 << ". " << Z.Cov()(i,i) - Rp.E(i)*Rp.E(i) << "   " << Z.Cov()(i,i) << "   " << Rp.E(i) << std::endl;
 	}
 	//Rp.PrintParameters();
 
-	std::cout << "\n>> | Step | Proton radius value | Proton radius uncertainty |" << std::endl;
+	std::cout << "\n || Step | Radius value     | Radius uncertainty     ||" << std::endl;
 	std::cout.precision(8);
-	double radius,radius_err;
-	double r = 0.1;
-	for (int i = 0; i < 6; ++i) {
-		double s = 1.;
-		for (int j = 0; j < i+1; ++j) {
-			s = s*r;
+	double r, radius, radius_err;
+	for (int t = 0; t < 4; ++t) {
+		std::cout << "Form factor type = " << t << std::endl;
+		r = 0.1;
+		for (int i = 0; i < 6; ++i) {
+			double s = 1.;
+			for (int j = 0; j < i+1; ++j) {
+				s = s*r;
+			}
+			radius = Rp.Radius(t, s);
+			radius_err = Rp.RadiusUncer(t, s);
+			std::cout.width(10); std::cout <<  s;
+			std::cout.width(17); std::cout << radius;
+			std::cout.width(17); std::cout << radius_err << std::endl;
 		}
-		radius = Rp.RadiusEP(s);
-		radius_err = Rp.RadiusEPUncer(s);
-		std::cout.width(10); std::cout <<  s;
-		std::cout.width(17); std::cout << radius;
-		std::cout.width(17); std::cout << radius_err << std::endl;
 	}
 	//std::cout << "> Do it:" << std::endl;	
 	//std::vector< std::vector<double> > em = Z.cov;
@@ -72,7 +75,9 @@ void performRadius ( char* p, char* c ) {
 	
 	std::cout << "\n> Monte Carlo result: " << std::endl;
 
-	Rp.RadiusEPUncerMC(0.0001, 10000);
+	for (int t = 0; t < 4; ++t) {
+		Rp.RadiusUncerMC(t, 0.0001, 10000);
+	}
 
 /*  	DataGenerator mydata(123), mydata2(123);
  * 	mydata.Gauss(1.,1.);

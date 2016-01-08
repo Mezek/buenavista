@@ -59,6 +59,8 @@ char parametersFile[] = "parNucleons-Fit.dat";         ///< Input parameters.
 char outputFile[] = "outNucleons-Fit.dat";             ///< Output parameters.
 char xiFile[] = "outXi.dat";                           ///< Chi2 output.
 char debugFile[] = "outDebug.dat";                     ///< Debug output.
+char matrixFile[] = "covarianceMatrix.dat";            ///< Covariance matrix.
+char radiusFile[] = "outRadius.dat";                   ///< Radius output.
 
 #include "modules/ConstBasic.cpp"
 #include "modules/ConstMesons-D.cpp"

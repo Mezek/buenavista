@@ -52,10 +52,13 @@ char dataFile1[] = "dataNucleonsHDubnicka.dat";
 //char dataFileF[] = "../Data/dataNeutronRatios.dat";
 ///@}
 
-char parametersFile[] = "parNucleons-FitC.dat";         ///< Input parameters.
-char outputFile[] = "outNucleons-temp.dat";             ///< Output parameters.
+char parametersFile[] = "parNucleons-FitC.dat";        ///< Input parameters.
+char outputFile[] = "outNucleons-temp.dat";            ///< Output parameters.
 char xiFile[] = "outXi.dat";                           ///< Chi2 output.
 char debugFile[] = "outDebug.dat";                     ///< Debug output.
+char matrixFile[] = "covarianceMatrix.dat";            ///< Covariance matrix.
+char radiusFile[] = "outRadius.dat";                   ///< Radius output.
+
 
 #include "modules/ConstBasic.cpp"
 #include "modules/ConstMesons-D.cpp"
@@ -81,6 +84,7 @@ char debugFile[] = "outDebug.dat";                     ///< Debug output.
 #include "NucleonsChi.cpp"
 #include "NucleonsPlot.cpp"
 #include "NucleonsDebug.cpp"
+#include "NucleonsRadius.cpp"
 
 using namespace ROOT::Minuit2;
 
@@ -124,15 +128,16 @@ int main ( int argc, char **argv ) {
 
 			/// Xi2: parameters, data
 
-			performChi(globalArgs.parameters,globalArgs.data);
+			performChi(globalArgs.parameters, globalArgs.data);
 
 			/// Plot: parameters, data
 
-			performPlot(globalArgs.parameters,globalArgs.data);
+			//performPlot(globalArgs.parameters, globalArgs.data);
+			//performRadius(globalArgs.parameters, matrixFile);
 			
 			/// Debug: parameters, debugFile
 
-			if ( globalArgs.verbose == 1) { performDebug(globalArgs.parameters,debugFile); }
+			if ( globalArgs.verbose == 1) { performDebug(globalArgs.parameters, debugFile); }
 			
 			break;
 		}

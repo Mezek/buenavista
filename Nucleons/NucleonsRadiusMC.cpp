@@ -51,7 +51,7 @@ void performRadius ( char* f) {
 	}
 	sigma = sqrt(variance/(num-1));
 
-	std::cout << "\nProton radius value : Proton radius uncertainty" << std::endl;
+	std::cout << "\n|| Proton radius value | Proton radius uncertainty ||" << std::endl;
 	std::cout.width(17); std::cout << mean;
 	std::cout << "  +/- ";
 	std::cout.width(17); std::cout << sqrt(sigma) << std::endl;

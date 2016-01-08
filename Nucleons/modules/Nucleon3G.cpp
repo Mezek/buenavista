@@ -726,18 +726,31 @@ double FFactor::Radius ( const int fftype, const double step )
 	TComplex d = FFactor::Derive(fftype, 0., step);
 	TComplex v2 = 6.*d*0.1*hTransC2;
 	double v;
-	switch (fftype) {
+	/*switch (fftype) {
 		case 1:
 			v = sqrt(v2.Re());
 			break;
 		case 2:
-			v = sqrt(fabs(v2.Re()));
+			v = sqrt(-v2.Re());
 			break;
 		case 3:
-			v = sqrt(fabs(v2.Re()));
+			v = sqrt(-v2.Re());
 			break;
 		default:
 			v = sqrt(v2.Re());
+	} */
+	switch (fftype) {
+		case 1:
+			v = v2.Re()/muP;
+			break;
+		case 2:
+			v = -v2.Re();
+			break;
+		case 3:
+			v = -v2.Re()/muN;
+			break;
+		default:
+			v = v2.Re();
 	}
 	return v;
 }
@@ -779,6 +792,79 @@ double FFactor::RadiusUncer ( const int fftype, const double step )
 	double v = sqrt(sig)*2./FFactor::Radius(fftype, step);
 	return v;
 }
+
+void FFactor::RadiusUncerMC ( const int fftype, const double step, const double nIter )
+{
+	// Check step value
+	if (step > t0v) {
+		std::cout << "\n> RadiusUncerMC: Warning! Step = " << step << " must be lower than t0v = " << t0v << std::endl;
+	}
+
+	// Get Cholesky decomposition of correlation matrix
+	TDecompChol matA(cov);
+	matA.Decompose();
+
+	// Get lower matrix
+	TMatrixD matB(modelPar,modelPar);
+	matB=matA.GetU();
+	matB.Transpose(matB);
+	//matB.Print();
+
+	TVectorD parMean(modelPar), parSigma(modelPar);
+
+	for (int i = 0; i < modelPar; ++i) {
+		parMean(i) = FFactor::A(i);
+		// Sigma of parameters, transform too?!
+		parSigma(i) = FFactor::E(i)*FFactor::E(i); // parSigma(i) = Z.cov[i][i];
+	}
+
+	TRandom3 gen_val;
+	//gen_val.SetSeed(0);
+	//std::cout << gen_val.GetSeed() << std::endl;
+	TVectorD vecX(modelPar);
+	double mc_mean = FFactor::Radius(fftype, step);
+	double mc_sigma;
+	double mc_variance = 0.;
+	double mc_mean_check = 0.;
+	int mc_num = nIter;
+	for (int k = 0; k < mc_num; ++k) {
+		std::vector<double> tempVal, tempValX;
+		tempVal.resize(modelPar);
+		tempValX.resize(modelPar);
+		for (int i = 0; i < modelPar; ++i) {
+			//vecX[i] = gen_val.Gaus(parMean(i),parSigma(i));
+			vecX(i) = gen_val.Gaus(0.,1.);
+			tempValX[i] = vecX(i);
+		}
+		// Transform vector by matrix
+		vecX *= matB; // implemented: vector = matrix*vector
+		// (Un)correlated values
+		for (int i = 0; i < modelPar; ++i) {
+			tempVal[i] = vecX(i)+parMean(i);
+			//std::cout << tempValX[i] << " : " << vecX(i) << " : " << parMean(i) << " : " << tempVal[i] << std::endl;
+		}
+		FFactor::SetParameters(tempVal);
+		double x_i = FFactor::Radius(fftype, step);
+		if (k%1000 == 0) {
+			std::cout << "\r>> " << k/1000+1 << " / " << mc_num/1000 << "k";
+			//std::cout << "= \b";
+			fflush(stdout);
+		}
+		mc_variance = (x_i-mc_mean)*(x_i-mc_mean) + mc_variance;
+		mc_mean_check = mc_mean_check + x_i;
+	}
+	mc_sigma = sqrt(mc_variance/(mc_num-1));
+	mc_mean_check = mc_mean_check/mc_num;
+
+	std::cout << std::endl;
+	std::cout << "Type=" << fftype << " radius       : ";
+	std::cout.width(17); std::cout << mc_mean << "   ";
+	std::cout.width(17); std::cout << sqrt(mc_sigma) << " / " << mc_sigma/sqrt(mc_num) << std::endl;
+	std::cout << "Type=" << fftype << " radius check : ";
+	std::cout.width(17); std::cout << mc_mean_check  << std::endl;
+}
+
+/// Older version only for GEP
 
 double FFactor::RadiusEP ( const double step )
 {

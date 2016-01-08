@@ -18,6 +18,7 @@ void performFit ( char* p, char* f, char* o) {
 	std::cout << "> Form factor data:   `" << f << "'" << std::endl;
 	std::cout << "> Start parameters:   `" << p << "'" << std::endl;
 	std::cout << "> Output parameters:  `" << o << "'" << std::endl;
+	std::cout << "> Covariance matrix:  `" << matrixFile << "'" << std::endl;
 
 	FFactor pFF(12);
 	pFF.LoadParameters(p);
@@ -78,10 +79,10 @@ void performFit ( char* p, char* f, char* o) {
 	std::cout << "> 1. minimalization..." << std::endl;	
 	//FunctionMinimum min = migrad(100000,100.);
 
-	minimize.Fix(0.);
-	minimize.Fix(1.);
-	minimize.Fix(2.);
-	minimize.Fix(3.);
+	//minimize.Fix(0.);
+	//minimize.Fix(1.);
+	//minimize.Fix(2.);
+	//minimize.Fix(3.);
 	//std::cout << "> ... 2. minimalization..." << std::endl;
 	//FunctionMinimum min2 = migrad(10000,1.);
 
@@ -131,4 +132,19 @@ void performFit ( char* p, char* f, char* o) {
 	}
 	os.close();
 
+	/// Covariance matrix
+	MnUserCovariance cov = min9.UserCovariance();
+
+	// fixed parameters result in smaller matrix
+	os.open(matrixFile);
+	os.precision(10);
+	for (int i = 0; i < nPar; ++i) {
+		for (int j = 0; j < nPar; ++j) {
+			os.width(17);
+			os << cov(i,j);
+		}
+		os << "\n";
+	}
+	os.close();
+	
 }
