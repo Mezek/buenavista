@@ -17,14 +17,7 @@
 
 namespace shortCut {
 
-/// Compare difference of two numbers with a small delta.
 
-int howDiff ( double a, double b, double stdDiff )
-{
-	double p = fabs(a-b);
-	//std::cout << ">> " << p << std::endl;
-	if (p <= stdDiff) { return 0; } else { return 1; };
-}
 
 /// Signum of given number.
 
@@ -109,6 +102,36 @@ FFactor::FFactor ( std::size_t size ): a(size), v(size)
 	modelPar = a.size();
 	numberOfParameters = modelPar;
 	cov.ResizeTo(modelPar,modelPar);
+
+	for (int i = 0; i < 4; ++i) {
+		expressPar += FF[i].mesons;
+	}
+	expressPar -= modelPar - 4;
+}
+
+TComplex eL (const TComplex &a, const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
+{
+	TComplex f;
+	if (sign == +1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b-1./c)/(a-1./c)*(b-1./sc)/(a-1./sc); }
+	if (sign == -1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b+c)/(a+c)*(b+sc)/(a+sc); }
+	return f;
+}
+
+TComplex sI (const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
+{
+	TComplex f;
+	if (sign == +1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b-1./c)*(b-1./sc)/(sc-1./sc); }
+	if (sign == -1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b+c)*(b+sc)/(sc-1./sc); }
+	return f;
+}
+
+/// Compare difference of two numbers with a small delta.
+
+int howDiff ( double a, double b, double stdDiff )
+{
+	double p = fabs(a-b);
+	//std::cout << ">> " << p << std::endl;
+	if (p <= stdDiff) { return 0; } else { return 1; };
 }
 
 /// Load parameters from file
@@ -195,26 +218,11 @@ void FFactor::PrintParameters ()
 		std::cout << this->v[i].err << std::endl;
 	}
 
+	// Norms
 	std::cout << "\n>> Norms for the components:" << std::endl;
 	for (int i = 0; i < 4; ++i) {
 		std::cout << FF[i].name << ": nor[" << i << "] = " << FF[i].nor << std::endl;
 	}
-
-	// Signs of parameters
-	std::cout.width(10);
-	std::cout.precision(7);
-	std::cout << "\n>> Signs of the parameters:" << std::endl;
-	std::cout << "\t" << "Om\t" << "Phi\t" << "Om1\t" << "Ph1\t"<< "Rh\t" << std::endl;
-	std::cout << "F1s\t" << shortCut::signum(this->v[4].val) << "\t" <<
-		shortCut::signum(this->v[5].val) << "\t" <<
-		shortCut::signum(this->v[6].val) << "\t" <<
-		shortCut::signum(this->v[7].val) << std::endl;
-	std::cout << "F2s\t" << shortCut::signum(this->v[9].val) << "\t" <<
-		shortCut::signum(this->v[10].val) << "\t" <<
-		shortCut::signum(this->v[11].val) << std::endl;
-	std::cout << "F1v\t" << "\t" << "\t"<< "\t" << "\t" <<
-		shortCut::signum(this->v[8].val) << std::endl;
-	std::cout << "F2v\t" << "\t" << "\t"<< "\t" << "\t" << "\t" << std::endl;
 
 	// Mesons under/over threshold
 	std::cout << "\n>> Mesons placement to threshold:" << std::endl;
@@ -246,6 +254,119 @@ void FFactor::PrintParameters ()
 		std::cout << u + d;
 		std::cout << std::endl;
 	}
+	this->ExpressedParameters();
+}
+
+/// Print missing parameters on std::cout
+
+void FFactor::ExpressedParameters ()
+{
+	std::cout << "\n>> Calculated missing parameters:" << std::endl;
+	std::vector<hod> b(expressPar);
+	double sign, mt;
+	TComplex vN;
+
+	// F1s
+	vN = FFactor::W(k0,t0s,a[0].val,1.);
+	for (int i = 0; i < FF[0].mesons; i++) {
+		mt = mS[i]*mS[i]-wS[i]*wS[i]/4.;
+		if ( mt < a[0].val ) {
+			sign = 1.;
+		}
+		else {
+			sign = -1.;
+		}
+		vM[i] = FFactor::W(mwS2[i],t0s,a[0].val,sign);
+		vMc[i] = vMc[i].Conjugate(vM[i]);
+		sub[i] = sI(vN,vM[i],vMc[i],sign);
+	}
+	b[0].name = "f_Om2";
+	b[0].val = sub[5]/(sub[5]-sub[4])*FF[0].nor 
+		- (sub[5]-sub[0])/(sub[5]-sub[4])*a[4].val
+		- (sub[5]-sub[1])/(sub[5]-sub[4])*a[5].val
+		- (sub[5]-sub[2])/(sub[5]-sub[4])*a[6].val
+		- (sub[5]-sub[3])/(sub[5]-sub[4])*a[7].val;
+
+	b[1].name = "f_Ph2";
+	b[1].val = FF[0].nor - b[0].val - a[4].val - a[5].val - a[6].val - a[7].val;
+
+	double h = 	- sub[4]/(sub[5]-sub[4])*FF[0].nor 
+		+ (sub[4]-sub[0])/(sub[5]-sub[4])*a[4].val
+		+ (sub[4]-sub[1])/(sub[5]-sub[4])*a[5].val
+		+ (sub[4]-sub[2])/(sub[5]-sub[4])*a[6].val
+		+ (sub[4]-sub[3])/(sub[5]-sub[4])*a[7].val;
+	std::cout << h << std::endl;
+
+	// F2s
+	vN = FFactor::W(k0,t0s,a[2].val,1.);
+	for (int i = 0; i < FF[2].mesons; i++) {
+		mt = mS[i]*mS[i]-wS[i]*wS[i]/4.;
+		if ( mt < a[2].val ) {
+			sign = 1.;
+		}
+		else {
+			sign = -1.;
+		}
+		vM[i] = FFactor::W(mwS2[i],t0s,a[2].val,sign);
+		vMc[i] = vMc[i].Conjugate(vM[i]);
+		sub[i] = sI(vN,vM[i],vMc[i],sign);
+	}	
+	b[2].name = "f_Om1";
+	b[3].name = "f_Om2";
+	b[4].name = "f_Ph2";
+	b[4].val = FF[2].nor - b[2].val - b[3].val - a[9].val - a[10].val - a[11].val;
+	
+	// F1v
+	vN = this->W(k0,t0v,a[1].val,1.);
+	for (int i = 0; i < FF[1].mesons; i++) {
+		mt = mV[i]*mV[i]-wV[i]*wV[i]/4.;
+		if ( mt < a[1].val ) {
+			sign = 1.;
+		}
+		else {
+			sign = -1.;
+		}
+		vM[i] = FFactor::W(mwV2[i],t0v,a[1].val,sign);
+		vMc[i] = vMc[i].Conjugate(vM[i]);
+		sub[i] = sI(vN,vM[i],vMc[i],sign);
+	}
+	b[5].name = "f_Rh1";
+	b[5].val = sub[2]/(sub[2]-sub[1])*FF[1].nor 
+		- (sub[2]-sub[0])/(sub[2]-sub[1])*a[8].val;
+
+	b[6].name = "f_Rh2";
+	b[6].val = FF[1].nor - b[5].val - a[8].val;
+
+	// F2v
+	vN = FFactor::W(k0,t0v,a[3].val,1.);
+	for (int i = 0; i < FF[3].mesons; i++) {
+		mt = mV[i]*mV[i]-wV[i]*wV[i]/4.;
+		if ( mt < a[3].val ) {
+			sign = 1.;
+		}
+		else {
+			sign = -1.;
+		}
+		vM[i] = FFactor::W(mwV2[i],t0v,a[3].val,sign);
+		vMc[i] = vMc[i].Conjugate(vM[i]);
+		sub[i] = sI(vN,vM[i],vMc[i],sign);
+	}
+	b[7].name = "f_Rh_T";
+	b[7].val = FF[3].nor*sub[1]/(sub[1]-sub[0])*sub[2]/(sub[2]-sub[0]);
+	b[8].name = "f_Rh1_T";
+	b[8].val = FF[3].nor*sub[0]/(sub[0]-sub[1])*sub[2]/(sub[2]-sub[1]);
+	b[9].name = "f_Rh2_T";
+	b[9].val = FF[3].nor*sub[0]/(sub[0]-sub[2])*sub[1]/(sub[1]-sub[2]);
+
+	for (int i = 0; i < expressPar; i++) {
+		std::cout.width(3);
+		std::cout << i+1 << ".";
+		std::cout.width(10);
+		std::cout << b[i].name;
+		std::cout.width(13);
+		std::cout << b[i].val << std::endl;
+	}
+	std::cout << b[7].val + b[8].val + b[9].val << " " << FF[3].nor << std::endl;
 }
 
 /// Return value of i. parameter
@@ -316,22 +437,6 @@ TComplex FFactor::W (const TComplex &t, const TComplex &t0, const TComplex &tin,
 	cZ = cZ.Sqrt(cQin-cQ);
 	cRes = kI*(cK-sign*cZ)/(cK+sign*cZ);
 	return cRes;
-}
-
-TComplex eL (const TComplex &a, const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
-{
-	TComplex f;
-	if (sign == +1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b-1./c)/(a-1./c)*(b-1./sc)/(a-1./sc); }
-	if (sign == -1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b+c)/(a+c)*(b+sc)/(a+sc); }
-	return f;
-}
-
-TComplex sI (const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
-{
-	TComplex f;
-	if (sign == +1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b-1./c)*(b-1./sc)/(sc-1./sc); }
-	if (sign == -1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b+c)*(b+sc)/(sc-1./sc); }
-	return f;
 }
 
 /** 0 = Om, 1 = Phi, 2 = Om1P, 3 = Phi1P, 4 = Om2P, 5 = Phi2P */
@@ -1000,7 +1105,7 @@ void FFactor::CheckFormFactor ( const char* nameString, double sD )
 	if ( (nameString == "proton") || (nameString == "all") ) {
 		chkA = FFactor::GEP(trashP).Re();
 		chkB = FFactor::GMP(trashP).Re();
-		chkF = shortCut::howDiff(chkA,chkB,sD);
+		chkF = howDiff(chkA,chkB,sD);
 		if ( chkF == 1 ) {
 			chkD = fabs(chkA-chkB);
 			std::cout << "> CheckFormFactor: Warning!" << std::endl;
@@ -1012,7 +1117,7 @@ void FFactor::CheckFormFactor ( const char* nameString, double sD )
 	if ( (nameString == "neutron") || (nameString == "all") ) {
 		chkA = FFactor::GEN(trashN).Re();
 		chkB = FFactor::GMN(trashN).Re();
-		chkF = shortCut::howDiff(chkA,chkB,sD);
+		chkF = howDiff(chkA,chkB,sD);
 		if ( chkF == 1 ) {
 			chkD = fabs(chkA-chkB);
 			std::cout << "> CheckFormFactor: Warning!" << std::endl;
@@ -1031,7 +1136,7 @@ void FFactor::CheckFormFactor ( const char* nameString, double sD )
 	if ( (nameString == "proton") || (nameString == "all") ) {
 		normaG = FFactor::GEP(k0).Re();
 		normaT = 1.;
-		chkF = shortCut::howDiff(normaG, normaT,sD);
+		chkF = howDiff(normaG, normaT,sD);
 		if ( chkF == 1) {
 			std::cout << "> CheckFormFactor: Warning! GEp(0) = " << normaG << std::endl;
 			handSome = true;
@@ -1039,7 +1144,7 @@ void FFactor::CheckFormFactor ( const char* nameString, double sD )
 
 		normaG = FFactor::GMP(k0).Re();
 		normaT = 1.+ammP;
-		chkF = shortCut::howDiff(normaG, normaT,sD);
+		chkF = howDiff(normaG, normaT,sD);
 		if ( chkF == 1) {
 			std::cout << "> CheckFormFactor: Warning! GMp(0) = " << normaG << std::endl;
 			handSome = true;
@@ -1049,7 +1154,7 @@ void FFactor::CheckFormFactor ( const char* nameString, double sD )
 	if ( (nameString == "neutron") || (nameString == "all") ) {
 		normaG = FFactor::GEN(k0).Re();
 		normaT = 0.;
-		chkF = shortCut::howDiff(normaG, normaT,sD);
+		chkF = howDiff(normaG, normaT,sD);
 		if ( chkF == 1) {
 			std::cout << "> CheckFormFactor: Warning! GEn(0) = " << normaG << std::endl;
 			handSome = true;
@@ -1057,7 +1162,7 @@ void FFactor::CheckFormFactor ( const char* nameString, double sD )
 
 		normaG = FFactor::GMN(k0).Re();
 		normaT = ammN;
-		chkF = shortCut::howDiff(normaG, normaT,sD);
+		chkF = howDiff(normaG, normaT,sD);
 		if ( chkF == 1) {
 			std::cout << "> CheckFormFactor: Warning! GMn(0) = " << normaG << std::endl;
 			handSome = true;

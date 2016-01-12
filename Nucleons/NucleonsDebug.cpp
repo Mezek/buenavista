@@ -27,7 +27,7 @@ void performDebug ( char* p, char* f ) {
 	std::cout << "-d: " << globalArgs.data << std::endl;
 	std::cout << "-v: " << globalArgs.verbose << std::endl;*/
 
-	// Convert parameters
+	/*// Convert parameters
 	double q1 = 2.2181;
 	double eq1 = 0.0005;
 	double q2 = 2.2203;
@@ -48,7 +48,7 @@ void performDebug ( char* p, char* f ) {
 	std::cout << ">> 1v : "<< h3 << " +/- " << eh3 << std::endl;
 	std::cout << ">> 2s : "<< h2 << " +/- " << eh2 << std::endl;
 	std::cout << ">> 2v : "<< h4 << " +/- " << eh4 << std::endl;
-	
+	*/
 
 	/*// Inverse Convert parameters
 	double t1 = 2.01907;
@@ -77,8 +77,8 @@ void performDebug ( char* p, char* f ) {
 		//std::cout << "> Neutron M: " << dM.Radius(3, s) << " step: " << s << std::endl;
 	}
 
-	/*double tD = -1.;
-	for (int i = 0; i < 30; ++i) {
+	double tD = -1.;
+	for (int i = 0; i < 20; ++i) {
 		std::cout << "\n>> Debug: t = " << tD << std::endl;
 		std::cout << tD << " " << dM.ScalarOne(tD) << std::endl;
 		std::cout << tD << " " << dM.VectorOne(tD) << std::endl;
@@ -88,8 +88,8 @@ void performDebug ( char* p, char* f ) {
 		std::cout << tD << " " << dM.AbsGMP(tD) << std::endl;
 		std::cout << tD << " " << dM.AbsGEN(tD) << std::endl;
 		std::cout << tD << " " << dM.AbsGMN(tD) << std::endl;
-		tD = tD + .05;
-	}*/
+		tD = tD + .5;
+	}
 
 	/*TComplex a(1.,0.);
 	TComplex t0s(t0s,0.);

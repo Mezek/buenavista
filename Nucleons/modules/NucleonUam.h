@@ -45,6 +45,7 @@ class FFactor {
 	std::vector<hod> a;
 	TMatrixD cov;
 	int modelPar;
+	int expressPar;
 	bool handSome;
 	
   public:
@@ -56,6 +57,7 @@ class FFactor {
 	void SetParameters ( const std::vector<double>& );
 	void FixParameters ( void );
 	void PrintParameters ( void );
+	void ExpressedParameters ( void );
 	void LoadCovMatrix ( char* );
 	double A ( int );
 	double E ( int );
