@@ -315,12 +315,16 @@ void FFactor::ExpressedParameters ()
 		- (sub[5]-sub[1])/(sub[5]-sub[2])*(sub[4]-sub[1])/(sub[4]-sub[2])*a[10].val
 		- (sub[5]-sub[3])/(sub[5]-sub[2])*(sub[4]-sub[3])/(sub[4]-sub[2])*a[11].val;
 	b[3].name = "f_Om2_T";
-	b[3].val = sub[5]/(sub[5]-sub[4])*sub[2]/(sub[4]-sub[2])*FF[2].nor 
-		- (sub[5]-sub[0])/(sub[5]-sub[4])*(sub[2]-sub[0])/(sub[4]-sub[2])*a[9].val
-		- (sub[5]-sub[1])/(sub[5]-sub[4])*(sub[2]-sub[1])/(sub[4]-sub[2])*a[10].val
-		- (sub[5]-sub[3])/(sub[5]-sub[4])*(sub[2]-sub[3])/(sub[4]-sub[2])*a[11].val;
+	b[3].val = - sub[5]/(sub[5]-sub[4])*sub[2]/(sub[4]-sub[2])*FF[2].nor 
+		+ (sub[5]-sub[0])/(sub[5]-sub[4])*(sub[2]-sub[0])/(sub[4]-sub[2])*a[9].val
+		+ (sub[5]-sub[1])/(sub[5]-sub[4])*(sub[2]-sub[1])/(sub[4]-sub[2])*a[10].val
+		+ (sub[5]-sub[3])/(sub[5]-sub[4])*(sub[2]-sub[3])/(sub[4]-sub[2])*a[11].val;
 	b[4].name = "f_Ph2_T";
-	b[4].val = FF[2].nor - b[2].val - b[3].val - a[9].val - a[10].val - a[11].val;
+	b[4].val = sub[2]/(sub[5]-sub[2])*sub[4]/(sub[5]-sub[4])*FF[2].nor 
+		- (sub[2]-sub[0])/(sub[5]-sub[2])*(sub[4]-sub[0])/(sub[5]-sub[4])*a[9].val
+		- (sub[2]-sub[1])/(sub[5]-sub[2])*(sub[4]-sub[1])/(sub[5]-sub[4])*a[10].val
+		- (sub[2]-sub[3])/(sub[5]-sub[2])*(sub[4]-sub[3])/(sub[5]-sub[4])*a[11].val;
+
 
 /*	// choice Bartos
 	b[2].name = "f_Om1_T";
@@ -329,12 +333,15 @@ void FFactor::ExpressedParameters ()
 		- (sub[5]-sub[1])/(sub[5]-sub[3])*(sub[4]-sub[1])/(sub[4]-sub[3])*a[10].val
 		- (sub[5]-sub[2])/(sub[5]-sub[3])*(sub[4]-sub[2])/(sub[4]-sub[3])*a[11].val;
 	b[3].name = "f_Om2_T";
-	b[3].val = sub[5]/(sub[5]-sub[4])*sub[3]/(sub[4]-sub[3])*FF[2].nor 
-		- (sub[5]-sub[0])/(sub[5]-sub[4])*(sub[3]-sub[0])/(sub[4]-sub[3])*a[9].val
-		- (sub[5]-sub[1])/(sub[5]-sub[4])*(sub[3]-sub[1])/(sub[4]-sub[3])*a[10].val
-		- (sub[5]-sub[2])/(sub[5]-sub[4])*(sub[3]-sub[2])/(sub[4]-sub[3])*a[11].val;
+	b[3].val = - sub[5]/(sub[5]-sub[4])*sub[3]/(sub[4]-sub[3])*FF[2].nor 
+		+ (sub[5]-sub[0])/(sub[5]-sub[4])*(sub[3]-sub[0])/(sub[4]-sub[3])*a[9].val
+		+ (sub[5]-sub[1])/(sub[5]-sub[4])*(sub[3]-sub[1])/(sub[4]-sub[3])*a[10].val
+		+ (sub[5]-sub[2])/(sub[5]-sub[4])*(sub[3]-sub[2])/(sub[4]-sub[3])*a[11].val;
 	b[4].name = "f_Ph2_T";
-	b[4].val = FF[2].nor - b[2].val - b[3].val - a[9].val - a[10].val - a[11].val;
+	b[4].val = sub[3]/(sub[5]-sub[3])*sub[4]/(sub[5]-sub[4])*FF[2].nor 
+		- (sub[3]-sub[0])/(sub[5]-sub[3])*(sub[4]-sub[0])/(sub[5]-sub[4])*a[9].val
+		- (sub[3]-sub[1])/(sub[5]-sub[3])*(sub[4]-sub[1])/(sub[5]-sub[4])*a[10].val
+		- (sub[3]-sub[2])/(sub[5]-sub[3])*(sub[4]-sub[2])/(sub[5]-sub[4])*a[11].val;
 */
 	
 	// F1v
