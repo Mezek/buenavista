@@ -261,7 +261,7 @@ void FFactor::PrintParameters ()
 
 void FFactor::ExpressedParameters ()
 {
-	std::cout << "\n>> Calculated missing parameters:" << std::endl;
+	std::cout << "\n>> Calculated expressed parameters:" << std::endl;
 	std::vector<hod> b(expressPar);
 	double sign, mt;
 	TComplex vN;
@@ -288,14 +288,11 @@ void FFactor::ExpressedParameters ()
 		- (sub[5]-sub[3])/(sub[5]-sub[4])*a[7].val;
 
 	b[1].name = "f_Ph2";
-	b[1].val = FF[0].nor - b[0].val - a[4].val - a[5].val - a[6].val - a[7].val;
-
-	double h = 	- sub[4]/(sub[5]-sub[4])*FF[0].nor 
+	b[1].val = - sub[4]/(sub[5]-sub[4])*FF[0].nor 
 		+ (sub[4]-sub[0])/(sub[5]-sub[4])*a[4].val
 		+ (sub[4]-sub[1])/(sub[5]-sub[4])*a[5].val
 		+ (sub[4]-sub[2])/(sub[5]-sub[4])*a[6].val
 		+ (sub[4]-sub[3])/(sub[5]-sub[4])*a[7].val;
-	std::cout << h << std::endl;
 
 	// F2s
 	vN = FFactor::W(k0,t0s,a[2].val,1.);
@@ -310,11 +307,35 @@ void FFactor::ExpressedParameters ()
 		vM[i] = FFactor::W(mwS2[i],t0s,a[2].val,sign);
 		vMc[i] = vMc[i].Conjugate(vM[i]);
 		sub[i] = sI(vN,vM[i],vMc[i],sign);
-	}	
-	b[2].name = "f_Om1";
-	b[3].name = "f_Om2";
-	b[4].name = "f_Ph2";
+	}
+
+	b[2].name = "f_Om1_T";
+	b[2].val = sub[5]/(sub[5]-sub[2])*sub[4]/(sub[4]-sub[2])*FF[2].nor 
+		- (sub[5]-sub[0])/(sub[5]-sub[2])*(sub[4]-sub[0])/(sub[4]-sub[2])*a[9].val
+		- (sub[5]-sub[1])/(sub[5]-sub[2])*(sub[4]-sub[1])/(sub[4]-sub[2])*a[10].val
+		- (sub[5]-sub[3])/(sub[5]-sub[2])*(sub[4]-sub[3])/(sub[4]-sub[2])*a[11].val;
+	b[3].name = "f_Om2_T";
+	b[3].val = sub[5]/(sub[5]-sub[4])*sub[2]/(sub[4]-sub[2])*FF[2].nor 
+		- (sub[5]-sub[0])/(sub[5]-sub[4])*(sub[2]-sub[0])/(sub[4]-sub[2])*a[9].val
+		- (sub[5]-sub[1])/(sub[5]-sub[4])*(sub[2]-sub[1])/(sub[4]-sub[2])*a[10].val
+		- (sub[5]-sub[3])/(sub[5]-sub[4])*(sub[2]-sub[3])/(sub[4]-sub[2])*a[11].val;
+	b[4].name = "f_Ph2_T";
 	b[4].val = FF[2].nor - b[2].val - b[3].val - a[9].val - a[10].val - a[11].val;
+
+/*	// choice Bartos
+	b[2].name = "f_Om1_T";
+	b[2].val = sub[5]/(sub[5]-sub[3])*sub[4]/(sub[4]-sub[3])*FF[2].nor 
+		- (sub[5]-sub[0])/(sub[5]-sub[3])*(sub[4]-sub[0])/(sub[4]-sub[3])*a[9].val
+		- (sub[5]-sub[1])/(sub[5]-sub[3])*(sub[4]-sub[1])/(sub[4]-sub[3])*a[10].val
+		- (sub[5]-sub[2])/(sub[5]-sub[3])*(sub[4]-sub[2])/(sub[4]-sub[3])*a[11].val;
+	b[3].name = "f_Om2_T";
+	b[3].val = sub[5]/(sub[5]-sub[4])*sub[3]/(sub[4]-sub[3])*FF[2].nor 
+		- (sub[5]-sub[0])/(sub[5]-sub[4])*(sub[3]-sub[0])/(sub[4]-sub[3])*a[9].val
+		- (sub[5]-sub[1])/(sub[5]-sub[4])*(sub[3]-sub[1])/(sub[4]-sub[3])*a[10].val
+		- (sub[5]-sub[2])/(sub[5]-sub[4])*(sub[3]-sub[2])/(sub[4]-sub[3])*a[11].val;
+	b[4].name = "f_Ph2_T";
+	b[4].val = FF[2].nor - b[2].val - b[3].val - a[9].val - a[10].val - a[11].val;
+*/
 	
 	// F1v
 	vN = this->W(k0,t0v,a[1].val,1.);
@@ -335,7 +356,8 @@ void FFactor::ExpressedParameters ()
 		- (sub[2]-sub[0])/(sub[2]-sub[1])*a[8].val;
 
 	b[6].name = "f_Rh2";
-	b[6].val = FF[1].nor - b[5].val - a[8].val;
+	b[6].val = sub[0]/(sub[0]-sub[2])*FF[1].nor 
+		- (sub[0]-sub[1])/(sub[0]-sub[2])*b[5].val;
 
 	// F2v
 	vN = FFactor::W(k0,t0v,a[3].val,1.);
@@ -366,7 +388,18 @@ void FFactor::ExpressedParameters ()
 		std::cout.width(13);
 		std::cout << b[i].val << std::endl;
 	}
-	std::cout << b[7].val + b[8].val + b[9].val << " " << FF[3].nor << std::endl;
+	std::cout << "\n>> Check of sums and norm values:" << std::endl;
+	std::cout << FF[0].nor << " "
+		<< b[0].val + b[1].val + a[4].val + a[5].val + a[6].val + a[7].val << std::endl;
+
+	std::cout << FF[1].nor << " "
+		<< b[5].val + b[6].val + a[8].val << std::endl;
+
+	std::cout << FF[2].nor << " "
+		<< b[2].val + b[3].val + b[4].val + a[9].val + a[10].val + a[11].val << std::endl;
+
+	std::cout << FF[3].nor << " "
+		<< b[7].val + b[8].val + b[9].val << std::endl;
 }
 
 /// Return value of i. parameter
