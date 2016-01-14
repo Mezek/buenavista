@@ -43,6 +43,7 @@ class FFactor {
 	TComplex vM[6],vMc[6],mul[6],sub[6];
 	izo FF[4];
 	std::vector<hod> a;
+	std::string FFtype[4];
 	TMatrixD cov;
 	int modelPar;
 	int expressPar;

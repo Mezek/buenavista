@@ -46,11 +46,16 @@ FFactor::FFactor ( std::size_t size ): a(size), v(size)
 
 	// izo :: name, nor, mesons
 
-	// Names
+	// Names Dirac, Pauli / Sachs
 	FF[0].name = "F1s";
 	FF[1].name = "F1v";
 	FF[2].name = "F2s";
 	FF[3].name = "F2v";
+
+	FFtype[0] = "GEP";
+	FFtype[1] = "GMP";
+	FFtype[2] = "GEN";
+	FFtype[3] = "GMN";
 		
 	// Norms
 	FF[0].nor = 0.5;
@@ -391,7 +396,6 @@ void FFactor::ExpressedParameters ()
 		std::cout.width(13);
 		std::cout << b[i].val << std::endl;
 	}
-	std::cout << expressPar << " " << modelPar << " " << allMesons << std::endl;
 	std::cout << "\n>> Check of sums and norm values:" << std::endl;
 	double s[4];
 	s[0] = b[0].val + b[1].val + a[4].val + a[5].val + a[6].val + a[7].val;
@@ -998,7 +1002,7 @@ void FFactor::RadiusUncerMC ( const int fftype, const double step, const double 
 	mc_mean_check = mc_mean_check/mc_num;
 
 	std::cout << std::endl;
-	std::cout << "Type=" << fftype << " radius" << std::endl;
+	std::cout << "Type=" << fftype << " " << FFtype[fftype] << " radius" << std::endl;
 	std::cout << "MC value          : ";
 	std::cout.width(17); std::cout << mc_mean << "  +/-  ";
 	std::cout.width(12); std::cout << sqrt(mc_sigma) << " / " << mc_sigma/sqrt(mc_num) << std::endl;
@@ -1118,7 +1122,7 @@ void FFactor::RadiusEPUncerMC ( const double step, const double nIter )
 		mc_mean_check = mc_mean_check + x_i;
 	}
 	mc_sigma = sqrt(mc_variance/(mc_num-1));
-	mc_mean_check = mc_mean_check/mc_num;
+	mc_mean_check = mc_mean_check;
 
 	std::cout << "\n>> Proton radius value : Proton radius uncertainty" << std::endl;
 	std::cout.width(17); std::cout << mc_mean;

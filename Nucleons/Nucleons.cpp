@@ -132,7 +132,7 @@ int main ( int argc, char **argv ) {
 
 			/// Plot: parameters, data
 
-			//performPlot(globalArgs.parameters, globalArgs.data);
+			performPlot(globalArgs.parameters, globalArgs.data);
 			performRadius(globalArgs.parameters, matrixFile);
 			
 			/// Debug: parameters, debugFile

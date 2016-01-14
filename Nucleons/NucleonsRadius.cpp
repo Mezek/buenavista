@@ -45,7 +45,14 @@ void performRadius ( char* p, char* c ) {
 	std::cout << "> Diagonal elements and parameter errors:" << std::endl;
 	std::cout << " || No. | Difference | Diagonal element of cov. matrix | Parameter's error ||" << std::endl;
 	for (int i = 0; i < nPar; ++i) {
-		std::cout << i+1 << ". " << Z.Cov()(i,i) - Rp.E(i)*Rp.E(i) << "   " << Z.Cov()(i,i) << "   " << Rp.E(i) << std::endl;
+		std::cout.width(5);
+		std::cout << i+1 << ". ";
+		std::cout.width(14);
+		std::cout << Z.Cov()(i,i) - Rp.E(i)*Rp.E(i);
+		std::cout.width(14);
+		std::cout << Z.Cov()(i,i);
+		std::cout.width(14);
+		std::cout << Rp.E(i) << std::endl;
 	}
 	//Rp.PrintParameters();
 
@@ -84,18 +91,4 @@ void performRadius ( char* p, char* c ) {
 		std::cout.width(17); std::cout << radVal[t] << "  +/-  ";
 		std::cout.width(12); std::cout << radErr[t] << std::endl;
 	}
-
-/*  	DataGenerator mydata(123), mydata2(123);
- * 	mydata.Gauss(1.,1.);
- * 	mydata2.Flat(1.,1.);
- * 	std::vector<double> value = mydata.Data();
- * 	std::vector<double> value2 = mydata2.Data();
- * 	std::cout << "\n" << std::endl;
- * 	std::cout << mydata.Size() << std::endl;
- *  	for (int i = 0; i < mydata.Size(); ++i) {
- *  		std::cout << i+1 << " " << value[i] << " " << value2[i] << std::endl;
- *  	}
- */
-
-	
 }
