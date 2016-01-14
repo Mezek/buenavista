@@ -72,12 +72,12 @@ void performDebug ( char* p, char* f ) {
 			s = s*r;
 		}
 		std::cout << "> Proton  E: " << dM.Radius(0, s) << " step: " << s << std::endl;
-		//std::cout << "> Proton  M: " << dM.Radius(1, s) << " step: " << s << std::endl;
-		//std::cout << "> Neutron E: " << dM.Radius(2, s) << " step: " << s << std::endl;
-		//std::cout << "> Neutron M: " << dM.Radius(3, s) << " step: " << s << std::endl;
+		std::cout << "> Proton  M: " << dM.Radius(1, s) << " step: " << s << std::endl;
+		std::cout << "> Neutron E: " << dM.Radius(2, s) << " step: " << s << std::endl;
+		std::cout << "> Neutron M: " << dM.Radius(3, s) << " step: " << s << std::endl;
 	}
 
-	double tD = -1.;
+	/*double tD = -1.;
 	for (int i = 0; i < 20; ++i) {
 		std::cout << "\n>> Debug: t = " << tD << std::endl;
 		std::cout << tD << " " << dM.ScalarOne(tD) << std::endl;
@@ -89,7 +89,7 @@ void performDebug ( char* p, char* f ) {
 		std::cout << tD << " " << dM.AbsGEN(tD) << std::endl;
 		std::cout << tD << " " << dM.AbsGMN(tD) << std::endl;
 		tD = tD + .5;
-	}
+	}*/
 
 	/*TComplex a(1.,0.);
 	TComplex t0s(t0s,0.);

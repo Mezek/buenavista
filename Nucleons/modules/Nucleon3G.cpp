@@ -63,6 +63,7 @@ FFactor::FFactor ( std::size_t size ): a(size), v(size)
 	FF[1].mesons = 3;
 	FF[2].mesons = 6;
 	FF[3].mesons = 3;
+	allMesons = 18;
 
 	// Masses and widths
 	mS[0] = massOm;
@@ -102,11 +103,7 @@ FFactor::FFactor ( std::size_t size ): a(size), v(size)
 	modelPar = a.size();
 	numberOfParameters = modelPar;
 	cov.ResizeTo(modelPar,modelPar);
-
-	for (int i = 0; i < 4; ++i) {
-		expressPar += FF[i].mesons;
-	}
-	expressPar -= modelPar - 4;
+	expressPar = allMesons - modelPar + 4;
 }
 
 TComplex eL (const TComplex &a, const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
@@ -262,7 +259,7 @@ void FFactor::PrintParameters ()
 void FFactor::ExpressedParameters ()
 {
 	std::cout << "\n>> Calculated expressed parameters:" << std::endl;
-	std::vector<hod> b(expressPar);
+	std::vector<hod> b(expressPar), z(18);
 	double sign, mt;
 	TComplex vN;
 
@@ -324,7 +321,6 @@ void FFactor::ExpressedParameters ()
 		- (sub[2]-sub[0])/(sub[5]-sub[2])*(sub[4]-sub[0])/(sub[5]-sub[4])*a[9].val
 		- (sub[2]-sub[1])/(sub[5]-sub[2])*(sub[4]-sub[1])/(sub[5]-sub[4])*a[10].val
 		- (sub[2]-sub[3])/(sub[5]-sub[2])*(sub[4]-sub[3])/(sub[5]-sub[4])*a[11].val;
-
 
 /*	// choice Bartos
 	b[2].name = "f_Om1_T";
@@ -395,18 +391,18 @@ void FFactor::ExpressedParameters ()
 		std::cout.width(13);
 		std::cout << b[i].val << std::endl;
 	}
+	std::cout << expressPar << " " << modelPar << " " << allMesons << std::endl;
 	std::cout << "\n>> Check of sums and norm values:" << std::endl;
-	std::cout << FF[0].nor << " "
-		<< b[0].val + b[1].val + a[4].val + a[5].val + a[6].val + a[7].val << std::endl;
-
-	std::cout << FF[1].nor << " "
-		<< b[5].val + b[6].val + a[8].val << std::endl;
-
-	std::cout << FF[2].nor << " "
-		<< b[2].val + b[3].val + b[4].val + a[9].val + a[10].val + a[11].val << std::endl;
-
-	std::cout << FF[3].nor << " "
-		<< b[7].val + b[8].val + b[9].val << std::endl;
+	double s[4];
+	s[0] = b[0].val + b[1].val + a[4].val + a[5].val + a[6].val + a[7].val;
+	s[1] = b[5].val + b[6].val + a[8].val;
+	s[2] = b[2].val + b[3].val + b[4].val + a[9].val + a[10].val + a[11].val;
+	s[3] = b[7].val + b[8].val + b[9].val;
+	for (int i = 0; i < 4; ++i) {
+		std::cout << FF[i].nor << " " << s[i] << std::endl;
+	}
+	
+	z[0] = a[0];
 }
 
 /// Return value of i. parameter
@@ -889,10 +885,10 @@ double FFactor::Radius ( const int fftype, const double step )
 			v = v2.Re()/muP;
 			break;
 		case 2:
-			v = -v2.Re();
+			v = v2.Re();
 			break;
 		case 3:
-			v = -v2.Re()/muN;
+			v = v2.Re()/muN;
 			break;
 		default:
 			v = v2.Re();
@@ -990,11 +986,11 @@ void FFactor::RadiusUncerMC ( const int fftype, const double step, const double 
 		}
 		FFactor::SetParameters(tempVal);
 		double x_i = FFactor::Radius(fftype, step);
-		if (k%1000 == 0) {
+		/*if (k%1000 == 0) {
 			std::cout << "\r>> " << k/1000+1 << " / " << mc_num/1000 << "k";
 			//std::cout << "= \b";
 			fflush(stdout);
-		}
+		}*/
 		mc_variance = (x_i-mc_mean)*(x_i-mc_mean) + mc_variance;
 		mc_mean_check = mc_mean_check + x_i;
 	}
@@ -1002,10 +998,11 @@ void FFactor::RadiusUncerMC ( const int fftype, const double step, const double 
 	mc_mean_check = mc_mean_check/mc_num;
 
 	std::cout << std::endl;
-	std::cout << "Type=" << fftype << " radius       : ";
-	std::cout.width(17); std::cout << mc_mean << "   ";
-	std::cout.width(17); std::cout << sqrt(mc_sigma) << " / " << mc_sigma/sqrt(mc_num) << std::endl;
-	std::cout << "Type=" << fftype << " radius check : ";
+	std::cout << "Type=" << fftype << " radius" << std::endl;
+	std::cout << "MC value          : ";
+	std::cout.width(17); std::cout << mc_mean << "  +/-  ";
+	std::cout.width(12); std::cout << sqrt(mc_sigma) << " / " << mc_sigma/sqrt(mc_num) << std::endl;
+	std::cout << "MC check          : ";
 	std::cout.width(17); std::cout << mc_mean_check  << std::endl;
 }
 

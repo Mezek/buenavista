@@ -46,6 +46,7 @@ class FFactor {
 	TMatrixD cov;
 	int modelPar;
 	int expressPar;
+	int allMesons;
 	bool handSome;
 	
   public:

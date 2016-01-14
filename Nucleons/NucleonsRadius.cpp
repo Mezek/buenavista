@@ -51,6 +51,7 @@ void performRadius ( char* p, char* c ) {
 
 	std::cout << "\n || Step | Radius value     | Radius uncertainty     ||" << std::endl;
 	std::cout.precision(8);
+	double radVal[4], radErr[4];
 	double r, radius, radius_err;
 	for (int t = 0; t < 4; ++t) {
 		std::cout << "Form factor type = " << t << std::endl;
@@ -66,6 +67,8 @@ void performRadius ( char* p, char* c ) {
 			std::cout.width(17); std::cout << radius;
 			std::cout.width(17); std::cout << radius_err << std::endl;
 		}
+		radVal[t] = radius;
+		radErr[t] = radius_err;
 	}
 	//std::cout << "> Do it:" << std::endl;	
 	//std::vector< std::vector<double> > em = Z.cov;
@@ -73,10 +76,13 @@ void performRadius ( char* p, char* c ) {
 	//	std::cout << i+1 << ". " << em[i][i] << "   " << Z.cov[i][i] << "   " << std::endl;
 	//}
 	
-	std::cout << "\n> Monte Carlo result: " << std::endl;
+	std::cout << "\n> Radii + MC values: " << std::endl;
 
 	for (int t = 0; t < 4; ++t) {
 		Rp.RadiusUncerMC(t, 0.0001, 10000);
+		std::cout << "Cov. matrix value : ";
+		std::cout.width(17); std::cout << radVal[t] << "  +/-  ";
+		std::cout.width(12); std::cout << radErr[t] << std::endl;
 	}
 
 /*  	DataGenerator mydata(123), mydata2(123);
