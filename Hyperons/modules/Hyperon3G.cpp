@@ -17,14 +17,7 @@
 
 namespace shortCut {
 
-/// Compare difference of two numbers with a small delta.
 
-int howDiff ( double a, double b, double stdDiff )
-{
-	double p = fabs(a-b);
-	//std::cout << ">> " << p << std::endl;
-	if (p <= stdDiff) { return 0; } else { return 1; };
-}
 
 /// Signum of given number.
 
@@ -64,10 +57,6 @@ void FFactor::SetParticle ( int myParticle )
 	//std::cout << "\n>> FFactor has type: " << myParticle << std::endl;
 	particleType = myParticle;
 	
-	modelPar = globalFF;
-	numberOfParameters = modelPar;
-	handSome = false;
-
 	// Masses and widths
 	mS[0] = massOm;
 	mS[1] = massPhi;
@@ -100,7 +89,7 @@ void FFactor::SetParticle ( int myParticle )
 	for (int i = 0; i < 6; ++i) {
 		mwS2[i] = (mS[i]-kI*wS[i]/2.)*(mS[i]-kI*wS[i]/2.);
 		mwV2[i] = (mV[i]-kI*wV[i]/2.)*(mV[i]-kI*wV[i]/2.);
-	}	
+	}
 
 	// izo :: name, nor, mesons
 
@@ -113,7 +102,7 @@ void FFactor::SetParticle ( int myParticle )
 	// Norms
 	while ( HyperonsCheckRange(particleType) != 1 ) {
 		particleType = HyperonsGetType();
-		std::cout << ">> FFactor has type: " << particleType << std::endl;
+		std::cout << ">> FFactor set for particle type: " << particleType << std::endl;
 	}
 
 	switch (particleType) {
@@ -176,6 +165,13 @@ void FFactor::SetParticle ( int myParticle )
 	FF[1].mesons = 3;
 	FF[2].mesons = 6;
 	FF[3].mesons = 3;
+	allMesons = 18;
+
+	handSome = false;
+	modelPar = globalFF;
+	numberOfParameters = modelPar;
+	cov.ResizeTo(modelPar, modelPar);
+
 }
 
 /// Get particle type
@@ -183,6 +179,31 @@ void FFactor::SetParticle ( int myParticle )
 int FFactor::GetParticle( void )
 {
 	return particleType;
+}
+
+TComplex eL (const TComplex &a, const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
+{
+	TComplex f;
+	if (sign == +1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b-1./c)/(a-1./c)*(b-1./sc)/(a-1./sc); }
+	if (sign == -1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b+c)/(a+c)*(b+sc)/(a+sc); }
+	return f;
+}
+
+TComplex sI (const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
+{
+	TComplex f;
+	if (sign == +1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b-1./c)*(b-1./sc)/(sc-1./sc); }
+	if (sign == -1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b+c)*(b+sc)/(sc-1./sc); }
+	return f;
+}
+
+/// Compare difference of two numbers with a small delta.
+
+int howDiff ( double a, double b, double stdDiff )
+{
+	double p = fabs(a-b);
+	//std::cout << ">> " << p << std::endl;
+	if (p <= stdDiff) { return 0; } else { return 1; };
 }
 
 /// Load parameters from file
@@ -283,27 +304,11 @@ void FFactor::PrintParameters ()
 		std::cout << this->v[i].err << std::endl;
 	}
 
+	// Norms
 	std::cout << "\n>> Norms for the components:" << std::endl;
 	for (int i = 0; i < 4; ++i) {
 		std::cout << FF[i].name << ": nor[" << i << "] = " << FF[i].nor << std::endl;
 	}
-
-	// Signs of parameters
-	std::cout.width(10);
-	std::cout.precision(7);
-	std::cout << "\n>> Signs of the parameters:" << std::endl;
-	std::cout << "\t" << "Om\t" << "Phi\t" << "Om1\t" << "Ph1\t"<< "Rh\t" << std::endl;
-	std::cout << "F1s\t" << shortCut::signum(this->v[4].val) << "\t" <<
-		shortCut::signum(this->v[5].val) << "\t" <<
-		shortCut::signum(this->v[6].val) << "\t" <<
-		shortCut::signum(this->v[7].val) << std::endl;
-	std::cout << "F2s\t" << shortCut::signum(this->v[9].val) << "\t" <<
-		shortCut::signum(this->v[10].val) << "\t" <<
-		shortCut::signum(this->v[11].val) << std::endl;
-	std::cout << "F1v\t" << "\t" << "\t"<< "\t" << "\t" <<
-		shortCut::signum(this->v[8].val) << std::endl;
-	std::cout << "F2v\t" << "\t" << "\t"<< "\t" << "\t" <<
-		shortCut::signum(this->v[12].val) << std::endl;
 
 	// Mesons under/over threshold
 	std::cout << "\n>> Mesons placement to threshold:" << std::endl;
@@ -539,29 +544,12 @@ TComplex FFactor::W (const TComplex &t, const TComplex &t0, const TComplex &tin,
 	return cRes;
 }
 
-TComplex eL (const TComplex &a, const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
-{
-	TComplex f;
-	if (sign == +1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b-1./c)/(a-1./c)*(b-1./sc)/(a-1./sc); }
-	if (sign == -1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b+c)/(a+c)*(b+sc)/(a+sc); }
-	return f;
-}
-
-TComplex sI (const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
-{
-	TComplex f;
-	if (sign == +1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b-1./c)*(b-1./sc)/(sc-1./sc); }
-	if (sign == -1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b+c)*(b+sc)/(sc-1./sc); }
-	return f;
-}
-
 /** 0 = Om, 1 = Phi, 2 = Om1P, 3 = Phi1P, 4 = Om2P, 5 = Phi2P */
 
 TComplex FFactor::ScalarOne (TComplex t)
 {
 	TComplex v = FFactor::W(t,t0s,a[0].val,1.);
 	TComplex vN = FFactor::W(k0,t0s,a[0].val,1.);
-	//std::cout << ">> ScalarOne: "<< a[0] << " " << v << " " << vN << std::endl;
 	
 	double sign, mt;
 	for (int i = 0; i < FF[0].mesons; i++) {
@@ -726,10 +714,7 @@ TComplex FFactor::VectorTwo (TComplex t)
 	TComplex norm,normA,suma;
 	norm = (1.-v*v)/(1.-vN*vN);
 	normA = normA.Power(norm,6);
-	suma = normA*(FF[3].nor*mul[1]*mul[2] +
-	  (mul[0]*mul[2]*(sub[2]-sub[0])/(sub[2]-sub[1]) +
-	   mul[1]*mul[0]*(sub[1]-sub[0])/(sub[1]-sub[2]) -
-	   mul[1]*mul[2])*a[12].val);
+	suma = normA*FF[3].nor*mul[0]*mul[1]*mul[2];
 	return suma;
 }
 

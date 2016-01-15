@@ -16,7 +16,7 @@ int HyperonsGetType () {
 
 	do {
 		pT = 0;
-		std::cout << "> Choose form factor type: " << std::endl;
+		std::cout << "> Choose particle(s): " << std::endl;
 		std::cout << " 1 - Nucleons: p, n " << std::endl;
 		std::cout << " 2 - Lambda " << std::endl;
 		std::cout << " 3 - Sigma+, Sigma- " << std::endl;

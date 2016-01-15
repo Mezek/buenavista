@@ -107,7 +107,7 @@ FFactor::FFactor ( std::size_t size ): a(size), v(size)
 	handSome = false;
 	modelPar = a.size();
 	numberOfParameters = modelPar;
-	cov.ResizeTo(modelPar,modelPar);
+	cov.ResizeTo(modelPar, modelPar);
 	expressPar = allMesons - modelPar + 4;
 }
 
@@ -264,7 +264,7 @@ void FFactor::PrintParameters ()
 void FFactor::ExpressedParameters ()
 {
 	std::cout << "\n>> Calculated expressed parameters:" << std::endl;
-	std::vector<hod> b(expressPar), z(18);
+	std::vector<hod> b(expressPar), z(allMesons);
 	double sign, mt;
 	TComplex vN;
 
@@ -405,8 +405,32 @@ void FFactor::ExpressedParameters ()
 	for (int i = 0; i < 4; ++i) {
 		std::cout << FF[i].nor << " " << s[i] << std::endl;
 	}
+/*
+	z[0] = a[4];
+	z[1] = a[5];
+	z[2] = a[6];
+	z[3] = a[7];
+	z[4] = b[0];
+	z[5] = b[1];
+
+	z[6] = a[8];
+	z[7] = b[5];
+	z[8] = b[6];
 	
-	z[0] = a[0];
+	z[9] = a[9];
+	z[10] = a[10];
+	z[11] = a[11];
+	z[12] = b[2];
+	z[13] = b[3];
+	z[14] = b[4];
+
+	z[15] = b[7];
+	z[16] = b[8];
+	z[17] = b[9];
+	
+	for (int i = 0; i < allMesons; i++) {
+		std::cout << i+1 << ". " << z[i].name << " " << z[i].val << std::endl;
+	}*/
 }
 
 /// Return value of i. parameter
@@ -485,7 +509,6 @@ TComplex FFactor::ScalarOne (TComplex t)
 {
 	TComplex v = FFactor::W(t,t0s,a[0].val,1.);
 	TComplex vN = FFactor::W(k0,t0s,a[0].val,1.);
-	//std::cout << "F1s: v = " << v << " vN = " << vN << std::cout << std::endl;
 	
 	double sign, mt;
 	for (int i = 0; i < FF[0].mesons; i++) {

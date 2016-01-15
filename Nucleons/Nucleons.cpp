@@ -102,7 +102,7 @@ int main ( int argc, char **argv ) {
 
 	/// Start
 	
-	TApplication theApp("Nucleons-D", &argc, argv);
+	TApplication theApp("Nucleons", &argc, argv);
 	std::cout << "\n> Start  : " << ctime (&rawtime) << std::endl;
 	
 	/// Get data

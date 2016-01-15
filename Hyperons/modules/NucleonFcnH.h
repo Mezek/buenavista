@@ -9,8 +9,8 @@
  * @brief	Header for FCN function of nucleon FF, v. hyperon.
  */
 
-#ifndef NucleonFcnH_H_
-#define NucleonFcnH_H_
+#ifndef _NucleonFcnH_H_
+#define _NucleonFcnH_H_
 
 #include "Minuit2/FCNBase.h"
 
@@ -74,4 +74,4 @@ class NucleonFcn : public FCNBase {
 	
 }  // namespace ROOT
 
-#endif //NucleonFcnH_H_
+#endif // _NucleonFcnH_H_

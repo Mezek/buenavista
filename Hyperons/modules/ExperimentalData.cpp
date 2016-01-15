@@ -237,8 +237,10 @@ void ExperimentalData::CheckData ()
 			dVal = fVal[i] - delta;
 		}
 		if ( dVal < 0. ) {
-			std::cout << "> CheckData: Warning! Type=" << fType[i] << " data at " << fX[i] 
-			<< " : lower error < zero: " << dVal << std::endl;
+			std::cout << "> CheckData: Warning! Type=";
+			std::cout << fType[i] << " data at ";
+			std::cout.width(7);
+			std::cout << fX[i]<< " : y- error exceed 0.0: " << dVal << std::endl;
 		}
 	}
 

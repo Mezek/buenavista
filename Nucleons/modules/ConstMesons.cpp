@@ -26,7 +26,7 @@
 
 	// Om1P
 	static const double massOm1P = 1.425;
-	static const double widthOm1P = 0.215;                // PDG value  0.18-0.25
+	static const double widthOm1P = 0.215;                // PDG range 0.180-0.250
 	// Donnachie value A
 	//static const double massOm1P = 1.391;                 // +/- 0.018
 	//static const double widthOm1P = 0.224;                // +/- 0.049
@@ -41,8 +41,8 @@
 	static const double widthEEOm2P = 0.152*0.000001;     // +/- 0.047*0.000001 
 
 	// Phi
-	static const double massPhi = 1.019455;
-	static const double widthPhi = 0.00426;               // PDG value
+	static const double massPhi = 1.019461;
+	static const double widthPhi = 0.004266;              // PDG value
 	// Donachie value
 	static const double widthEEPhi = 0.000001258;         // widthPhi*0.0002954;
 

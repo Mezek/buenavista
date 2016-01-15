@@ -10,8 +10,8 @@
  * @brief	Header for plotting, v. hyperon.
  */
 
-#ifndef PlotGraphH_H_
-#define PlotGraphH_H_
+#ifndef _PlotGraphH_H_
+#define _PlotGraphH_H_
 
 // Root graphics
 #include "TGraph.h"
@@ -54,4 +54,4 @@ class PlotGraph {
 	void view4Exp (Int_t num, Double_t axisX[], Double_t axisY1[], Double_t axisY2[], Double_t axisY3[], Double_t axisY4[], Int_t num1, Double_t axisEX1[], Double_t axisEY1[], Int_t num2, Double_t axisEX2[], Double_t axisEY2[], Int_t num3, Double_t axisEX3[], Double_t axisEY3[], Int_t num4, Double_t axisEX4[], Double_t axisEY4[]);
 };
 
-#endif // PlotGraphH_H_
+#endif // _PlotGraphH_H_

@@ -17,14 +17,7 @@
 
 namespace shortCut {
 
-/// Compare difference of two numbers with a small delta.
 
-int howDiff ( double a, double b, double stdDiff )
-{
-	double p = fabs(a-b);
-	//std::cout << ">> " << p << std::endl;
-	if (p <= stdDiff) { return 0; } else { return 1; };
-}
 
 /// Signum of given number.
 
@@ -184,6 +177,31 @@ void FFactor::SetParticle ( int myParticle )
 	FF[1].tresh = 2;
 	FF[2].tresh = 3;
 	FF[3].tresh = 2;
+}
+
+TComplex eL (const TComplex &a, const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
+{
+	TComplex f;
+	if (sign == +1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b-1./c)/(a-1./c)*(b-1./sc)/(a-1./sc); }
+	if (sign == -1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b+c)/(a+c)*(b+sc)/(a+sc); }
+	return f;
+}
+
+TComplex sI (const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
+{
+	TComplex f;
+	if (sign == +1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b-1./c)*(b-1./sc)/(sc-1./sc); }
+	if (sign == -1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b+c)*(b+sc)/(sc-1./sc); }
+	return f;
+}
+
+/// Compare difference of two numbers with a small delta.
+
+int howDiff ( double a, double b, double stdDiff )
+{
+	double p = fabs(a-b);
+	//std::cout << ">> " << p << std::endl;
+	if (p <= stdDiff) { return 0; } else { return 1; };
 }
 
 /// Load parameters from file
@@ -507,22 +525,6 @@ TComplex FFactor::W (const TComplex &t, const TComplex &t0, const TComplex &tin,
 	cZ = cZ.Sqrt(cQin-cQ);
 	cRes = kI*(cK-sign*cZ)/(cK+sign*cZ);
 	return cRes;
-}
-
-TComplex eL (const TComplex &a, const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
-{
-	TComplex f;
-	if (sign == +1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b-1./c)/(a-1./c)*(b-1./sc)/(a-1./sc); }
-	if (sign == -1.) { f = (b-c)/(a-c)*(b-sc)/(a-sc)*(b+c)/(a+c)*(b+sc)/(a+sc); }
-	return f;
-}
-
-TComplex sI (const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
-{
-	TComplex f;
-	if (sign == +1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b-1./c)*(b-1./sc)/(sc-1./sc); }
-	if (sign == -1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b+c)*(b+sc)/(sc-1./sc); }
-	return f;
 }
 
 /** 0 = Om, 1 = Phi, 2 = Om1P, 3 = Phi1P, 4 = Om2P, 5 = Phi2P */

@@ -9,8 +9,8 @@
  * @brief	Header for U&A form factor for nucleons, v. hyperon.
  */
 
-#ifndef NucleonUamH_H_
-#define NucleonUamH_H_
+#ifndef _NucleonUamH_H_
+#define _NucleonUamH_H_
 
 #include "TMatrixDSym.h"
 #include "TDecompChol.h"
@@ -43,8 +43,10 @@ class FFactor {
 	TComplex vM[6],vMc[6],mul[6],sub[6];
 	izo FF[4];
 	std::vector<hod> a;
+	std::string FFtype[4];
 	TMatrixD cov;
 	int modelPar;
+	int allMesons;
 	bool handSome;
 	int particleType;
 	double mS2[6],mV2[6];
@@ -107,4 +109,4 @@ class FFactor {
 
 }  // namespace ROOT
 
-#endif // NucleonUamH_H_
+#endif // _```NucleonUamH_H_
