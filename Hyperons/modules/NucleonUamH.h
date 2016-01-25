@@ -46,6 +46,7 @@ class FFactor {
 	std::string FFtype[4];
 	TMatrixD cov;
 	int modelPar;
+	int expressPar;
 	int allMesons;
 	bool handSome;
 	int particleType;
@@ -65,6 +66,7 @@ class FFactor {
 	void SetParameters ( const std::vector<double>& );
 	void FixParameters ( void );
 	void PrintParameters ( void );
+	void ExpressedParameters ( void );
 	void LoadCovMatrix ( char* );
 	double A ( int );
 	double E ( int );

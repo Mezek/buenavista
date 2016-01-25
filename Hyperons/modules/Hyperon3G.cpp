@@ -171,6 +171,7 @@ void FFactor::SetParticle ( int myParticle )
 	modelPar = globalFF;
 	numberOfParameters = modelPar;
 	cov.ResizeTo(modelPar, modelPar);
+	expressPar = 10;
 
 }
 
@@ -340,6 +341,153 @@ void FFactor::PrintParameters ()
 		std::cout << u + d;
 		std::cout << std::endl;
 	}
+	this->ExpressedParameters();
+}
+
+void FFactor::ExpressedParameters ()
+{
+	std::cout << "\n>> Calculated expressed parameters:" << std::endl;
+	std::vector<hod> b(expressPar), z(allMesons);
+	double sign, mt;
+	TComplex vN;
+
+	// F1s
+	vN = FFactor::W(k0,t0s,a[0].val,1.);
+	for (int i = 0; i < FF[0].mesons; i++) {
+		mt = mS[i]*mS[i]-wS[i]*wS[i]/4.;
+		if ( mt < a[0].val ) {
+			sign = 1.;
+		}
+		else {
+			sign = -1.;
+		}
+		vM[i] = FFactor::W(mwS2[i],t0s,a[0].val,sign);
+		vMc[i] = vMc[i].Conjugate(vM[i]);
+		sub[i] = sI(vN,vM[i],vMc[i],sign);
+	}
+	b[0].name = "f_Om2";
+	b[0].val = sub[5]/(sub[5]-sub[4])*FF[0].nor 
+		- (sub[5]-sub[0])/(sub[5]-sub[4])*a[4].val
+		- (sub[5]-sub[1])/(sub[5]-sub[4])*a[5].val
+		- (sub[5]-sub[2])/(sub[5]-sub[4])*a[6].val
+		- (sub[5]-sub[3])/(sub[5]-sub[4])*a[7].val;
+
+	b[1].name = "f_Ph2";
+	b[1].val = - sub[4]/(sub[5]-sub[4])*FF[0].nor 
+		+ (sub[4]-sub[0])/(sub[5]-sub[4])*a[4].val
+		+ (sub[4]-sub[1])/(sub[5]-sub[4])*a[5].val
+		+ (sub[4]-sub[2])/(sub[5]-sub[4])*a[6].val
+		+ (sub[4]-sub[3])/(sub[5]-sub[4])*a[7].val;
+
+	// F2s
+	vN = FFactor::W(k0,t0s,a[2].val,1.);
+	for (int i = 0; i < FF[2].mesons; i++) {
+		mt = mS[i]*mS[i]-wS[i]*wS[i]/4.;
+		if ( mt < a[2].val ) {
+			sign = 1.;
+		}
+		else {
+			sign = -1.;
+		}
+		vM[i] = FFactor::W(mwS2[i],t0s,a[2].val,sign);
+		vMc[i] = vMc[i].Conjugate(vM[i]);
+		sub[i] = sI(vN,vM[i],vMc[i],sign);
+	}
+
+	b[2].name = "f_Om1_T";
+	b[2].val = sub[5]/(sub[5]-sub[2])*sub[4]/(sub[4]-sub[2])*FF[2].nor 
+		- (sub[5]-sub[0])/(sub[5]-sub[2])*(sub[4]-sub[0])/(sub[4]-sub[2])*a[9].val
+		- (sub[5]-sub[1])/(sub[5]-sub[2])*(sub[4]-sub[1])/(sub[4]-sub[2])*a[10].val
+		- (sub[5]-sub[3])/(sub[5]-sub[2])*(sub[4]-sub[3])/(sub[4]-sub[2])*a[11].val;
+	b[3].name = "f_Om2_T";
+	b[3].val = - sub[5]/(sub[5]-sub[4])*sub[2]/(sub[4]-sub[2])*FF[2].nor 
+		+ (sub[5]-sub[0])/(sub[5]-sub[4])*(sub[2]-sub[0])/(sub[4]-sub[2])*a[9].val
+		+ (sub[5]-sub[1])/(sub[5]-sub[4])*(sub[2]-sub[1])/(sub[4]-sub[2])*a[10].val
+		+ (sub[5]-sub[3])/(sub[5]-sub[4])*(sub[2]-sub[3])/(sub[4]-sub[2])*a[11].val;
+	b[4].name = "f_Ph2_T";
+	b[4].val = sub[2]/(sub[5]-sub[2])*sub[4]/(sub[5]-sub[4])*FF[2].nor 
+		- (sub[2]-sub[0])/(sub[5]-sub[2])*(sub[4]-sub[0])/(sub[5]-sub[4])*a[9].val
+		- (sub[2]-sub[1])/(sub[5]-sub[2])*(sub[4]-sub[1])/(sub[5]-sub[4])*a[10].val
+		- (sub[2]-sub[3])/(sub[5]-sub[2])*(sub[4]-sub[3])/(sub[5]-sub[4])*a[11].val;
+
+/*	// choice Bartos
+	b[2].name = "f_Om1_T";
+	b[2].val = sub[5]/(sub[5]-sub[3])*sub[4]/(sub[4]-sub[3])*FF[2].nor 
+		- (sub[5]-sub[0])/(sub[5]-sub[3])*(sub[4]-sub[0])/(sub[4]-sub[3])*a[9].val
+		- (sub[5]-sub[1])/(sub[5]-sub[3])*(sub[4]-sub[1])/(sub[4]-sub[3])*a[10].val
+		- (sub[5]-sub[2])/(sub[5]-sub[3])*(sub[4]-sub[2])/(sub[4]-sub[3])*a[11].val;
+	b[3].name = "f_Om2_T";
+	b[3].val = - sub[5]/(sub[5]-sub[4])*sub[3]/(sub[4]-sub[3])*FF[2].nor 
+		+ (sub[5]-sub[0])/(sub[5]-sub[4])*(sub[3]-sub[0])/(sub[4]-sub[3])*a[9].val
+		+ (sub[5]-sub[1])/(sub[5]-sub[4])*(sub[3]-sub[1])/(sub[4]-sub[3])*a[10].val
+		+ (sub[5]-sub[2])/(sub[5]-sub[4])*(sub[3]-sub[2])/(sub[4]-sub[3])*a[11].val;
+	b[4].name = "f_Ph2_T";
+	b[4].val = sub[3]/(sub[5]-sub[3])*sub[4]/(sub[5]-sub[4])*FF[2].nor 
+		- (sub[3]-sub[0])/(sub[5]-sub[3])*(sub[4]-sub[0])/(sub[5]-sub[4])*a[9].val
+		- (sub[3]-sub[1])/(sub[5]-sub[3])*(sub[4]-sub[1])/(sub[5]-sub[4])*a[10].val
+		- (sub[3]-sub[2])/(sub[5]-sub[3])*(sub[4]-sub[2])/(sub[5]-sub[4])*a[11].val;
+*/
+	
+	// F1v
+	vN = this->W(k0,t0v,a[1].val,1.);
+	for (int i = 0; i < FF[1].mesons; i++) {
+		mt = mV[i]*mV[i]-wV[i]*wV[i]/4.;
+		if ( mt < a[1].val ) {
+			sign = 1.;
+		}
+		else {
+			sign = -1.;
+		}
+		vM[i] = FFactor::W(mwV2[i],t0v,a[1].val,sign);
+		vMc[i] = vMc[i].Conjugate(vM[i]);
+		sub[i] = sI(vN,vM[i],vMc[i],sign);
+	}
+	b[5].name = "f_Rh1";
+	b[5].val = sub[2]/(sub[2]-sub[1])*FF[1].nor 
+		- (sub[2]-sub[0])/(sub[2]-sub[1])*a[8].val;
+
+	b[6].name = "f_Rh2";
+	b[6].val = sub[0]/(sub[0]-sub[2])*FF[1].nor 
+		- (sub[0]-sub[1])/(sub[0]-sub[2])*b[5].val;
+
+	// F2v
+	vN = FFactor::W(k0,t0v,a[3].val,1.);
+	for (int i = 0; i < FF[3].mesons; i++) {
+		mt = mV[i]*mV[i]-wV[i]*wV[i]/4.;
+		if ( mt < a[3].val ) {
+			sign = 1.;
+		}
+		else {
+			sign = -1.;
+		}
+		vM[i] = FFactor::W(mwV2[i],t0v,a[3].val,sign);
+		vMc[i] = vMc[i].Conjugate(vM[i]);
+		sub[i] = sI(vN,vM[i],vMc[i],sign);
+	}
+	b[7].name = "f_Rh_T";
+	b[7].val = FF[3].nor*sub[1]/(sub[1]-sub[0])*sub[2]/(sub[2]-sub[0]);
+	b[8].name = "f_Rh1_T";
+	b[8].val = FF[3].nor*sub[0]/(sub[0]-sub[1])*sub[2]/(sub[2]-sub[1]);
+	b[9].name = "f_Rh2_T";
+	b[9].val = FF[3].nor*sub[0]/(sub[0]-sub[2])*sub[1]/(sub[1]-sub[2]);
+
+	for (int i = 0; i < expressPar; i++) {
+		std::cout.width(3);
+		std::cout << i+1 << ".";
+		std::cout.width(10);
+		std::cout << b[i].name;
+		std::cout.width(13);
+		std::cout << b[i].val << std::endl;
+	}
+	std::cout << "\n>> Check of sums and norm values:" << std::endl;
+	double s[4];
+	s[0] = b[0].val + b[1].val + a[4].val + a[5].val + a[6].val + a[7].val;
+	s[1] = b[5].val + b[6].val + a[8].val;
+	s[2] = b[2].val + b[3].val + b[4].val + a[9].val + a[10].val + a[11].val;
+	s[3] = b[7].val + b[8].val + b[9].val;
+	for (int i = 0; i < 4; ++i) {
+		std::cout << FF[i].nor << " " << s[i] << std::endl;
+	}
 }
 
 double Duo ( double &a, double &b )
@@ -362,12 +510,12 @@ void FFactor::TransformSU3 ()
 	double k4 = TMath::Cos(th)/TMath::Sqrt(3.);
 
 	double fuO[3], fuP[3], fuR[3]; // universal coupling constants
-	fuO[0] = 17.0576;
-	fuP[0] = 13.4448;
-	fuR[0] = 4.9569;
-	fuO[1] = 47.5897;
-	fuP[1] = 37.0510;
-	fuR[1] = 13.6455;
+	fuO[0] = 17.0620;
+	fuP[0] = -13.4428;
+	fuR[0] = 4.9582;
+	fuO[1] = 47.6022;
+	fuP[1] = -33.6598; //37.0510;
+	fuR[1] = 13.6491;
 	fuO[2] = 48.3651;
 	fuP[2] = 0.;
 	fuR[2] = 22.5275;
@@ -379,6 +527,13 @@ void FFactor::TransformSU3 ()
 	fO[1][0] = a[9].val*fuO[0];
 	fP[1][0] = a[10].val*fuP[0];
 	fR[1][0] = a[12].val*fuR[0];
+
+	std::cout << a[4].val << " " << fO[0][0] << std::endl;
+	std::cout << a[5].val << " " << fP[0][0] << std::endl;
+	std::cout << a[8].val << " " << fR[0][0] << std::endl;
+	std::cout << a[9].val << " " << fO[1][0] << std::endl;
+	std::cout << a[10].val << " " << fP[1][0] << std::endl;
+	std::cout << a[12].val << " " << fR[1][0] << std::endl;
 
 	fO[0][1] = a[6].val*fuO[1];
 	fP[0][1] = a[7].val*fuP[1];

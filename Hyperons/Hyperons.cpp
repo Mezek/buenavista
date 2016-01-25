@@ -58,7 +58,7 @@ char xiFile[] = "outXiHyperons.dat";                   ///< Chi2 output.
 char debugFile[] = "outDebugHyperons.dat";             ///< Debug output.
 
 #include "modules/ConstBasic.cpp"
-#include "modules/ConstMesons.cpp"
+#include "modules/ConstMesons-D.cpp"
 #include "modules/ExperimentalData.cpp"
 #include "modules/PlotGraphH.cpp"
 #include "modules/HyperonsGetType.cpp"
