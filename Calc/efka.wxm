@@ -1,9 +1,9 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 0.8.5 ] */
+/* [ Created with wxMaxima version 15.08.2 ] */
 
 /* [wxMaxima: input   start ] */
-linsolve([fRe=1/2*(fDe+fFe), fOe=k1*fSe-3./2.*k2*fFe+k3/2.*fDe, fPe=k3*fSe+3./2.*k4*fFe-k4/2.*fDe], [fDe,fFe,fSe]);
-linsolve([fRe=1/2*(a+b), fOe=k1*c-1.5*k2*b+.5*k3*a, fPe=k3*c+1.5*k4*b-.5*k4*a], [a,b,c]);
+linsolve([fRe=1/2*(fDe+fFe), fOe=k1/sqrt(2)*fSe-3./2.*k2/sqrt(3)*fFe+1./2.*k2/sqrt(3)*fDe, fPe=k2/sqrt(2)*fSe+3./2.*k1/sqrt(3)*fFe-1./2.*k1/sqrt(3)*fDe], [fDe,fFe,fSe]);
+linsolve([fRe=1/2*(fDe+fFe), fOe=cos(x)/sqrt(2)*fSe-3./2.*sin(x)/sqrt(3)*fFe+1./2.*sin(x)/sqrt(3)*fDe, fPe=sin(x)/sqrt(2)*fSe+3./2.*cos(x)/sqrt(3)*fFe-1./2.*cos(x)/sqrt(3)*fDe], [fDe,fFe,fSe]);
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
