@@ -508,7 +508,7 @@ void FFactor::TransformSU3 ()
 	fuP[1] = -33.6598; //37.0510;
 	fuR[1] = 13.6491;
 	fuO[2] = 48.3651;
-	fuP[2] = 0.;
+	fuP[2] = -34.1993;
 	fuR[2] = 22.5275;
 
 	this->ExpressedParameters();
@@ -588,9 +588,8 @@ void FFactor::TransformSU3 ()
 	a[8].val = fRp[0][0]/fuR[0];
 	a[9].val = fOp[1][0]/fuO[0];
 	a[10].val = fPp[1][0]/fuP[0];
-	a[11].val = fOp[1][1]/fuO[1];
-	a[12].val = fRp[1][0]/fuR[0];
-	FFactor::FixParameters();	
+	a[11].val = fPp[1][1]/fuP[1];
+	this->FixParameters();	
 	std::cout << ">> SU(3) transformation of coupling constants... done." << std::endl;
 
 	std::cout.precision(6);
@@ -607,6 +606,7 @@ void FFactor::TransformSU3 ()
 	std::cout << "T f_Om1: " << fO[1][1] << std::endl;
 	std::cout << "T f_Ph1: " << fP[1][1] << std::endl;
 	std::cout << "T f_Rh1: " << fR[1][1] << std::endl;
+	this->PrintParameters();
 }
 
 /// Return value of i. parameter

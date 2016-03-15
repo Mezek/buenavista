@@ -17,7 +17,7 @@ using namespace ROOT::Minuit2;
 
 void performRadius ( char* p, char* c ) {
 
-	std::cout << "\n> Radius calculation:   '" << std::endl;
+	std::cout << "\n> Radius calculation: " << std::endl;
 	std::cout << "> Radius parameters:   '" << p << "'" << std::endl;
 	std::cout << "> Covarince matrix:    '" << c << "'" << std::endl;	
 	std::cout << "> Radius data output:  '" << radiusFile << "'\n" << std::endl;	
