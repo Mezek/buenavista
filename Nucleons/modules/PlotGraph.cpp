@@ -194,7 +194,7 @@ void PlotGraph::viewPlusDataAE (Int_t num, Double_t axisX[], Double_t axisY[], I
 	mgr1->Add(gr2,"P");
 	mgr1->Draw("A");
 
-	mgr1->GetXaxis()->SetTitle("t [GeV^{2}]");
+	mgr1->GetXaxis()->SetTitle("Q^2 [GeV^{2}]");
 	mgr1->GetYaxis()->SetTitle(title);
 	mgr1->GetXaxis()->CenterTitle();
 	mgr1->GetYaxis()->CenterTitle();

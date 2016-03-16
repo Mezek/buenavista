@@ -6,7 +6,8 @@ bin_PROGRAMS = \
 	SingleGraph\
 	NucleonsM\
 	NucleonsMC\
-	MultiGraph
+	MultiGraph\
+	plotRatio
 
 Nucleons_SOURCES = \
 	Nucleons.cpp
@@ -25,6 +26,9 @@ NucleonsMC_SOURCES =  \
 
 MultiGraph_SOURCES =  \
 	MultiGraph.cpp
+
+plotRatio_SOURCES =  \
+	plotRatio.cpp
 
 Kompare_SOURCES = \
 	Komparision.cpp
