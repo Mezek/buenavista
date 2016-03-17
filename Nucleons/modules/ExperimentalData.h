@@ -26,6 +26,8 @@ class ExperimentalData {
 	int typeInt;
 	std::string line;
 	int num;
+	std::vector<int> sSeries;
+	std::vector<std::string> sName;
 	std::vector<int> fType;
 	std::vector<double> fX;
 	std::vector<double> fVal;
@@ -36,7 +38,9 @@ class ExperimentalData {
 	TMatrixD fCov;
 	
   public:
-		
+
+	std::vector<int> Series() const { return sSeries; }
+	std::vector<std::string> Name() const { return sName; }
 	std::vector<int> Type() const { return fType; }
 	std::vector<double> X() const { return fX; }
 	std::vector<double> Val() const { return fVal; }

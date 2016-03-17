@@ -36,7 +36,14 @@ void ExperimentalData::ReadData ( char* d )
 					std::istringstream stream (lineSub);
 					stream >> typeInt;
 					//std::cout << ">> " << lineSub << " " << typeInt << std::endl;
+					sSeries.push_back(typeInt);
 				}
+				if ((firstChar == '*')) {
+					// Extract data type
+					std::string lineSub = line.substr(7);
+					//std::cout << ">> " << lineSub << " " << std::endl;
+					sName.push_back(lineSub);
+				}				
 			}
 			else {
 				myDataFile >> dA >> dB >> dC >> dD;

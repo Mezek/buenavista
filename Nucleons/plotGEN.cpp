@@ -4,7 +4,7 @@
  * $Author$
  *
  * @file
- * @brief       Plot ratio.
+ * @brief       Plot GEN.
  */
 
 #include <iostream>
@@ -24,10 +24,7 @@
 #include "TComplex.h"
 #include "TMath.h"
 
-///@{
-char dataFile[] = "dataRatio.dat";           /**< Form factor data. */
-///@}
-
+char dataFile[] = "dataGEN.dat";                       ///< Form factor data.
 char parametersFile[] = "parNucleons-FitD.dat";        ///< Input parameters.
 char outputFile[] = "outNucleons-temp.dat";            ///< Output parameters.
 
@@ -80,20 +77,19 @@ int main ( int argc, char **argv ) {
 
 	double plotRX[nPoints], plotRpY[nPoints];
 	
-	tMin = 3.5;
-	tMax = 10.0;
+	tMin = -4.0;
+	tMax = 0.0;
 	tStep = (tMax-tMin)/nPoints;
 	tA = tMin;
 	TComplex t,hA,hB,hC,hD;
 
 	for (int i = 0; i < nPoints; ++i) {
 		tA = tMin + i*tStep;
-		plotRX[i] = tA;
+		plotRX[i] = -tA;
  		t = tMin + i*tStep;
 
-		hA = pPlot.AbsGEP(t);
-		hB = pPlot.AbsGMP(t);
-		plotRpY[i] = (hA/hB);
+		hA = pPlot.AbsGEN(t);
+		plotRpY[i] = hA;
 
     }
 
@@ -137,7 +133,7 @@ int main ( int argc, char **argv ) {
 
 		for (int j = 0; j < W.size(); j++) {
 			if (series[i] == type[j]) {
-				dataX.push_back(x[j]);
+				dataX.push_back(-x[j]);
 				dataY.push_back(val[j]);
 				dataU.push_back(errUp[j]);
 				dataD.push_back(errDown[j]);
@@ -155,20 +151,20 @@ int main ( int argc, char **argv ) {
 	}
 	mgr1->Draw("A");
 
-	mgr1->GetXaxis()->SetTitle("t [GeV^{2}]");
-	mgr1->GetYaxis()->SetTitle("|G_{E}^{p}/G_{M}^{p}|");
+	mgr1->GetXaxis()->SetTitle("Q^{2} [GeV^{2}]");
+	mgr1->GetYaxis()->SetTitle("|G_{E}^{n}|");
 	mgr1->GetXaxis()->CenterTitle();
 	mgr1->GetYaxis()->CenterTitle();
 
 	// Change the axis limits
-	gPad->Modified();
-	mgr1->GetXaxis()->SetLimits(3.,10.);
+	/*gPad->Modified();
+	mgr1->GetXaxis()->SetLimits(-4.,0.);
 	mgr1->SetMinimum(0.01);
-	mgr1->SetMaximum(3.);
+	mgr1->SetMaximum(3.);*/
 
 	Char_t const* title = "Our model";
 
-	TLegend *lg1 = new TLegend (.5,.7,.87,.87);
+	TLegend *lg1 = new TLegend (.5,.4,.87,.87);
 	lg1->SetFillColor(kWhite);
  	lg1->AddEntry(gr1,title,"l");
 	for (int i = 0; i < numS; i++) {
