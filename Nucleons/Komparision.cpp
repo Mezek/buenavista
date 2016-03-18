@@ -85,7 +85,7 @@ int main ( int argc, char **argv ) {
 	std::cout << "> Start parameters:   '" << parametersFile << "'" << std::endl;
 	std::cout << "> Output parameters:  '" << outputFile << "'" << std::endl;
 
-	FFactorK pFF(4,4);
+	FFactorK pFF(2);
 	pFF.LoadParameters(parametersFile);
 	pFF.PrintParameters();
 	
@@ -124,7 +124,7 @@ int main ( int argc, char **argv ) {
 	for (int i = 0; i < nPoints; ++i) {
 		tA = tMin + i*tStep;
 		plotX[i] = -tA;
-		plotY0[i] = pFF.GEp(tA)/pFF.GD(tA);
+		plotY0[i] = pFF.GEP(tA)/pFF.GD(tA);
 		//std::cout <<  i << ": " << plotX[i] << "  " << plotY0[i] << std::endl;
     }
 

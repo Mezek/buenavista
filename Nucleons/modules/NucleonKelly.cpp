@@ -15,46 +15,81 @@ namespace ROOT {
 
 	namespace Minuit2 {
 
-FFactorK::FFactorK (std::size_t size, int poke):
+// size = size of vector `a', e.~g., a0, a1 -> size=2
+FFactorK::FFactorK (std::size_t size):
 		a(size),
-		b(size),
-		modelPar(poke)
+		b(size+2),
+		c(2)
 {
-	numberOfParameters = 2*modelPar;
+	numberOfParameters = size + size+2 + 2;
 };
 
 void FFactorK::LoadParameters (char* ds)
 {
 	ifstream myDataFile (ds);
-	double x,y;
+	int por;
 	int num = 0;
+	double x;
+	std::vector<double> fa, fb;
 	if (myDataFile.is_open()) {
 		while (myDataFile.peek() != EOF) {
-			myDataFile >> a[num] >> b[num];
-			++num;
+			firstChar = myDataFile.peek();
+			if ( (firstChar == '%') || (firstChar == '#') ) {
+				getline (myDataFile,line);
+			}
+			else {
+				myDataFile >> por >> x;
+				if (num < a.size()) {
+					a[por] = x;
+				}
+				if ((num >= a.size()) && (num < 2*a.size()+2)) {
+					b[por] = x;
+				}
+				if ((num >= 2*a.size()+2)) {
+					c[por] = x;
+				}
+				getline (myDataFile,line);
+				++num;
+			}
 		}
 		myDataFile.close();
-		num = num-1;
-		if (num != a.size()) {
-			std::cout << ">> Error: Number of parameters in " << ds << ": " << num << "' differs from declared: " << a.size() << "!" << std::endl;
+		if (num != numberOfParameters) {
+			std::cout << ">> Error: Number of parameters in `" << ds << "': "
+				      << num << " differs from declared: " << numberOfParameters << "!" << std::endl;
 		} else {
-			std::cout << "\n " << std::endl;
+			//std::cout << "\n " << std::endl;
 		}
-		/*for (int i = 0; i < a.size(); ++i) {
-			std::cout << i << ": " << a[i] << " " << b[i] << std::endl;
-		}*/
 	}
 	else std::cerr << ">> Error: Unable to open parametric file: '" << ds << "'!" << std::endl;
 }
 
 void FFactorK::PrintParameters ()
 {
-	std::cout << "\n>> Actual pararameters:" << std::endl;
-	std::cout << "\ti" << "  \t" << "a[i]" << "\t " << "b[i]" << std::endl;
-	std::cout << "    -----------------------------" << std::endl;
-	for (int i=0; i<a.size(); ++i) {
-		//std::cout << i+1 << ". " << a[i] << std::endl;
-		std::cout << "\t" << i << ". \t" << this->a[i] << "\t " << this->b[i] << std::endl;
+	std::cout << "\n> Kelly's form factor:" << std::endl;
+	std::cout << "> Actual pararameters:" << std::endl;
+	std::cout << "a[i]:" << std::endl;
+	for (int i = 0; i < a.size(); ++i) {
+		std::cout.width(6);
+		std::cout << i;
+		std::cout.width(10);
+		std::cout << this->a[i];
+		std::cout << std::endl;	
+	}
+	std::cout << "b[i]:" << std::endl;
+	for (int i = 0; i < b.size(); ++i) {
+		std::cout.width(6);
+		std::cout << i;
+		std::cout.width(10);
+		std::cout << this->b[i];
+		std::cout << std::endl;	
+	}
+	std::cout << "A, B:" << std::endl;
+	for (int i = 0; i < c.size(); ++i) {
+		std::cout.width(6);
+		std::cout << i;
+		std::cout.width(10);
+		std::cout << this->c[i];
+		std::cout << std::endl;	
 	}
 }
 
@@ -72,14 +107,23 @@ double FFactorK::G (double t, double M)
 	return nom/denom;
 }
 
-double FFactorK::GEp (double t)
+double FFactorK::GEP (double t)
 {
 	return FFactorK::G(t,massP);
 }
 
-double FFactorK::GMp (double t)
+double FFactorK::GMP (double t)
 {
 	return FFactorK::G(t,massP);
+}
+
+double FFactorK::GEN (double t, double M)
+{
+	double r;
+	double Qs = -t;
+	double tau = Qs/(4.*M*M);
+	r = c[0]*tau/(1. + c[1]*tau)*this->GD(t);
+	return r;
 }
 
 double FFactorK::GD (double t)

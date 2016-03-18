@@ -19,21 +19,22 @@ namespace ROOT {
 class FFactorK {
 
   private:
-	std::vector<double> a, b;
-	const int modelPar;
+	std::vector<double> a, b, c;
 	double t;
+	char firstChar;
+	std::string line;
 	
   public:
 	int numberOfParameters;
 	//FFactorK () {}; // default constructor
-	FFactorK ( std::size_t, int ); // for constructor initialization list
+	FFactorK ( std::size_t ); // for constructor initialization list
 	void LoadParameters ( char* );
 	void PrintParameters ();
 	double G ( double, double );
-	double GEp ( double );
-	double GMp ( double );
-	double GEn ( double );
-	double GMn ( double );
+	double GEP ( double );
+	double GMP ( double );
+	double GEN ( double, double );
+	double GMN ( double );
 	double GD ( double );
 	~FFactorK () {};
 };

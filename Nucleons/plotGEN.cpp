@@ -26,6 +26,7 @@
 
 char dataFile[] = "dataGEN.dat";                       ///< Form factor data.
 char parametersFile[] = "parNucleons-FitD.dat";        ///< Input parameters.
+char parametersFile1[] = "parNucleons-Kelly.dat";
 char outputFile[] = "outNucleons-temp.dat";            ///< Output parameters.
 
 #include "modules/ConstBasic.cpp"
@@ -33,6 +34,7 @@ char outputFile[] = "outNucleons-temp.dat";            ///< Output parameters.
 #include "modules/ExperimentalData.cpp"
 #include "modules/PlotGraph.cpp"
 #include "modules/Nucleon3G.cpp"
+#include "modules/NucleonKelly.cpp"
 
 using namespace ROOT::Minuit2;
 
@@ -49,6 +51,7 @@ int main ( int argc, char **argv ) {
 	/// Plot
 	std::cout << "\n> Plotting:" << std::endl;
 	std::cout << "> Plotted parameters:          `" << parametersFile << "'" << std::endl;
+	std::cout << ">                              `" << parametersFile1 << "'" << std::endl;
 	std::cout << "> Plotted form factor data:    `" << dataFile << "'" << std::endl;
 
 	const int nPoints = 2500;
@@ -74,8 +77,10 @@ int main ( int argc, char **argv ) {
 		
 	FFactor pPlot(12);
 	pPlot.LoadParameters(parametersFile);
+	FFactorK pKelly(2);
+	pKelly.LoadParameters(parametersFile1);
 
-	double plotRX[nPoints], plotRpY[nPoints];
+	double plotRX[nPoints], plotRpY[nPoints], plotRkY[nPoints];
 	
 	tMin = -4.0;
 	tMax = 0.0;
@@ -90,8 +95,9 @@ int main ( int argc, char **argv ) {
 
 		hA = pPlot.AbsGEN(t);
 		plotRpY[i] = hA;
-
+		plotRkY[i] = pKelly.GEN(t, massP);
     }
+
 
 	// Graph
 
@@ -122,6 +128,11 @@ int main ( int argc, char **argv ) {
 	gr1->SetLineWidth(2);
 	mgr1->Add(gr1,"L");
 
+	TGraph *gr2 = new TGraph (nPoints, plotRX, plotRkY);
+	gr2->SetLineColor(4);
+	gr2->SetLineWidth(2);
+	mgr1->Add(gr2,"L");
+
 	int numS = series.size();
 	TGraphAsymmErrors *g[numS];
 	
@@ -145,8 +156,8 @@ int main ( int argc, char **argv ) {
 		g[i] = new TGraphAsymmErrors (dataX.size(), &(dataX[0]), &(dataY[0]), 0, 0, &(dataU[0]), &(dataD[0]));
 		mgr1->Add(g[i],"P");
 
-		g[i]->SetMarkerStyle(21);
-		g[i]->SetMarkerSize(.7);
+		g[i]->SetMarkerStyle(20+i);
+		g[i]->SetMarkerSize(1);
 		g[i]->SetMarkerColor(2+i);
 	}
 	mgr1->Draw("A");
@@ -167,12 +178,13 @@ int main ( int argc, char **argv ) {
 	TLegend *lg1 = new TLegend (.5,.4,.87,.87);
 	lg1->SetFillColor(kWhite);
  	lg1->AddEntry(gr1,title,"l");
+	lg1->AddEntry(gr2,"Kelly","l");
 	for (int i = 0; i < numS; i++) {
 		lg1->AddEntry(g[i],names[i].c_str(),"ep");
 	}
 	lg1->SetTextSize(0.03);
 	lg1->Draw();
-	
+
 	/// End output
 
 	theApp.Run(); //delete theApp;
