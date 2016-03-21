@@ -27,6 +27,7 @@
 char dataFile[] = "dataGEN.dat";                       ///< Form factor data.
 char parametersFile[] = "parNucleons-FitD.dat";        ///< Input parameters.
 char parametersFile1[] = "parNucleons-Kelly.dat";
+char parametersFile2[] = "parNucleons-Bertozzi.dat";
 char outputFile[] = "outNucleons-temp.dat";            ///< Output parameters.
 
 #include "modules/ConstBasic.cpp"
@@ -35,6 +36,7 @@ char outputFile[] = "outNucleons-temp.dat";            ///< Output parameters.
 #include "modules/PlotGraph.cpp"
 #include "modules/Nucleon3G.cpp"
 #include "modules/NucleonKelly.cpp"
+#include "modules/NucleonBertozzi.cpp"
 
 using namespace ROOT::Minuit2;
 
@@ -52,6 +54,7 @@ int main ( int argc, char **argv ) {
 	std::cout << "\n> Plotting:" << std::endl;
 	std::cout << "> Plotted parameters:          `" << parametersFile << "'" << std::endl;
 	std::cout << ">                              `" << parametersFile1 << "'" << std::endl;
+	std::cout << ">                              `" << parametersFile2 << "'" << std::endl;
 	std::cout << "> Plotted form factor data:    `" << dataFile << "'" << std::endl;
 
 	const int nPoints = 2500;
@@ -79,8 +82,10 @@ int main ( int argc, char **argv ) {
 	pPlot.LoadParameters(parametersFile);
 	FFactorK pKelly(2);
 	pKelly.LoadParameters(parametersFile1);
+	FFactorB pBertozzi(3);
+	pBertozzi.LoadParameters(parametersFile2);
 
-	double plotRX[nPoints], plotRpY[nPoints], plotRkY[nPoints];
+	double plotRX[nPoints], plotRpY[nPoints], plotRkY[nPoints], plotRbY[nPoints];
 	
 	tMin = -4.0;
 	tMax = 0.0;
@@ -96,6 +101,7 @@ int main ( int argc, char **argv ) {
 		hA = pPlot.AbsGEN(t);
 		plotRpY[i] = hA;
 		plotRkY[i] = pKelly.GEN(t, massP);
+		plotRbY[i] = pBertozzi.GEN(t);
     }
 
 
@@ -132,6 +138,11 @@ int main ( int argc, char **argv ) {
 	gr2->SetLineColor(4);
 	gr2->SetLineWidth(2);
 	mgr1->Add(gr2,"L");
+
+	TGraph *gr3 = new TGraph (nPoints, plotRX, plotRbY);
+	gr3->SetLineColor(6);
+	gr3->SetLineWidth(2);
+	mgr1->Add(gr3,"L");
 
 	int numS = series.size();
 	TGraphAsymmErrors *g[numS];
@@ -173,12 +184,13 @@ int main ( int argc, char **argv ) {
 	mgr1->SetMinimum(0.01);
 	mgr1->SetMaximum(3.);*/
 
-	Char_t const* title = "Our model";
+	Char_t const* title = "U&A model";
 
 	TLegend *lg1 = new TLegend (.5,.4,.87,.87);
 	lg1->SetFillColor(kWhite);
  	lg1->AddEntry(gr1,title,"l");
 	lg1->AddEntry(gr2,"Kelly","l");
+	lg1->AddEntry(gr3,"Bertozzi","l");
 	for (int i = 0; i < numS; i++) {
 		lg1->AddEntry(g[i],names[i].c_str(),"ep");
 	}
