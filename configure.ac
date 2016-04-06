@@ -1,7 +1,7 @@
 Idnl Process this file with autoconf to produce a configure script.
 dnl Author: Erik.Bartos@gmail.com
 
-AC_INIT(buenavista, 0.3)
+AC_INIT(buenavista, 0.4)
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.15])
 LT_INIT
@@ -20,6 +20,7 @@ Docs/Makefile
 Hyperons/Makefile
 Nucleons/Makefile
 Pions/Makefile
+Transition/Makefile
 src/Makefile
 Nucleons/Iachello/Makefile
 Nucleons/Delta/Makefile
