@@ -24,15 +24,15 @@
 #include "TComplex.h"
 #include "TMath.h"
 
-char dataFile[] = "dataEta.dat";                  ///< Form factor data.
+char dataFile[] = "data/dataEta.dat";                  ///< Form factor data.
 char parametersFile[] = "parEta.dat";             ///< Input parameters.
 char outputFile[] = "outEta-temp.dat";            ///< Output parameters.
 
-#include "../modules/ConstBasic.cpp"
-#include "../modules/ConstMesons.cpp"
-#include "../modules/ExperimentalData.cpp"
-#include "../modules/PlotGraph.cpp"
-#include "../modules/MesonTest.cpp"
+#include "modules/ConstBasic.cpp"
+#include "modules/ConstMesons.cpp"
+#include "modules/ExperimentalData.cpp"
+#include "modules/PlotGraph.cpp"
+#include "modules/MesonTest.cpp"
 
 using namespace ROOT::Minuit2;
 
@@ -42,9 +42,9 @@ int main ( int argc, char **argv ) {
 	std::cout << "=== Version 1.0, (c) 2016 Erik Bartoš" << std::endl;
 
 	FFactor meson();
-	meson.testFunction(3.);
-}
-/*
+	//meson.testFunction(3.);
+
+
 	/// Start
 	
 	TApplication theApp("Ratios", &argc, argv);
@@ -52,8 +52,6 @@ int main ( int argc, char **argv ) {
 	/// Plot
 	std::cout << "\n> Plotting:" << std::endl;
 	std::cout << "> Plotted parameters:          `" << parametersFile << "'" << std::endl;
-	std::cout << ">                              `" << parametersFile1 << "'" << std::endl;
-	std::cout << ">                              `" << parametersFile2 << "'" << std::endl;
 	std::cout << "> Plotted form factor data:    `" << dataFile << "'" << std::endl;
 
 	const int nPoints = 2500;
@@ -74,7 +72,7 @@ int main ( int argc, char **argv ) {
 	std::vector<double> errDown = W.ErrDown();
 	std::vector<double> theta = W.Theta();
 	std::vector<double> energy = W.Energy();
-
+/*
 	// Plot function
 		
 	FFactor pPlot(12);
@@ -102,7 +100,7 @@ int main ( int argc, char **argv ) {
 		plotRkY[i] = pKelly.GEN(t, massP);
 		plotRbY[i] = pBertozzi.GEN(t);
     }
-
+*/
 
 	// Graph
 
@@ -127,7 +125,7 @@ int main ( int argc, char **argv ) {
 	//c->SetLogy(); // logarithmic scale
 
 	TMultiGraph *mgr1 = new TMultiGraph();
-
+/*
 	TGraph *gr1 = new TGraph (nPoints, plotRX, plotRpY);
 	gr1->SetLineColor(1);
 	gr1->SetLineWidth(2);
@@ -195,10 +193,10 @@ int main ( int argc, char **argv ) {
 	}
 	lg1->SetTextSize(0.03);
 	lg1->Draw();
-
+*/
 	/// End output
 
 	theApp.Run(); //delete theApp;
 	
 	return EXIT_SUCCESS;
-}*/
+}
