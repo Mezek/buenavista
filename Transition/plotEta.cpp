@@ -24,7 +24,7 @@
 #include "TComplex.h"
 #include "TMath.h"
 
-char dataFile[] = "data/dataEta.dat";                  ///< Form factor data.
+char dataFile[] = "data/dataEta.dat";             ///< Form factor data.
 char parametersFile[] = "parEta.dat";             ///< Input parameters.
 char outputFile[] = "outEta-temp.dat";            ///< Output parameters.
 
@@ -139,7 +139,7 @@ int main ( int argc, char **argv ) {
 	TGraph *gr3 = new TGraph (nPoints, plotRX, plotRbY);
 	gr3->SetLineColor(6);
 	gr3->SetLineWidth(2);
-	mgr1->Add(gr3,"L");
+	mgr1->Add(gr3,"L");*/
 
 	int numS = series.size();
 	TGraphAsymmErrors *g[numS];
@@ -152,7 +152,7 @@ int main ( int argc, char **argv ) {
 
 		for (int j = 0; j < W.size(); j++) {
 			if (series[i] == type[j]) {
-				dataX.push_back(-x[j]);
+				dataX.push_back(x[j]);
 				dataY.push_back(val[j]);
 				dataU.push_back(errUp[j]);
 				dataD.push_back(errDown[j]);
@@ -169,7 +169,7 @@ int main ( int argc, char **argv ) {
 		g[i]->SetMarkerColor(2+i);
 	}
 	mgr1->Draw("A");
-
+/*
 	mgr1->GetXaxis()->SetTitle("Q^{2} [GeV^{2}]");
 	mgr1->GetYaxis()->SetTitle("|G_{E}^{n}|");
 	mgr1->GetXaxis()->CenterTitle();
