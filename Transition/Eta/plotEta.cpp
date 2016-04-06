@@ -32,7 +32,7 @@ char outputFile[] = "outEta-temp.dat";            ///< Output parameters.
 #include "../modules/ConstMesons.cpp"
 #include "../modules/ExperimentalData.cpp"
 #include "../modules/PlotGraph.cpp"
-#include "../modules/MesonUam.cpp"
+#include "../modules/MesonTest.cpp"
 
 using namespace ROOT::Minuit2;
 
@@ -40,6 +40,9 @@ int main ( int argc, char **argv ) {
 	
 	std::cout << "=== Program: " << argv[0] << std::endl;
 	std::cout << "=== Version 1.0, (c) 2016 Erik Bartoš" << std::endl;
+
+	FFactor meson();
+	meson.testFunction(3.);
 }
 /*
 	/// Start

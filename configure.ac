@@ -3,7 +3,7 @@ dnl Author: Erik.Bartos@gmail.com
 
 AC_INIT(buenavista, 0.4)
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE([1.15])
+AM_INIT_AUTOMAKE([subdir-objects])
 LT_INIT
 AM_SILENT_RULES([yes])
 AC_PROG_CXX
