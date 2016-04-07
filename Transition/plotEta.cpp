@@ -41,8 +41,10 @@ int main ( int argc, char **argv ) {
 	std::cout << "=== Program: " << argv[0] << std::endl;
 	std::cout << "=== Version 1.0, (c) 2016 Erik Bartoš" << std::endl;
 
-	FFactor meson();
-	//meson.testFunction(3.);
+	FFactorE eta;
+	TComplex tc(2.,2.);
+	//eta.LoadParameters(parametersFile);
+	std::cout << eta.FFVal(tc) << std::endl;
 
 
 	/// Start
@@ -102,7 +104,7 @@ int main ( int argc, char **argv ) {
     }
 */
 
-	// Graph
+/*	// Graph
 
 	TStyle *plain = new TStyle("Plain","Plain Style(no colors/fill areas)");
 	plain->SetCanvasBorderMode(0);
@@ -125,6 +127,7 @@ int main ( int argc, char **argv ) {
 	//c->SetLogy(); // logarithmic scale
 
 	TMultiGraph *mgr1 = new TMultiGraph();
+	*/
 /*
 	TGraph *gr1 = new TGraph (nPoints, plotRX, plotRpY);
 	gr1->SetLineColor(1);
@@ -140,7 +143,7 @@ int main ( int argc, char **argv ) {
 	gr3->SetLineColor(6);
 	gr3->SetLineWidth(2);
 	mgr1->Add(gr3,"L");*/
-
+/*
 	int numS = series.size();
 	TGraphAsymmErrors *g[numS];
 	
@@ -169,6 +172,7 @@ int main ( int argc, char **argv ) {
 		g[i]->SetMarkerColor(2+i);
 	}
 	mgr1->Draw("A");
+*/
 /*
 	mgr1->GetXaxis()->SetTitle("Q^{2} [GeV^{2}]");
 	mgr1->GetYaxis()->SetTitle("|G_{E}^{n}|");

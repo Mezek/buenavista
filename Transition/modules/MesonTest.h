@@ -35,7 +35,7 @@ struct hod {
 	double val, err, down, up;
 };
 
-class FFactor {
+class FFactorE {
 
   private:
 	TComplex t;
@@ -51,7 +51,8 @@ class FFactor {
 	bool handSome;
 	
   public:
-	FFactor ( std::size_t );
+	FFactorE ();
+	FFactorE ( std::size_t );
 	int numberOfParameters;
 	std::vector<hod> v;
 	void LoadParameters ( char* );
@@ -59,6 +60,7 @@ class FFactor {
 	void SetParameters ( const std::vector<double>& );
 	void FixParameters ( void );
 	void PrintParameters ( void );
+	void testFunction ( void );
 	double A ( int );
 	double E ( int );
 	TComplex W ( const TComplex &, const TComplex &, const TComplex &, const double );
@@ -66,7 +68,7 @@ class FFactor {
 	TComplex VectorP ( TComplex );
 	TComplex FFVal ( TComplex );
 
-	~FFactor () {};
+	~FFactorE () {};
 };
 
 	}  // namespace Minuit2
