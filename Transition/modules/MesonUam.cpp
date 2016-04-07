@@ -84,14 +84,6 @@ TComplex eL (const TComplex &a, const TComplex &b, const TComplex &c, const TCom
 	return f;
 }
 
-TComplex sI (const TComplex &b, const TComplex &c, const TComplex &sc, const double sign)
-{
-	TComplex f;
-	if (sign == +1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b-1./c)*(b-1./sc)/(sc-1./sc); }
-	if (sign == -1.) { f = -1.*(b-c)*(b-sc)/(c-1./c)*(b+c)*(b+sc)/(sc-1./sc); }
-	return f;
-}
-
 /// Compare difference of two numbers with a small delta.
 
 int howDiff ( double a, double b, double stdDiff )
