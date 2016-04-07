@@ -17,7 +17,8 @@
 	static const double massPi2 = massPi*massPi;
 
 	static const double t0s = 9.*massPi2;                 // isoscalar squared branch point		
-	static const double t0v = 4.*massPi2;                 // isovector squared branch point	
+	static const double t0v = 4.*massPi2;                 // isovector squared branch point
+	static const double t0t = massPi2;                    // transition squared branch point
 
 	// Om
 	static const double massOm = 0.78265;
