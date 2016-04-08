@@ -28,7 +28,7 @@ char dataFile1[] = "data/dataEta.dat";            ///< Form factor data.
 char dataFile2[] = "data/dataEtaPrime.dat";
 char dataFile3[] = "data/dataPiZero.dat";
 char parametersFile1[] = "parEta.dat";            ///< Input parameters.
-char parametersFile2[] = "parEtaPrime.dat";
+char parametersFile2[] = "parEtaPrimeFit.dat";
 char parametersFile3[] = "parPiZero.dat";
 char outputFile[] = "outEta-temp.dat";            ///< Output parameters.
 
@@ -54,7 +54,7 @@ int main ( int argc, char **argv ) {
 	std::cout << "> Plotted parameters:          `" << parametersFile2 << "'" << std::endl;
 	std::cout << "> Plotted form factor data:    `" << dataFile2 << "'" << std::endl;
 
-	const int nPoints = 2500;
+	const int nPoints = 10000;
 	double tMin;
 	double tMax;
 	double tStep;
@@ -79,6 +79,11 @@ int main ( int argc, char **argv ) {
 	eta.LoadParameters(parametersFile2);
 	eta.PrintParameters();
 
+	/*// Debug
+	TComplex dn(.612,0.);
+	std::cout << "S = " << eta.ScalarP(dn) << std::endl;
+	std::cout << "V = " << eta.VectorP(dn) << std::endl;
+	std::cout << "F = " << eta.FFVal(dn) << std::endl;*/
 	/*
 	double t1 = eta.A(0);
 	double t3 = eta.A(1);
@@ -92,7 +97,7 @@ int main ( int argc, char **argv ) {
 	std::cout << ">> S : "<< h1 << " +/- " << eh1 << std::endl;
 	std::cout << ">> V : "<< h3 << " +/- " << eh3 << std::endl;*/
 
-	double plotRX[nPoints], plotRpY[nPoints];
+	double plotRX[nPoints], plotRpY[nPoints], plotRSY[nPoints], plotRVY[nPoints];
 	
 	tMin = -13.0;
 	tMax = 5.0;
@@ -107,6 +112,8 @@ int main ( int argc, char **argv ) {
 
 		hA = eta.FFAbsVal(t);
 		plotRpY[i] = hA;
+		plotRSY[i] = eta.ScalarP(t).Rho();
+		plotRVY[i] = eta.VectorP(t).Rho();
     }
 
 	// Graph
@@ -137,6 +144,16 @@ int main ( int argc, char **argv ) {
 	gr1->SetLineColor(1);
 	gr1->SetLineWidth(2);
 	mgr1->Add(gr1,"L");
+
+	TGraph *gr2 = new TGraph (nPoints, plotRX, plotRSY);
+	gr2->SetLineColor(2);
+	gr2->SetLineWidth(2);
+	//mgr1->Add(gr2,"L");
+
+	TGraph *gr3 = new TGraph (nPoints, plotRX, plotRVY);
+	gr3->SetLineColor(4);
+	gr3->SetLineWidth(2);
+	//mgr1->Add(gr3,"L");
 	
 	int numS = series.size();
 	TGraphAsymmErrors *g[numS];

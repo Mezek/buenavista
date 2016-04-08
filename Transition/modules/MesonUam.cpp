@@ -183,18 +183,8 @@ void FFactorT::PrintParameters ()
 
 	// Mesons under/over threshold
 	std::cout << "\n>> Mesons placement to threshold:" << std::endl;
-	std::cout.width(10);
-	std::cout << "FF";
-	std::cout.width(6);
-	std::cout << "Under";
-	std::cout.width(6);
-	std::cout << "Over";
-	std::cout.width(6);
-	std::cout << "All";
-	std::cout.width(6);
-	std::cout << std::endl;
 
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < 2; ++i) {
 		int d = 0;
 		int u = 0;
 		double t;
@@ -209,9 +199,10 @@ void FFactorT::PrintParameters ()
 			} else {
 				u = u + 1;
 			}
+			std::cout << i << " " << j << " " << t << " " << a[i].val << std::endl;
 		}
 		std::cout.width(10);
-		std::cout << FF.name;
+		std::cout << "Mesons";
 		std::cout.width(6);
 		std::cout << d;
 		std::cout.width(6);
@@ -220,6 +211,16 @@ void FFactorT::PrintParameters ()
 		std::cout << u + d;
 		std::cout << std::endl;
 	}
+	std::cout.width(10);
+	std::cout << FF.name;
+	std::cout.width(6);
+	std::cout << "Under";
+	std::cout.width(6);
+	std::cout << "Over";
+	std::cout.width(6);
+	std::cout << "All";
+	std::cout.width(6);
+	std::cout << std::endl;
 }
 
 /// Return value of i. parameter
@@ -287,6 +288,15 @@ TComplex FFactorT::ScalarP (TComplex t)
 		//std::cout << sign << " ";
 	}
 	//std::cout << std::endl;
+	/*vM[0] = this->W(mwS2[0],t0t,a[0].val,1);
+	vMc[0] = vMc[0].Conjugate(vM[0]);
+	mul[0] = eL(v,vN,vM[0],vMc[0],1);
+	vM[1] = this->W(mwS2[1],t0t,a[0].val,-1);
+	vMc[1] = vMc[1].Conjugate(vM[1]);
+	mul[1] = eL(v,vN,vM[1],vMc[1],-1);
+	vM[2] = this->W(mwS2[2],t0t,a[0].val,-1);
+	vMc[2] = vMc[2].Conjugate(vM[2]);
+	mul[2] = eL(v,vN,vM[2],vMc[2],-1);*/
 
 	TComplex norm, normA, suma;
 	norm = (1.-v*v)/(1.-vN*vN);
@@ -331,7 +341,7 @@ TComplex FFactorT::VectorP (TComplex t)
 
 TComplex FFactorT::FFVal ( TComplex t )
 {
-	TComplex val = this->ScalarP(t) + this->VectorP(t); 
+	TComplex val = this->ScalarP(t) + this->VectorP(t);
 	return val;
 }
 

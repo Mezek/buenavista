@@ -85,3 +85,10 @@
 	static const double massRho4P = 2.455;                // +/-53 by D. fit
 	static const double widthRho4P = 0.728;               // +/-2 by D. fit
 
+	// Eta
+	static const double massEta = 0.547862;                // PDG value  
+	static const double widthEta = 0.00000131;
+
+	// EtaPrime
+	static const double massEtaPrime = 0.95778;  
+	static const double widthEtaPrime = 0.000198;
