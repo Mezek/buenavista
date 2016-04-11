@@ -25,8 +25,11 @@
 #include "TMath.h"
 
 char dataFile1[] = "data/dataEta.dat";            ///< Form factor data.
-char parametersFile1[] = "parEtaFit.dat";            ///< Input parameters.
-char parametersFile2[] = "parEtaFit.dat";
+char dataFile2[] = "data/dataEtaPrime.dat";
+char dataFile3[] = "data/dataPiZero.dat";
+char parametersFile1[] = "parEta.dat";            ///< Input parameters.
+char parametersFile2[] = "parEtaPrimeFit.dat";
+char parametersFile3[] = "parPiZero.dat";
 char outputFile[] = "outEta-temp.dat";            ///< Output parameters.
 
 #include "modules/ConstBasic.cpp"
@@ -48,8 +51,8 @@ int main ( int argc, char **argv ) {
 
 	/// Plot
 	std::cout << "\n> Plotting:" << std::endl;
-	std::cout << "> Plotted parameters:          `" << parametersFile1 << "'" << std::endl;
-	std::cout << "> Plotted form factor data:    `" << dataFile1 << "'" << std::endl;
+	std::cout << "> Plotted parameters:          `" << parametersFile2 << "'" << std::endl;
+	std::cout << "> Plotted form factor data:    `" << dataFile2 << "'" << std::endl;
 
 	const int nPoints = 10000;
 	double tMin;
@@ -58,7 +61,7 @@ int main ( int argc, char **argv ) {
 	double tA;
 
 	ExperimentalData W;
-	W.ReadData(dataFile1);
+	W.ReadData(dataFile2);
 	std::cout << "\nNumber of plotted points:      " << W.size() << std::endl;
 	std::vector<int> series = W.Series();
 	std::vector<std::string> names = W.Name();
@@ -72,8 +75,8 @@ int main ( int argc, char **argv ) {
 
 	// Plot function
 	
-	FFactorT trans(1);
-	trans.LoadParameters(parametersFile1);
+	FFactorT trans(2);
+	trans.LoadParameters(parametersFile2);
 	trans.PrintParameters();
 
 	// Debug
@@ -178,7 +181,7 @@ int main ( int argc, char **argv ) {
 	mgr1->Draw("A");
 
 	mgr1->GetXaxis()->SetTitle("t [GeV^{2}]");
-	mgr1->GetYaxis()->SetTitle("|F_{#eta}|");
+	mgr1->GetYaxis()->SetTitle("|F_{#eta'}|");
 	mgr1->GetXaxis()->CenterTitle();
 	mgr1->GetYaxis()->CenterTitle();
 
@@ -202,7 +205,7 @@ int main ( int argc, char **argv ) {
 
 	c->Update();
 
-	c->SaveAs("gEta.pdf");
+	c->SaveAs("gEtaPrime.pdf");
 
 	/// End output
 

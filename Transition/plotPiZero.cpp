@@ -4,7 +4,7 @@
  * $Author$
  *
  * @file
- * @brief       Plot Eta.
+ * @brief       Plot PiZero.
  */
 
 #include <iostream>
@@ -24,10 +24,10 @@
 #include "TComplex.h"
 #include "TMath.h"
 
-char dataFile1[] = "data/dataEta.dat";            ///< Form factor data.
-char parametersFile1[] = "parEtaFit.dat";            ///< Input parameters.
-char parametersFile2[] = "parEtaFit.dat";
-char outputFile[] = "outEta-temp.dat";            ///< Output parameters.
+char dataFile1[] = "data/dataPiZero.dat";            ///< Form factor data.
+char parametersFile1[] = "parPiZeroFit.dat";         ///< Input parameters.
+char parametersFile2[] = "parPiZeroFit.dat";
+char outputFile[] = "outEta-temp.dat";               ///< Output parameters.
 
 #include "modules/ConstBasic.cpp"
 #include "modules/ConstMesons.cpp"
@@ -44,7 +44,7 @@ int main ( int argc, char **argv ) {
 
 	/// Start
 	
-	TApplication theApp("Ratios", &argc, argv);
+	TApplication theApp("FF", &argc, argv);
 
 	/// Plot
 	std::cout << "\n> Plotting:" << std::endl;
@@ -72,7 +72,7 @@ int main ( int argc, char **argv ) {
 
 	// Plot function
 	
-	FFactorT trans(1);
+	FFactorT trans(3);
 	trans.LoadParameters(parametersFile1);
 	trans.PrintParameters();
 
@@ -178,7 +178,7 @@ int main ( int argc, char **argv ) {
 	mgr1->Draw("A");
 
 	mgr1->GetXaxis()->SetTitle("t [GeV^{2}]");
-	mgr1->GetYaxis()->SetTitle("|F_{#eta}|");
+	mgr1->GetYaxis()->SetTitle("|F_{#pi^{0}}|");
 	mgr1->GetXaxis()->CenterTitle();
 	mgr1->GetYaxis()->CenterTitle();
 
@@ -202,7 +202,7 @@ int main ( int argc, char **argv ) {
 
 	c->Update();
 
-	c->SaveAs("gEta.pdf");
+	c->SaveAs("gPiZero.pdf");
 
 	/// End output
 
