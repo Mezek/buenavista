@@ -86,9 +86,9 @@ int main ( int argc, char **argv ) {
 	double et1 = trans.E(0);
 	double et2 = trans.E(1);
 
-	double h1 = sqrt(t1/t0t - 1.);
+	double h1 = TMath::Sqrt(t1/t0t - 1.);
 	double eh1 = et1/(2.*t1*h1);
-	double h2 = sqrt(t2/t0t - 1.);
+	double h2 = TMath::Sqrt(t2/t0t - 1.);
 	double eh2 = et2/(2.*t2*h2);
 	std::cout << ">> q_in^S : "<< h1 << " +/- " << eh1 << std::endl;
 	std::cout << ">> q_in^V : "<< h2 << " +/- " << eh2 << std::endl;

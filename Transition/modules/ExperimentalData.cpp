@@ -251,7 +251,7 @@ void ExperimentalData::CheckData ()
 		}
 	}
 
-	std::cout << "Asymmetric errors:             " << k << "\t(" << floor(100.*k/l+0.5) << "%)" << std::endl;
+	std::cout << "Asymmetric errors:             " << k << "\t(" << std::floor(100.*k/l+0.5) << "%)" << std::endl;
 }
 
 /// Show data info
