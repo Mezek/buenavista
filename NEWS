@@ -1,2 +1,5 @@
 this version:
 	- working copy, not for public
+
+TODO:
+	- switch to CMake after compilation against Root will be available under Windows
